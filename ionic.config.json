@@ -1,0 +1,8 @@
+{
+  "name": "findMe",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "3b5763a6"
+}
