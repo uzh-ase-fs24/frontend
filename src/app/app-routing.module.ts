@@ -6,19 +6,14 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
     path: 'home',
-    loadChildren: () =>
+    loadComponent: () =>
       import('./home/home.component').then((m) => m.HomeComponent),
     canActivate: [() => inject(AuthService).isAuthenticated()],
   },
   {
     path: 'login',
-    loadChildren: () =>
+    loadComponent: () =>
       import('./login/login.component').then((m) => m.LoginComponent),
-  },
-  {
-    path: 'sign-up',
-    loadChildren: () =>
-      import('./sign-up/sign-up.component').then((m) => m.SignUpComponent),
   },
 ];
 @NgModule({

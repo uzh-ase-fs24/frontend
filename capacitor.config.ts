@@ -5,8 +5,8 @@ const config: CapacitorConfig = {
   appName: 'findMe',
   webDir: 'www',
   server: {
-    androidScheme: 'https'
-  }
+    androidScheme: 'http',
+  },
 };
 
 export default config;

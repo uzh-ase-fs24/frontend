@@ -2,8 +2,16 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { isPlatform } from '@ionic/angular';
+import config from 'capacitor.config';
+
 export const environment = {
-  production: false
+  production: false,
+  auth: {
+    domain: 'dev-ss50z3434hodufar.us.auth0.com',
+    clientId: 'XUo9dyc9aEJaC5im9tvutQmDRzeoNZU9',
+    webCallbackUri: 'http://localhost:8100/home',
+  },
 };
 
 /*
