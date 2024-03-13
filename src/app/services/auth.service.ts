@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { AuthService as auth0 } from '@auth0/auth0-angular';
+import { User, AuthService as auth0 } from '@auth0/auth0-angular';
 import { Browser } from '@capacitor/browser';
 import { isPlatform } from '@ionic/angular';
 import config from 'capacitor.config';
-import { mergeMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -18,11 +18,12 @@ export class AuthService {
     ? `${config.appId}://${environment.auth.domain}/capacitor/${config.appId}/callback`
     : environment.auth.webCallbackUri;
 
-  public isAuthenticated(): boolean {
-    return true;
+
+  public getUser(): Observable<User | undefined | null>{
+    return this.auth0.user$;
   }
 
-  async login() {
+  public async login() {
     this.auth0
       .loginWithRedirect({
         async openUrl(url: string) {
@@ -32,7 +33,7 @@ export class AuthService {
       .subscribe();
   }
 
-  logout() {
+  public logout() {
     this.auth0
       .logout({
         logoutParams: {
