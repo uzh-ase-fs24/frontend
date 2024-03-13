@@ -1,6 +1,6 @@
-import { NgModule, inject } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthService } from './services/auth.service';
+import { AuthGuard } from '@auth0/auth0-angular';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -8,7 +8,7 @@ const routes: Routes = [
     path: 'home',
     loadComponent: () =>
       import('./home/home.component').then((m) => m.HomeComponent),
-    canActivate: [() => inject(AuthService).isAuthenticated()],
+    canActivate: [AuthGuard],
   },
   {
     path: 'login',
