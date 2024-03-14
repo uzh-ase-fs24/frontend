@@ -1,0 +1,11 @@
+<div class="home-container">
+  @if (user$ | async; as user) {
+  <div>
+    <div style="display: flex; justify-content: center">
+      <img [src]="user.picture" alt="user.picture" />
+    </div>
+    <h1>Welcome, {{ user.nickname }}!</h1>
+    <ion-button (click)="logout()">Logout</ion-button>
+  </div>
+  }
+</div>
