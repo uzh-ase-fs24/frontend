@@ -1,5 +1,3 @@
-import { isPlatform } from '@ionic/angular';
-import config from 'capacitor.config';
 
 export const environment = {
   production: true,

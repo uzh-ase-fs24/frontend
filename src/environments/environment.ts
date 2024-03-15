@@ -2,9 +2,6 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { isPlatform } from '@ionic/angular';
-import config from 'capacitor.config';
-
 export const environment = {
   production: false,
   auth: {
