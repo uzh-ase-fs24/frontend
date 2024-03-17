@@ -18,8 +18,7 @@ export class AuthService {
     ? `${config.appId}://${environment.auth.domain}/capacitor/${config.appId}/callback`
     : environment.auth.webCallbackUri;
 
-
-  public getUser(): Observable<User | undefined | null>{
+  public getUser(): Observable<User | undefined | null> {
     return this.auth0.user$;
   }
 
@@ -37,10 +36,7 @@ export class AuthService {
     this.auth0
       .logout({
         logoutParams: {
-          returnTo: AuthService.redirectCallback,
-        },
-        async openUrl(url: string) {
-          await Browser.open({ url });
+          returnTo: environment.auth.logoutRedirectUri,
         },
       })
       .subscribe();

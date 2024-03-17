@@ -1,13 +1,19 @@
-<div class="home-container">
-  @if (userProfile$ && authUser$ | async; as authUser) {
+<div class="base-container">
+  @if(userProfile$ | async) { @if (authUser$ | async; as authUser) {
   <div>
     <div style="display: flex; justify-content: center">
       <img [src]="authUser.picture" alt="user.picture" />
     </div>
-    <h1>Welcome, {{ authUser.nickname }}!</h1>
-    <ion-button (click)="logout()">Logout</ion-button>
+    <div style="display: flex; justify-content: center">
+      <h1 style="text-align: center">Welcome, {{ authUser.nickname }}!</h1>
+    </div>
+    <div style="display: flex; justify-content: center">
+      <ion-button (click)="logout()">Logout</ion-button>
+    </div>
   </div>
   } @else {
+  <ion-spinner name="circular"></ion-spinner>
+  }} @else {
   <ion-spinner name="circular"></ion-spinner>
   }
 </div>

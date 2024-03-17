@@ -1,3 +1,64 @@
-<p>
-  signup works!
-</p>
+<div>
+  @if(loading()){
+  <div class="base-container"><ion-spinner name="circular"></ion-spinner></div>
+  } @else {
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Complete singup</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="signupForm" (ngSubmit)="submitForm()">
+    <ion-item lines="full">
+      <ion-input
+        formControlName="username"
+        type="text"
+        label="Username"
+        labelPlacement="floating"
+        ngDefaultControl
+      ></ion-input>
+    </ion-item>
+    @if (signupForm.controls.username.touched &&
+    signupForm.controls.username.invalid) {
+    <app-signup-form-exceptions
+      [field]="'Username'"
+      [errors]="signupForm.controls.username.errors"
+    ></app-signup-form-exceptions>
+    }
+    <ion-item lines="full">
+      <ion-input
+        formControlName="firstName"
+        type="text"
+        label="First Name"
+        labelPlacement="floating"
+        ngDefaultControl
+      ></ion-input>
+    </ion-item>
+    @if (signupForm.controls.firstName.touched &&
+    signupForm.controls.firstName.invalid) {
+    <app-signup-form-exceptions
+      [field]="'First Name'"
+      [errors]="signupForm.controls.firstName.errors"
+    ></app-signup-form-exceptions>
+    }
+    <ion-item lines="full">
+      <ion-input
+        formControlName="lastName"
+        type="text"
+        label="Last Name"
+        labelPlacement="floating"
+        ngDefaultControl
+      ></ion-input>
+    </ion-item>
+    @if (signupForm.controls.lastName.touched &&
+    signupForm.controls.lastName.invalid) {
+    <app-signup-form-exceptions
+      [field]="'Last Name'"
+      [errors]="signupForm.controls.lastName.errors"
+    ></app-signup-form-exceptions>
+    }
+    <ion-button style="margin-top: 30px" type="submit" expand="block"
+      >Submit</ion-button
+    >
+  </form>
+  }
+</div>

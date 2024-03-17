@@ -3,7 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { IonButton } from '@ionic/angular/standalone';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { EMPTY, catchError, tap } from 'rxjs';
+import { EMPTY, catchError, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { IonSpinner } from '@ionic/angular/standalone';
 
@@ -13,6 +13,7 @@ import { IonSpinner } from '@ionic/angular/standalone';
   styleUrls: ['./home.component.scss'],
   standalone: true,
   imports: [IonButton, IonSpinner, CommonModule],
+  // providers: [ProfileApiService],
 })
 export class HomeComponent {
   private authService = inject(AuthService);
@@ -20,20 +21,18 @@ export class HomeComponent {
   private router = inject(Router);
 
   authUser$ = this.authService.getUser();
-  userProfile$ = this.profileApiService
-    .getProfile()
-    .pipe(
-      tap((profile) => console.log('Profile:', profile)),
-      catchError((error) => {
+  userProfile$ = this.profileApiService.getProfile().pipe(
+    catchError((error) => {
+      console.log('Error:', error);
+      if (error.status === 404) {
+        this.router.navigate(['/signup']);
+      } else {
         console.log('Error:', error);
-        if (error.status === 404) {
-          this.router.navigate(['/signup']);
-        }
-        return EMPTY;
-      })
-    )
-    .subscribe();
-
+      }
+      // TODO: Return empty when the API is ready
+      return of({ username: 'test' });
+    })
+  );
   constructor() {}
 
   logout(): void {

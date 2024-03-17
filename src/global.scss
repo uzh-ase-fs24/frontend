@@ -24,3 +24,18 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+// Overwrites
+ion-spinner {
+  width: 70px;
+  height: 70px;
+}
+
+// Basic styles
+.base-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5vh;
+}
