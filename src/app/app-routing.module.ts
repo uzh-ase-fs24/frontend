@@ -10,6 +10,17 @@ const routes: Routes = [
       import('./home/home.component').then((m) => m.HomeComponent),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('./signup/signup.component').then((m) => m.SignupComponent),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./login/login.component').then((m) => m.LoginComponent),
+  },
 ];
 @NgModule({
   imports: [

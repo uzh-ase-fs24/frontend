@@ -1,0 +1,15 @@
+<div>
+  <div class="ion-padding" *ngIf="errors()?.['required']">
+    <ion-text color="danger">{{ field() }} is required.</ion-text>
+  </div>
+  <div class="ion-padding" *ngIf="errors()?.['minlength']">
+    <ion-text color="danger"
+      >{{ field() }} must be at least 3 characters long.</ion-text
+    >
+  </div>
+  <div class="ion-padding" *ngIf="errors()?.['maxlength']">
+    <ion-text color="danger"
+      >{{ field() }} must be at most 20 characters long.</ion-text
+    >
+  </div>
+</div>
