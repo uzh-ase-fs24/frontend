@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { IonButton } from '@ionic/angular/standalone';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +11,7 @@ import { AuthService } from '../services/auth.service';
   imports: [IonButton, CommonModule],
 })
 export class LoginComponent {
-
   authService = inject(AuthService);
 
-  constructor() { }
+  constructor() {}
 }

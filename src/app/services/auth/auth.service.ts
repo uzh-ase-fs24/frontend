@@ -18,8 +18,12 @@ export class AuthService {
     ? `${config.appId}://${environment.auth.domain}/capacitor/${config.appId}/callback`
     : environment.auth.webCallbackUri;
 
-  public getUser(): Observable<User | undefined | null> {
+  public get user$(): Observable<User | undefined | null> {
     return this.auth0.user$;
+  }
+
+  public get isAuthenticated$(): Observable<boolean> {
+    return this.auth0.isAuthenticated$;
   }
 
   public async login() {

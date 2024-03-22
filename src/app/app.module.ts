@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './services/auth/auth.service';
 import {
   HttpClient,
   HttpHandler,
@@ -30,6 +30,7 @@ const redirect_uri = AuthService.redirectCallback;
       useRefreshTokensFallback: false,
       authorizationParams: {
         redirect_uri,
+        prompt: 'none',
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
