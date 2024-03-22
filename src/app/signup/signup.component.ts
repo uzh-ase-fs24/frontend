@@ -89,7 +89,7 @@ export class SignupComponent {
           username: this.signupForm.value.username || '',
           firstName: this.signupForm.value.firstName || '',
           lastName: this.signupForm.value.lastName || '',
-          id: 0,
+          userId: 0,
         })
         .pipe(
           tap((user) => {
