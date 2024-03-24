@@ -10,11 +10,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AuthService } from './services/auth/auth.service';
-import {
-  HttpClient,
-  HttpHandler,
-  provideHttpClient,
-} from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 
 const redirect_uri = AuthService.redirectCallback;
 @NgModule({
@@ -27,10 +23,12 @@ const redirect_uri = AuthService.redirectCallback;
       domain: environment.auth.domain,
       clientId: environment.auth.clientId,
       useRefreshTokens: true,
-      useRefreshTokensFallback: false,
+      useRefreshTokensFallback: true,
       authorizationParams: {
+        cacheLocation: 'localstorage',
+        useRefreshTokens: true,
         redirect_uri,
-        prompt: 'none',
+        audience: environment.auth.audience,
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {

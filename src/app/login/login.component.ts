@@ -14,4 +14,8 @@ export class LoginComponent {
   authService = inject(AuthService);
 
   constructor() {}
+
+  login(): void {
+    this.authService.login().subscribe();
+  }
 }

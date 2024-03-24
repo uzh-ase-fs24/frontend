@@ -3,7 +3,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { IonButton } from '@ionic/angular/standalone';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { EMPTY, Observable, catchError, of, tap } from 'rxjs';
+import { EMPTY, Observable, catchError,} from 'rxjs';
 import { Router } from '@angular/router';
 import { IonSpinner } from '@ionic/angular/standalone';
 
@@ -23,11 +23,10 @@ export class HomeComponent {
   authUser$ = this.authService.user$;
   userProfile$: Observable<any> = this.profileApiService.getProfile().pipe(
     catchError((error) => {
-      console.log('Error:', error);
       if (error.status === 404) {
         this.router.navigate(['/signup']);
       } else {
-        console.log('Error:', error);
+        console.error('Error:', error);
       }
       return EMPTY;
     })
