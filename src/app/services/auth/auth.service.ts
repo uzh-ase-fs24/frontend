@@ -3,7 +3,7 @@ import { User, AuthService as auth0 } from '@auth0/auth0-angular';
 import { Browser } from '@capacitor/browser';
 import { isPlatform } from '@ionic/angular';
 import config from 'capacitor.config';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class AuthService {
 
   constructor() {}
 
-  public static redirectCallback = isPlatform('hybrid')
+  public static readonly redirectCallback = isPlatform('hybrid')
     ? `${config.appId}://${environment.auth.domain}/capacitor/${config.appId}/callback`
     : environment.auth.webCallbackUri;
 
