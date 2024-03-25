@@ -10,7 +10,8 @@ import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AuthService } from './services/auth/auth.service';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { apiInterceptor } from './services/auth/api.interceptor';
 
 const redirect_uri = AuthService.redirectCallback;
 @NgModule({
@@ -40,7 +41,7 @@ const redirect_uri = AuthService.redirectCallback;
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([apiInterceptor])),
   ],
   bootstrap: [AppComponent],
 })
