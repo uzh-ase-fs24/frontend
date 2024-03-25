@@ -5,20 +5,20 @@ import { User } from 'src/app/model/user';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ProfileApiService {
   http = inject(HttpClient);
   auth = inject(AuthService);
 
   constructor() {}
 
-  // TODO: Add profile type, use auth0 user id
   getProfile(): Observable<any> {
     return this.auth.user$.pipe(
-      tap((profile) => console.log('Profile:', profile)),
-      switchMap((user) => this.http.get(environment.api.url + '/users/2'))
+      switchMap((user) =>
+        this.http.get(
+          environment.api.url + '/users/' + user?.sub?.split('|')[1]
+        )
+      )
     );
   }
 

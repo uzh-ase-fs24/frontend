@@ -12,7 +12,7 @@ export const environment = {
     audience: 'https://findme.execute-api.localhost.localstack.cloud:4566/local'
   },
   api: {
-    url: 'https://findme.execute-api.localhost.localstack.cloud:4566/local/LoginCallback',
+    url: 'https://findme.execute-api.localhost.localstack.cloud:4566/local',
   },
 };
 
