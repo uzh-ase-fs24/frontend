@@ -5,6 +5,8 @@ import { isPlatform } from '@ionic/angular';
 import config from 'capacitor.config';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +38,6 @@ export class AuthService {
 
   public aquireTokenSilently(): Observable<string> {
     return this.auth0.getAccessTokenSilently({
-      cacheMode: 'cache-only',
       authorizationParams: {
         redirect_uri: AuthService.redirectCallback,
         audience: environment.auth.audience,
@@ -50,7 +51,7 @@ export class AuthService {
         logoutParams: {
           returnTo: environment.auth.logoutRedirectUri,
         },
-      })
+      }).pipe(takeUntilDestroyed())
       .subscribe();
   }
 }

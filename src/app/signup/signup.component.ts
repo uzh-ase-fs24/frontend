@@ -22,6 +22,8 @@ import { SignupFormExceptionsComponent } from './ui/signup-form-exceptions/signu
 import { ProfileApiService } from '../services/api/profile-api.service';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -94,7 +96,8 @@ export class SignupComponent {
         .pipe(
           tap((user) => {
             this.router.navigate(['/home']);
-          })
+          }),
+          takeUntilDestroyed()
         )
         .subscribe();
     }
