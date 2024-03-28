@@ -22,6 +22,8 @@ import { SignupFormExceptionsComponent } from './ui/signup-form-exceptions/signu
 import { ProfileApiService } from '../services/api/profile-api.service';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -44,7 +46,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     SignupFormExceptionsComponent,
   ],
-  // providers: [ProfileApiService],
+  providers: [ProfileApiService],
 })
 export class SignupComponent {
   profileApiService = inject(ProfileApiService);
@@ -89,12 +91,13 @@ export class SignupComponent {
           username: this.signupForm.value.username || '',
           firstName: this.signupForm.value.firstName || '',
           lastName: this.signupForm.value.lastName || '',
-          id: 0,
+          userId: 0,
         })
         .pipe(
           tap((user) => {
             this.router.navigate(['/home']);
-          })
+          }),
+          takeUntilDestroyed()
         )
         .subscribe();
     }

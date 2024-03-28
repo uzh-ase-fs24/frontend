@@ -9,12 +9,9 @@ import { AppComponent } from './app.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AuthService } from './services/auth.service';
-import {
-  HttpClient,
-  HttpHandler,
-  provideHttpClient,
-} from '@angular/common/http';
+import { AuthService } from './services/auth/auth.service';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { apiInterceptor } from './services/auth/api.interceptor';
 
 const redirect_uri = AuthService.redirectCallback;
 @NgModule({
@@ -27,9 +24,13 @@ const redirect_uri = AuthService.redirectCallback;
       domain: environment.auth.domain,
       clientId: environment.auth.clientId,
       useRefreshTokens: true,
-      useRefreshTokensFallback: false,
+      useRefreshTokensFallback: true,
       authorizationParams: {
+        prompt: 'login',
+        cacheLocation: 'localstorage',
+        useRefreshTokens: true,
         redirect_uri,
+        audience: environment.auth.audience,
       },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -41,7 +42,7 @@ const redirect_uri = AuthService.redirectCallback;
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([apiInterceptor])),
   ],
   bootstrap: [AppComponent],
 })

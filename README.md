@@ -15,7 +15,7 @@ A mobile social media guessing game app
 - Alternatively you can run the web build via the ionic plugin: Run > Web
 - Navigate inside your browser to [http://localhost:8100](http://localhost:8100)
 
-#### REMARK: CURRENTLY ONLY THE AUTHENTICATION ONLY WORKS IN THE PROGRESSIV WEB APP
+#### REMARK: CURRENTLY THE AUTHENTICATION ONLY WORKS IN THE PROGRESSIV WEB APP
 
 -> Use the mobile screen setting provided by chrome dev tools
 -> More information about PWA: [https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DAndroid&oco=0](https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DAndroid&oco=0)
