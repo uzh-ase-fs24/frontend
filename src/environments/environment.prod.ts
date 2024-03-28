@@ -2,12 +2,12 @@ export const environment = {
   production: true,
   auth: {
     // TODO: Add production auth0 configuration
-    domain: 'dev-ss50z3434hodufar.us.auth0.com',
-    clientId: 'XUo9dyc9aEJaC5im9tvutQmDRzeoNZU9',
+    domain: 'findme-dev.eu.auth0.com',
+    clientId: 'dQQU9Dtorl9YUJPUwqBRwJLWoAAlU24T',
     webCallbackUri: 'http://localhost:8100/home',
     logoutRedirectUri: 'http://localhost:8100/login',
     audience:
-      'https://findme.execute-api.localhost.localstack.cloud:4566/local',
+      'http://findme.execute-api.localhost.localstack.cloud:4566/local/',
   },
   api: {
     url: 'http://localhost:3000',

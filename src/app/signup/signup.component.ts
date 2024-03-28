@@ -46,7 +46,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ReactiveFormsModule,
     SignupFormExceptionsComponent,
   ],
-  // providers: [ProfileApiService],
+  providers: [ProfileApiService],
 })
 export class SignupComponent {
   profileApiService = inject(ProfileApiService);

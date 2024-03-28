@@ -3,7 +3,7 @@ import { AuthService } from '../services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { IonButton } from '@ionic/angular/standalone';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { EMPTY, Observable, catchError,} from 'rxjs';
+import { EMPTY, Observable, catchError } from 'rxjs';
 import { Router } from '@angular/router';
 import { IonSpinner } from '@ionic/angular/standalone';
 
