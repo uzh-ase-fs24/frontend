@@ -16,7 +16,7 @@ export class ProfileApiService {
     return this.auth.user$.pipe(
       switchMap((user) =>
         this.http.get(
-          environment.api.url + '/users/' + user?.sub?.split('|')[1]
+          environment.api.url + '/users'
         )
       )
     );
