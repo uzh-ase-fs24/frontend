@@ -4,8 +4,8 @@
   } @else {
   <div class="form-container">
     <div>
-      <div style="display: flex; justify-content: center">
-        <h2>Complete singup</h2>
+      <div class="center-container">
+        <h2>Complete Signup</h2>
       </div>
     </div>
     <form [formGroup]="signupForm" (ngSubmit)="submitForm()">
@@ -32,6 +32,7 @@
           type="text"
           label="First Name"
           labelPlacement="floating"
+          color="secondary"
           ngDefaultControl
         ></ion-input>
       </ion-item>
@@ -48,6 +49,7 @@
           type="text"
           label="Last Name"
           labelPlacement="floating"
+          color="secondary"
           ngDefaultControl
         ></ion-input>
       </ion-item>
@@ -58,7 +60,12 @@
         [errors]="signupForm.controls.lastName.errors"
       ></app-signup-form-exceptions>
       }
-      <ion-button style="margin-top: 30px" type="submit" expand="block"
+      <ion-button
+        style="margin-top: 30px"
+        type="submit"
+        expand="block"
+        color="secondary"
+        size="default"
         >Submit</ion-button
       >
     </form>

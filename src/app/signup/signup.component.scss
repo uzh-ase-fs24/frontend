@@ -1,9 +1,10 @@
 @import "../../theme/variables.scss";
 
 ion-item {
-  --background: --ion-color-tertiary;
+  --background: var(--ion-color-dark);
+  --color: var(--ion-color-light);
 }
 
-form {
-  --background: --ion-color-tertiary;
+h2 {
+  color: var(--ion-color-light);
 }
