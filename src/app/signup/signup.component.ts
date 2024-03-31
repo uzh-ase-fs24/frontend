@@ -8,10 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonContent,
   IonItem,
   IonLabel,
   IonText,
@@ -21,9 +17,8 @@ import {
 } from '@ionic/angular/standalone';
 import { SignupFormExceptionsComponent } from './ui/signup-form-exceptions/signup-form-exceptions.component';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '../services/auth/auth.service';
 
 @Component({
