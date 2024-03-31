@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,73 +8,58 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonContent,
   IonItem,
   IonLabel,
   IonText,
   IonButton,
   IonSpinner,
+  IonInput,
 } from '@ionic/angular/standalone';
 import { SignupFormExceptionsComponent } from './ui/signup-form-exceptions/signup-form-exceptions.component';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
   standalone: true,
   imports: [
+    IonInput,
     IonSpinner,
     IonButton,
     IonText,
-    IonContent,
     CommonModule,
-    IonTitle,
-    IonHeader,
-    IonToolbar,
-    IonContent,
     IonItem,
     IonLabel,
-    IonSpinner,
     FormsModule,
     ReactiveFormsModule,
     SignupFormExceptionsComponent,
   ],
-  // providers: [ProfileApiService],
+  providers: [ProfileApiService],
 })
-export class SignupComponent {
+export class SignupComponent implements OnDestroy {
   profileApiService = inject(ProfileApiService);
+  authservice = inject(AuthService);
   router = inject(Router);
+
+  onDestory = new Subject<void>();
 
   loading = signal(false);
   signupForm = new FormGroup({
     username: new FormControl(
       '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(20),
-      ])
+      Validators.compose([Validators.required, Validators.maxLength(20)])
     ),
     firstName: new FormControl(
       '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(20),
-      ])
+      Validators.compose([Validators.required, Validators.maxLength(20)])
     ),
     lastName: new FormControl(
       '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(20),
-      ])
+      Validators.compose([Validators.required, Validators.maxLength(20)])
     ),
   });
 
@@ -83,20 +68,23 @@ export class SignupComponent {
   submitForm() {
     this.signupForm.markAllAsTouched();
     if (this.signupForm.valid) {
-      this.loading.update((value) => true);
+      this.loading.set(true);
       this.profileApiService
         .postProfile({
           username: this.signupForm.value.username || '',
           firstName: this.signupForm.value.firstName || '',
           lastName: this.signupForm.value.lastName || '',
-          id: 0,
         })
         .pipe(
-          tap((user) => {
-            this.router.navigate(['/home']);
-          })
+          takeUntil(this.onDestory),
+          tap(() => this.router.navigate(['/home']))
         )
         .subscribe();
     }
+  }
+
+  ngOnDestroy() {
+    this.onDestory.next();
+    this.onDestory.complete();
   }
 }
