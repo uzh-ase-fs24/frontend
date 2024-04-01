@@ -1,16 +1,32 @@
-<div class="base-container">
+<div>
+  <!-- <div class="title-bar-container">
+    <ion-button (click)="logout()" color="secondary">
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+  </div> -->
+
   @if(userProfile$ | async) { @if (authUser$ | async; as authUser) {
-  <div>
-    <div style="display: flex; justify-content: center">
-      <img [src]="authUser.picture" alt="user.picture" />
-    </div>
-    <div style="display: flex; justify-content: center">
-      <h1 style="text-align: center">Welcome, {{ authUser.nickname }}!</h1>
-    </div>
-    <div style="display: flex; justify-content: center">
-      <ion-button (click)="logout()" color="secondary">Logout</ion-button>
-    </div>
-  </div>
+  <ion-tabs>
+    <ion-tab-bar>
+      <ion-tab-button tab="feed">
+        <ion-icon name="map-outline"></ion-icon>
+        Riddles
+      </ion-tab-button>
+      <ion-tab-button tab="post">
+        <ion-icon name="camera-outline"></ion-icon>
+        Post
+      </ion-tab-button>
+      <ion-tab-button tab="search">
+        <ion-icon name="search"></ion-icon>
+        Search
+      </ion-tab-button>
+      <ion-tab-button tab="profile">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        Profile
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
   } @else {
   <ion-spinner name="circular"></ion-spinner>
   }} @else {
