@@ -26,8 +26,4 @@ export class HomeComponent {
     })
   );
   constructor() {}
-
-  logout(): void {
-    this.authService.logout();
-  }
 }

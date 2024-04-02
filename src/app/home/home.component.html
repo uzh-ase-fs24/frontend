@@ -1,9 +1,4 @@
 <div class="base-container">
-  <!-- <div class="title-bar-container">
-    <ion-button (click)="logout()" color="secondary">
-      <ion-icon name="log-out-outline"></ion-icon>
-    </ion-button>
-  </div> -->
 
   @if(userProfile$ | async) { @if (authUser$ | async; as authUser) {
   <ion-tabs>

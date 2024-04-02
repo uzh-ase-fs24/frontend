@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { debounceTime, distinctUntilChanged, filter, Subject, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { connect } from 'ngxtension/connect';
 import { ProfileApiService } from 'src/app/services/api/profile-api.service';
