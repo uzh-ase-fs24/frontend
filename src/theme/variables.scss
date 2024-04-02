@@ -3,21 +3,21 @@
 
 /** Ionic CSS Variables **/
 :root {
-  /** primary **/
-  --ion-color-primary: #2dd36f;
-  --ion-color-primary-rgb: 45, 211, 111;
-  --ion-color-primary-contrast: #000000;
-  --ion-color-primary-contrast-rgb: 0, 0, 0;
-  --ion-color-primary-shade: #28ba62;
-  --ion-color-primary-tint: #42d77d;
-
   /** secondary **/
-  --ion-color-secondary: #3786df;
-  --ion-color-secondary-rgb: 61, 194, 255;
-  --ion-color-secondary-contrast: #ffffff;
-  --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #1d69c0;
-  --ion-color-secondary-tint: #50a1ff;
+  --ion-color-secondary: #2dd36f;
+  --ion-color-secondary-rgb: 45, 211, 111;
+  --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-contrast-rgb: 0, 0, 0;
+  --ion-color-secondary-shade: #28ba62;
+  --ion-color-secondary-tint: #42d77d;
+
+  /** primary **/
+  --ion-color-primary: #3786df;
+  --ion-color-primary-rgb: 61, 194, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #1d69c0;
+  --ion-color-primary-tint: #50a1ff;
 
   /** tertiary **/
   --ion-color-tertiary: #5260ff;
@@ -83,19 +83,19 @@
    */
 
   body {
-    --ion-color-primary: #23ca66;
-    --ion-color-primary-rgb: 47, 223, 117;
-    --ion-color-primary-contrast: #000000;
-    --ion-color-primary-contrast-rgb: 0, 0, 0;
-    --ion-color-primary-shade: #29c467;
-    --ion-color-primary-tint: #44e283;
+    --ion-color-secondary: #23ca66;
+    --ion-color-secondary-rgb: 47, 223, 117;
+    --ion-color-secondary-contrast: #000000;
+    --ion-color-secondary-contrast-rgb: 0, 0, 0;
+    --ion-color-secondary-shade: #29c467;
+    --ion-color-secondary-tint: #44e283;
 
-    --ion-color-secondary: #3786df;
-    --ion-color-secondary-rgb: 80, 200, 255;
-    --ion-color-secondary-contrast: #ffffff;
-    --ion-color-secondary-contrast-rgb: 255, 255, 255;
-    --ion-color-secondary-shade: #1d69c0;
-    --ion-color-secondary-tint: #50a1ff;
+    --ion-color-primary: #3786df;
+    --ion-color-primary-rgb: 80, 200, 255;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #1d69c0;
+    --ion-color-primary-tint: #50a1ff;
 
     --ion-color-tertiary: #6a64ff;
     --ion-color-tertiary-rgb: 106, 100, 255;
