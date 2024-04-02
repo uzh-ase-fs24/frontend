@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { map, Observable, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { User, UserDto } from 'src/app/model/user';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
@@ -29,5 +29,27 @@ export class ProfileApiService {
         };
       })
     );
+  }
+
+  getProfilesByNamePrefix(prefix: string): Observable<User[]> {
+    if (!prefix) {
+      return of([]);
+    }
+    return this.http
+      .get<UserDto[]>(environment.api.url + '/users/search', {
+        params: { username: prefix },
+      })
+      .pipe(
+        map((users) => {
+          return users.map((user) => {
+            return {
+              userId: user.user_id,
+              username: user.username,
+              firstName: user.first_name,
+              lastName: user.last_name,
+            };
+          });
+        })
+      );
   }
 }

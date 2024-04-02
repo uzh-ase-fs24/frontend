@@ -1,0 +1,51 @@
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { debounceTime, distinctUntilChanged, filter, Subject, switchMap } from 'rxjs';
+import { User } from 'src/app/model/user';
+import { connect } from 'ngxtension/connect';
+import { ProfileApiService } from 'src/app/services/api/profile-api.service';
+
+type searchState = {
+  searchTerm: string;
+  searchResults: User[];
+};
+
+@Injectable()
+export class SearchStateService {
+  // Services
+  profileApiService = inject(ProfileApiService);
+
+  // State
+  private state = signal<searchState>({
+    searchTerm: '',
+    searchResults: [],
+  });
+
+  // Selectors
+  public searchTerm = computed(() => this.state().searchTerm);
+  public searchResults = computed(() => this.state().searchResults);
+
+  // Action Sources (Subjects)
+  public search = new Subject<string | null | undefined>();
+
+  // Sources (Observables)
+  private searchResultsSource = this.search.pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+    switchMap((searchTerm) =>
+      this.profileApiService.getProfilesByNamePrefix(searchTerm || '')
+    )
+  );
+
+  constructor() {
+    // Reducers
+    connect(this.state)
+      .with(this.search, (state, searchTerm) => ({
+        searchTerm: searchTerm || '',
+      }))
+      .with(this.searchResultsSource, (state, searchResults) => ({
+        searchResults: searchResults,
+      }));
+
+    effect(() => console.log(this.state()));
+  }
+}

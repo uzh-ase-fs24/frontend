@@ -33,6 +33,11 @@ ion-spinner {
   height: 70px;
 }
 
+ion-item {
+  --background: var(--ion-color-dark);
+  --color: var(--ion-color-light);
+}
+
 // Basic styles
 .base-container {
   height: 100vh;

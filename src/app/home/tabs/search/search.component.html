@@ -1,3 +1,30 @@
-<p>
-  search works!
-</p>
+<div>
+  <div class="center-container">
+    <div class="search-container">
+      <ion-input
+        type="text"
+        label="Search User"
+        labelPlacement="floating"
+        [clearInput]="true"
+        fill="outline"
+        placeholder="Username..."
+        (ionInput)="searchState.search.next($event.detail.value)"
+      ></ion-input>
+    </div>
+  </div>
+
+  <div class="center-container">
+    <div class="result-container">
+      @for(item of searchState.searchResults(); track item.username) {
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ item.username }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-button expand="block" fill="outline"> Follow </ion-button>
+        </ion-card-content>
+      </ion-card>
+      }
+    </div>
+  </div>
+</div>
