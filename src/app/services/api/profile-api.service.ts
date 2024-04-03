@@ -12,9 +12,9 @@ export class ProfileApiService {
 
   constructor() {}
 
-  getProfile(): Observable<any> {
+  getProfile(): Observable<UserDto> {
     return this.auth.user$.pipe(
-      switchMap((user) => this.http.get(environment.api.url + '/users'))
+      switchMap((user) => this.http.get<UserDto>(environment.api.url + '/users'))
     );
   }
 

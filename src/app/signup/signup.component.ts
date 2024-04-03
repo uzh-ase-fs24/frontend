@@ -17,7 +17,7 @@ import {
 } from '@ionic/angular/standalone';
 import { SignupFormExceptionsComponent } from './ui/signup-form-exceptions/signup-form-exceptions.component';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap, timeout } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
 
