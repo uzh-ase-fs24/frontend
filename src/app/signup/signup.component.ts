@@ -15,11 +15,10 @@ import {
   IonSpinner,
   IonInput,
 } from '@ionic/angular/standalone';
-import { SignupFormExceptionsComponent } from './ui/signup-form-exceptions/signup-form-exceptions.component';
+import { UserFormExceptionsComponent } from '../shared/user-form-exceptions/user-form-exceptions.component';
 import { ProfileApiService } from '../services/api/profile-api.service';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -36,15 +35,16 @@ import { AuthService } from '../services/auth/auth.service';
     IonLabel,
     FormsModule,
     ReactiveFormsModule,
-    SignupFormExceptionsComponent,
+    UserFormExceptionsComponent,
   ],
   providers: [ProfileApiService],
 })
 export class SignupComponent implements OnDestroy {
+  // Services
   profileApiService = inject(ProfileApiService);
-  authservice = inject(AuthService);
   router = inject(Router);
 
+  // Class variables
   onDestory = new Subject<void>();
 
   loading = signal(false);

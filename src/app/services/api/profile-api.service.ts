@@ -18,19 +18,6 @@ export class ProfileApiService {
     );
   }
 
-  postProfile(user: UserDto): Observable<User> {
-    return this.http.post<UserDto>(environment.api.url + '/users', user).pipe(
-      map((user) => {
-        return {
-          userId: user.user_id,
-          username: user.username,
-          firstName: user.first_name,
-          lastName: user.last_name,
-        };
-      })
-    );
-  }
-
   getProfilesByNamePrefix(prefix: string): Observable<User[]> {
     if (!prefix) {
       return of([]);
@@ -49,6 +36,35 @@ export class ProfileApiService {
               lastName: user.last_name,
             };
           });
+        })
+      );
+  }
+
+  
+  postProfile(user: UserDto): Observable<User> {
+    return this.http.post<UserDto>(environment.api.url + '/users', user).pipe(
+      map((user) => {
+        return {
+          userId: user.user_id,
+          username: user.username,
+          firstName: user.first_name,
+          lastName: user.last_name,
+        };
+      })
+    );
+  }
+
+  updateProfile(user: UserDto): Observable<User> {
+    return this.http
+      .put<UserDto>(environment.api.url + '/users', user)
+      .pipe(
+        map((user) => {
+          return {
+            userId: user.user_id,
+            username: user.username,
+            firstName: user.first_name,
+            lastName: user.last_name,
+          };
         })
       );
   }

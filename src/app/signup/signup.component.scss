@@ -1,5 +1,10 @@
 @import "../../theme/variables.scss";
 
+ion-item {
+  --background: var(--ion-color-dark);
+  --color: var(--ion-color-light);
+}
+
 h2 {
   color: var(--ion-color-light);
 }
