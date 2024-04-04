@@ -9,7 +9,7 @@ export const environment = {
     clientId: 'dQQU9Dtorl9YUJPUwqBRwJLWoAAlU24T',
     webCallbackUri: 'http://localhost:8100/home',
     logoutRedirectUri: 'http://localhost:8100/login',
-    audience:  'https://findme-dev.eu.auth0.com/api/v2/'
+    audience: 'https://findme-dev.eu.auth0.com/api/v2/',
   },
   api: {
     url: 'https://findme.execute-api.localhost.localstack.cloud:4566/local',
