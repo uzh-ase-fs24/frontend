@@ -19,6 +19,7 @@ import { UserFormExceptionsComponent } from '../shared/user-form-exceptions/user
 import { ProfileApiService } from '../services/api/profile-api.service';
 import { Subject, takeUntil, tap, timeout } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -42,6 +43,7 @@ import { Router } from '@angular/router';
 export class SignupComponent implements OnDestroy {
   // Services
   profileApiService = inject(ProfileApiService);
+  authService = inject(AuthService);
   router = inject(Router);
 
   // Class variables
@@ -77,7 +79,8 @@ export class SignupComponent implements OnDestroy {
         })
         .pipe(
           takeUntil(this.onDestory),
-          tap(() => this.router.navigate(['home']))
+          tap(() => this.router.navigate(['home'])),
+          tap(() => this.authService.userProfileReady.next())
         )
         .subscribe();
     }
