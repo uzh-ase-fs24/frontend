@@ -17,7 +17,7 @@ import {
 } from '@ionic/angular/standalone';
 import { UserFormExceptionsComponent } from '../shared/user-form-exceptions/user-form-exceptions.component';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap, timeout } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({

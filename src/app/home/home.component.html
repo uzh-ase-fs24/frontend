@@ -1,6 +1,6 @@
 <div class="base-container">
-
-  @if(userProfile$ | async) { @if (authUser$ | async; as authUser) {
+  @if(!userNotFound) { @if(userProfile$ | async) { @if (authUser$ | async; as
+  authUser) {
   <ion-tabs>
     <ion-tab-bar>
       <ion-tab-button tab="feed">
@@ -26,5 +26,5 @@
   <ion-spinner name="circular"></ion-spinner>
   }} @else {
   <ion-spinner name="circular"></ion-spinner>
-  }
+  } }
 </div>
