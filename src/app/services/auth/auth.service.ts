@@ -12,6 +12,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class AuthService {
   private auth0 = inject(auth0);
+  
+  // A central subject is needed to signal when the user has signedup 
+  // -> prevents an infinite pulling of the user profile during the signup process
   public userProfileReady = new ReplaySubject<void>()
 
   constructor() {}

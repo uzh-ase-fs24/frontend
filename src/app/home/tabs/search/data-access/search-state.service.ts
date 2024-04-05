@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { connect } from 'ngxtension/connect';
@@ -45,7 +45,5 @@ export class SearchStateService {
       .with(this.searchResultsSource, (state, searchResults) => ({
         searchResults: searchResults,
       }));
-
-    effect(() => console.log(this.state()));
   }
 }
