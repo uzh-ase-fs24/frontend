@@ -1,3 +1,12 @@
-<p>
-  feed works!
-</p>
+<ion-content class="ion-padding">
+  <ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+  @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
+    <app-location-riddle-post
+      [locationRiddleImage]="item.image"
+      [comments]="item.comments"
+    ></app-location-riddle-post>
+  }
+</ion-content>
