@@ -10,6 +10,9 @@ import {
   IonButton,
 } from '@ionic/angular/standalone';
 import { SearchStateService } from './data-access/search-state.service';
+import { FollowRequestsApiService } from 'src/app/services/api/follow-requests-api.service';
+import { tap } from 'rxjs';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-search',
@@ -26,11 +29,24 @@ import { SearchStateService } from './data-access/search-state.service';
     IonItem,
     CommonModule,
   ],
-  providers: [SearchStateService],
+  providers: [SearchStateService, ToastService],
 })
 export class SearchComponent {
   // Services
   searchState = inject(SearchStateService);
+  followRequestsApiService = inject(FollowRequestsApiService);
+  toastService = inject(ToastService);
 
   constructor() {}
+
+  follow(userId: string | undefined) {
+    if (!userId) {
+      console.error('User ID in follow request is undefined');
+      return;
+    }
+    this.followRequestsApiService
+      .makeFollowRequests(userId)
+      .pipe(tap(() => this.toastService.success('Follow request sent!')))
+      .subscribe();
+  }
 }

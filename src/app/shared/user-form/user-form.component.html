@@ -5,6 +5,7 @@
     </div>
   </div>
   <form [formGroup]="userForm" (ngSubmit)="submit()">
+    @if(displayUsername()) {
     <ion-item lines="full">
       <ion-input
         formControlName="username"
@@ -20,8 +21,7 @@
       [field]="'Username'"
       [errors]="userForm.controls.username.errors"
     ></app-user-form-exceptions>
-    }
-
+    } }
     <ion-item lines="full">
       <ion-input
         formControlName="firstName"

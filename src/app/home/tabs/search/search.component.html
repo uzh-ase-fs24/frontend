@@ -14,14 +14,14 @@
   </div>
 
   <div class="center-container">
-    <div class="result-container">
+    <div class="list-container">
       @for(item of searchState.searchResults(); track item.username) {
       <ion-card>
         <ion-card-header>
           <ion-card-title>{{ item.username }}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-button expand="block" fill="outline"> Follow </ion-button>
+          <ion-button expand="block" fill="outline" (click)="follow(item.userId)"> Follow </ion-button>
         </ion-card-content>
       </ion-card>
       }

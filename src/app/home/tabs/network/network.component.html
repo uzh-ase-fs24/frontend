@@ -1,3 +1,39 @@
-<p>
-  network works!
-</p>
+<div>
+  <div class="title-bar-container">
+    <div class="center-container">
+      <h1>Your Network</h1>
+    </div>
+  </div>
+  <div class="title-bar-container">
+    <div class="center-container">
+      <h3>Follow Requests</h3>
+    </div>
+  </div>
+  <div class="center-container">
+    <div class="list-container">
+      @for(item of networkState.followRequests(); track item.requesterId) {
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{ item.requesterId }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-button
+            expand="block"
+            fill="outline"
+            (click)="networkState.acceptFollowRequest.next(item.requesterId)"
+            >Accept</ion-button
+          >
+          <ion-button
+            expand="block"
+            fill="outline"
+            style="margin-top: 10px"
+            color="medium"
+            (click)="networkState.declineFollowRequest.next(item.requesterId)"
+            >Decline</ion-button
+          >
+        </ion-card-content>
+      </ion-card>
+      }
+    </div>
+  </div>
+</div>

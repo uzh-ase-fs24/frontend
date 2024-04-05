@@ -38,6 +38,7 @@ export class UserFormComponent {
   lastName = input<string>('');
   submitButtonTitle = input<string>('Submit');
   formTitle = input<string>('User Form');
+  displayUsername = input<boolean>(true);
 
   userForm = new FormGroup({
     username: new FormControl(
@@ -58,6 +59,11 @@ export class UserFormComponent {
     effect(() => this.userForm.controls.username.setValue(this.username()));
     effect(() => this.userForm.controls.firstName.setValue(this.firstName()));
     effect(() => this.userForm.controls.lastName.setValue(this.lastName()));
+    effect(() =>
+      !this.displayUsername()
+        ? this.userForm.controls.username.clearValidators()
+        : null
+    );
   }
 
   submit() {
