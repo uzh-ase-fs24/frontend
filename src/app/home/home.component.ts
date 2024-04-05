@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { Observable, catchError, startWith, timeout } from 'rxjs';
+import { EMPTY, Observable, catchError, startWith, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   IonTabButton,
@@ -11,7 +11,7 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
-import { UserDto } from '../model/user';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-home',
@@ -32,22 +32,22 @@ export class HomeComponent {
   private profileApiService = inject(ProfileApiService);
   private router = inject(Router);
 
-  userNotFound = false;
-
   authUser$ = this.authService.user$;
-  userProfile$: Observable<UserDto | null> = this.profileApiService
-    .getProfile()
-    .pipe(
-      catchError((error) => {
-        this.userNotFound = true;
-        if (error.status === 404) {
-          this.router.navigate(['signup']);
-        } else {
-          console.error('Error:', error);
-        }
-        // Necessary to keep the observable alive and prevent infinite loop
-        return this.userProfile$;
-      })
+  userProfile$: Observable<User | null> =
+    this.authService.userProfileReady.pipe(
+      startWith(null),
+      switchMap((user) =>
+        this.profileApiService.getProfile().pipe(
+          catchError((error) => {
+            if (error.status === 404) {
+              this.router.navigate(['signup']);
+            } else {
+              console.error('Error:', error);
+            }
+            return EMPTY;
+          })
+        )
+      )
     );
 
   constructor() {}

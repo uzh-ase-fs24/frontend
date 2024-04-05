@@ -4,13 +4,13 @@ import { ValidationErrors } from '@angular/forms';
 import { IonText } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-signup-form-exceptions',
-  templateUrl: './signup-form-exceptions.component.html',
-  styleUrls: ['./signup-form-exceptions.component.scss'],
+  selector: 'app-user-form-exceptions',
+  templateUrl: './user-form-exceptions.component.html',
+  styleUrls: ['./user-form-exceptions.component.scss'],
   standalone: true,
   imports: [IonText, CommonModule],
 })
-export class SignupFormExceptionsComponent {
+export class UserFormExceptionsComponent {
   constructor() {}
 
   errors = input<ValidationErrors | null>();

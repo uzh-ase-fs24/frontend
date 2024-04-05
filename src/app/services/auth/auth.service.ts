@@ -3,7 +3,7 @@ import { User, AuthService as auth0 } from '@auth0/auth0-angular';
 import { Browser } from '@capacitor/browser';
 import { isPlatform } from '@ionic/angular';
 import config from 'capacitor.config';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -12,6 +12,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class AuthService {
   private auth0 = inject(auth0);
+  
+  // A central subject is needed to signal when the user has signedup 
+  // -> prevents an infinite pulling of the user profile during the signup process
+  public userProfileReady = new ReplaySubject<void>()
 
   constructor() {}
 

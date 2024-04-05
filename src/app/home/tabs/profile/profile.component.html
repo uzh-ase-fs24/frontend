@@ -1,5 +1,51 @@
-<div class="title-bar-container">
-  <ion-button color="secondary" (click)="logout()">
-    <ion-icon name="log-out-outline"></ion-icon>
-  </ion-button>
+<div>
+  @if(profile$ | async; as profile){ @if(updateProfileView()) {
+
+  <div class="base-container">
+    <div class="form-container">
+      <app-user-form
+        (submitForm)="submitForm($event)"
+        [username]="profile.username"
+        [firstName]="profile.firstName"
+        [lastName]="profile.lastName"
+        formTitle="Update Profile"
+        submitButtonTitle="Save"
+      >
+        <ion-button
+          (click)="updateProfileView.set(false)"
+          style="margin-top: 10px"
+          color="medium"
+          expand="block"
+          size="default"
+          >Cancel</ion-button
+        >
+      </app-user-form>
+    </div>
+  </div>
+
+  } @else {
+
+  <div class="title-bar-container">
+    <div class="center-container">
+      <h1>Profile</h1>
+    </div>
+  </div>
+  <div class="center-container" style="margin-top: 30px">
+    <ion-button (click)="updateProfileView.set(true)" style="margin: 10px">
+      Update Profile
+      <ion-icon name="create-outline"></ion-icon>
+    </ion-button>
+    <ion-button (click)="logout()" style="margin: 10px">
+      Logout
+      <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  } } @else {
+
+  <div class="center-container">
+    <ion-spinner name="circular"></ion-spinner>
+  </div>
+
+  }
 </div>
