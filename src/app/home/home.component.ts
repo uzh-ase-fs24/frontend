@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../services/auth/auth.service';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { EMPTY, Observable, catchError, of, startWith, switchMap } from 'rxjs';
+import { EMPTY, Observable, catchError, startWith, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   IonTabButton,

@@ -13,7 +13,7 @@ import {
   IonInput,
 } from '@ionic/angular/standalone';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { catchError, Subject, takeUntil, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
 import { UserFormComponent } from '../shared/user-form/user-form.component';
