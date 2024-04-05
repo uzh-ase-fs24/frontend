@@ -11,7 +11,7 @@ import {
   IonSpinner,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
-import { UserDto } from '../model/user';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +33,7 @@ export class HomeComponent {
   private router = inject(Router);
 
   authUser$ = this.authService.user$;
-  userProfile$: Observable<UserDto | null> =
+  userProfile$: Observable<User | null> =
     this.authService.userProfileReady.pipe(
       startWith(null),
       switchMap((user) =>

@@ -3,68 +3,10 @@
   <div><ion-spinner name="circular"></ion-spinner></div>
   } @else {
   <div class="form-container">
-    <div>
-      <div class="center-container">
-        <h2>Complete Signup</h2>
-      </div>
-    </div>
-    <form [formGroup]="signupForm" (ngSubmit)="submitForm()">
-      <ion-item lines="full">
-        <ion-input
-          formControlName="username"
-          type="text"
-          label="Username"
-          labelPlacement="floating"
-          ngDefaultControl
-        ></ion-input>
-      </ion-item>
-      @if (signupForm.controls.username.touched &&
-      signupForm.controls.username.invalid) {
-      <app-user-form-exceptions
-        [field]="'Username'"
-        [errors]="signupForm.controls.username.errors"
-      ></app-user-form-exceptions>
-      }
-      <ion-item lines="full">
-        <ion-input
-          formControlName="firstName"
-          type="text"
-          label="First Name"
-          labelPlacement="floating"
-          ngDefaultControl
-        ></ion-input>
-      </ion-item>
-      @if (signupForm.controls.firstName.touched &&
-      signupForm.controls.firstName.invalid) {
-      <app-user-form-exceptions
-        [field]="'First Name'"
-        [errors]="signupForm.controls.firstName.errors"
-      ></app-user-form-exceptions>
-      }
-      <ion-item lines="full">
-        <ion-input
-          formControlName="lastName"
-          type="text"
-          label="Last Name"
-          labelPlacement="floating"
-          ngDefaultControl
-        ></ion-input>
-      </ion-item>
-      @if (signupForm.controls.lastName.touched &&
-      signupForm.controls.lastName.invalid) {
-      <app-user-form-exceptions
-        [field]="'Last Name'"
-        [errors]="signupForm.controls.lastName.errors"
-      ></app-user-form-exceptions>
-      }
-      <ion-button
-        style="margin-top: 30px"
-        type="submit"
-        expand="block"
-        size="default"
-        >Submit</ion-button
-      >
-    </form>
+    <app-user-form
+      (submitForm)="submitForm($event)"
+      formTitle="Complete Signup"
+    ></app-user-form>
   </div>
   }
 </div>

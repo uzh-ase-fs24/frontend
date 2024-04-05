@@ -1,11 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, signal } from '@angular/core';
 import {
-  FormControl,
-  FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import {
   IonItem,
@@ -15,11 +12,12 @@ import {
   IonSpinner,
   IonInput,
 } from '@ionic/angular/standalone';
-import { UserFormExceptionsComponent } from '../shared/user-form-exceptions/user-form-exceptions.component';
 import { ProfileApiService } from '../services/api/profile-api.service';
-import { Subject, takeUntil, tap, timeout } from 'rxjs';
+import { catchError, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
+import { UserFormComponent } from '../shared/user-form/user-form.component';
+import { User } from '../model/user';
 
 @Component({
   selector: 'app-signup',
@@ -36,7 +34,7 @@ import { AuthService } from '../services/auth/auth.service';
     IonLabel,
     FormsModule,
     ReactiveFormsModule,
-    UserFormExceptionsComponent,
+    UserFormComponent,
   ],
   providers: [ProfileApiService],
 })
@@ -50,32 +48,16 @@ export class SignupComponent implements OnDestroy {
   onDestory = new Subject<void>();
 
   loading = signal(false);
-  signupForm = new FormGroup({
-    username: new FormControl(
-      '',
-      Validators.compose([Validators.required, Validators.maxLength(20)])
-    ),
-    firstName: new FormControl(
-      '',
-      Validators.compose([Validators.required, Validators.maxLength(20)])
-    ),
-    lastName: new FormControl(
-      '',
-      Validators.compose([Validators.required, Validators.maxLength(20)])
-    ),
-  });
 
   constructor() {}
 
-  submitForm() {
-    this.signupForm.markAllAsTouched();
-    if (this.signupForm.valid) {
+  submitForm(user: User) {
       this.loading.set(true);
       this.profileApiService
         .postProfile({
-          username: this.signupForm.value.username || '',
-          first_name: this.signupForm.value.firstName || '',
-          last_name: this.signupForm.value.lastName || '',
+          username: user.username,
+          first_name: user.firstName,
+          last_name: user.lastName,
         })
         .pipe(
           takeUntil(this.onDestory),
@@ -83,7 +65,6 @@ export class SignupComponent implements OnDestroy {
           tap(() => this.authService.userProfileReady.next())
         )
         .subscribe();
-    }
   }
 
   ngOnDestroy() {

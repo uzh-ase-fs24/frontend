@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import {
   IonButton,
@@ -7,16 +7,14 @@ import {
   IonInput,
   IonItem,
 } from '@ionic/angular/standalone';
-import { Subject, takeUntil } from 'rxjs';
 import { ProfileApiService } from 'src/app/services/api/profile-api.service';
-import { UserFormExceptionsComponent } from '../../../shared/user-form-exceptions/user-form-exceptions.component';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserFormComponent } from 'src/app/shared/user-form/user-form.component';
+import { User } from 'src/app/model/user';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
+import { catchError, EMPTY, tap } from 'rxjs';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -31,53 +29,40 @@ import {
     IonIcon,
     FormsModule,
     ReactiveFormsModule,
-    UserFormExceptionsComponent,
+    UserFormComponent,
+    CommonModule,
   ],
+  providers: [ProfileApiService, ToastService],
 })
-export class ProfileComponent implements OnDestroy {
+export class ProfileComponent {
   // Services
   profileApiService = inject(ProfileApiService);
   authService = inject(AuthService);
+  toastService = inject(ToastService);
+  destroyRef = inject(DestroyRef);
 
   // Class variables
-  onDestory = new Subject<void>();
-
-  loading = signal(false);
-  profileForm = new FormGroup({
-    username: new FormControl(
-      '',
-      Validators.compose([Validators.required, Validators.maxLength(20)])
-    ),
-    firstName: new FormControl(
-      '',
-      Validators.compose([Validators.required, Validators.maxLength(20)])
-    ),
-    lastName: new FormControl(
-      '',
-      Validators.compose([Validators.required, Validators.maxLength(20)])
-    ),
-  });
+  updateProfileView = signal(false);
+  profile$ = this.profileApiService.getProfile().pipe(takeUntilDestroyed());
 
   constructor() {}
 
-  submitForm() {
-    this.profileForm.markAllAsTouched();
-    if (this.profileForm.valid) {
-      this.loading.set(true);
-      this.profileApiService
-        .updateProfile({
-          username: this.profileForm.value.username || '',
-          first_name: this.profileForm.value.firstName || '',
-          last_name: this.profileForm.value.lastName || '',
+  submitForm(user: User) {
+    this.profile$ = this.profileApiService
+      .updateProfile({
+        username: user.username,
+        first_name: user.firstName,
+        last_name: user.lastName,
+      })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        tap(() => this.updateProfileView.set(false)),
+        tap(() => this.toastService.success('Profile updated successfully!')),
+        catchError(() => {
+          this.toastService.error('Failed to update profile');
+          return EMPTY;
         })
-        .pipe(takeUntil(this.onDestory))
-        .subscribe();
-    }
-  }
-
-  ngOnDestroy() {
-    this.onDestory.next();
-    this.onDestory.complete();
+      );
   }
 
   logout(): void {
