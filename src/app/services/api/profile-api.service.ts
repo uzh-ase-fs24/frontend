@@ -12,22 +12,20 @@ export class ProfileApiService {
 
   constructor() {}
 
-  getProfile(): Observable<UserDto> {
+  getProfile(): Observable<User> {
     return this.auth.user$.pipe(
-      switchMap((user) => this.http.get<UserDto>(environment.api.url + '/users'))
-    );
-  }
-
-  postProfile(user: UserDto): Observable<User> {
-    return this.http.post<UserDto>(environment.api.url + '/users', user).pipe(
-      map((user) => {
-        return {
-          userId: user.user_id,
-          username: user.username,
-          firstName: user.first_name,
-          lastName: user.last_name,
-        };
-      })
+      switchMap((user) =>
+        this.http.get<UserDto>(environment.api.url + '/users').pipe(
+          map((user) => {
+            return {
+              userId: user.user_id,
+              username: user.username,
+              firstName: user.first_name,
+              lastName: user.last_name,
+            };
+          })
+        )
+      )
     );
   }
 
@@ -51,5 +49,31 @@ export class ProfileApiService {
           });
         })
       );
+  }
+
+  postProfile(user: UserDto): Observable<User> {
+    return this.http.post<UserDto>(environment.api.url + '/users', user).pipe(
+      map((user) => {
+        return {
+          userId: user.user_id,
+          username: user.username,
+          firstName: user.first_name,
+          lastName: user.last_name,
+        };
+      })
+    );
+  }
+
+  updateProfile(user: UserDto): Observable<User> {
+    return this.http.put<UserDto>(environment.api.url + '/users', user).pipe(
+      map((user) => {
+        return {
+          userId: user.user_id,
+          username: user.username,
+          firstName: user.first_name,
+          lastName: user.last_name,
+        };
+      })
+    );
   }
 }
