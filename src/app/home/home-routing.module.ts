@@ -37,6 +37,13 @@ const routes: Routes = [
         loadComponent: () =>
           import('./tabs/post/post.component').then((m) => m.PostComponent),
       },
+      {
+        path: 'network',
+        loadComponent: () =>
+          import('./tabs/network/network.component').then(
+            (m) => m.NetworkComponent
+          ),
+      },
     ],
     canActivate: [AuthGuard],
   },
