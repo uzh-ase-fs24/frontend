@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IonCard, IonCardHeader, IonCardTitle, IonCardContent } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-feed',
