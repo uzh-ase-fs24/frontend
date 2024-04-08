@@ -1,11 +1,15 @@
 export type LocationRiddle = {
+  userId: string;
   locationRiddleId: string;
-  image: string;
+  locationRiddleImage: string;
   comments: string[];
+  createdAt: number;
 };
 
 export type LocationRiddleDto = {
   location_riddle_id: string;
-  image: string;
+  user_id: string;
+  location_riddle_image: string;
   comments: string[];
+  created_at: number;
 };
