@@ -62,15 +62,20 @@ export class ProfileApiService {
   }
 
   updateProfile(user: UserDto): Observable<User> {
-    return this.http.put<UserDto>(environment.api.url + '/users', user).pipe(
-      map((user) => {
-        return {
-          userId: user.user_id,
-          username: user.username,
-          firstName: user.first_name,
-          lastName: user.last_name,
-        };
+    return this.http
+      .put<UserDto>(environment.api.url + '/users', {
+        first_name: user.first_name,
+        last_name: user.last_name,
       })
-    );
+      .pipe(
+        map((user) => {
+          return {
+            userId: user.user_id,
+            username: user.username,
+            firstName: user.first_name,
+            lastName: user.last_name,
+          };
+        })
+      );
   }
 }
