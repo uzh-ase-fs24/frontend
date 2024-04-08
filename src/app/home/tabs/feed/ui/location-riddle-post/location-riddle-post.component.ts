@@ -1,4 +1,5 @@
-import {Component, input, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, input} from '@angular/core';
 import {
   IonAvatar,
   IonButton,
@@ -25,19 +26,19 @@ import {
     IonCard,
     IonAvatar,
     IonItem,
-    IonLabel
+    IonLabel,
+    CommonModule
   ],
   styleUrls: ['./location-riddle-post.component.scss'],
   standalone: true
 })
-export class LocationRiddlePostComponent implements OnInit {
+export class LocationRiddlePostComponent {
+  username = input<string>();
   locationRiddleImage = input<string>();
   comments = input<string[]>();
+  createdAt = input<number>();
 
   constructor() {
-  }
-
-  ngOnInit() {
   }
 
 }

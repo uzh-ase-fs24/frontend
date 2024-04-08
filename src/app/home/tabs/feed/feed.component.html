@@ -5,7 +5,9 @@
   </ion-refresher>
   @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
     <app-location-riddle-post
-      [locationRiddleImage]="item.image"
+      [locationRiddleImage]="item.locationRiddleImage"
+      [username]="getUsername(item.userId)"
+      [createdAt]="item.createdAt"
       [comments]="item.comments"
     ></app-location-riddle-post>
   }

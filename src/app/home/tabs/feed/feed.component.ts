@@ -16,12 +16,16 @@ export class FeedComponent {
   feedState = inject(FeedStateService);
 
   constructor() {
-    this.feedState.loadRiddles.next(null);
   }
 
   handleRefresh(event: any) {
-    console.log('Begin async operation');
-    this.feedState.loadRiddles.next(null);
-    event.target.complete();
+    this.feedState.refresh.next();
+    setTimeout(() => {
+      event.target.complete();
+    }, 800);
+  }
+
+  getUsername(userId: string) {
+    return this.feedState.users().find(user => user.userId === userId)?.username || '';
   }
 }
