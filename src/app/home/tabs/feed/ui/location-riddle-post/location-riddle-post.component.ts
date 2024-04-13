@@ -8,10 +8,15 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonFab,
+  IonFabButton,
+  IonIcon,
   IonImg,
   IonItem,
   IonLabel
 } from '@ionic/angular/standalone';
+import {MapComponent} from "./map/map.component";
+import {Coordinate} from 'ol/coordinate';
 
 @Component({
   selector: 'app-location-riddle-post',
@@ -19,6 +24,9 @@ import {
   imports: [
     IonImg,
     IonButton,
+    IonIcon,
+    IonFab,
+    IonFabButton,
     IonCardContent,
     IonCardTitle,
     IonCardHeader,
@@ -27,7 +35,8 @@ import {
     IonAvatar,
     IonItem,
     IonLabel,
-    CommonModule
+    CommonModule,
+    MapComponent,
   ],
   styleUrls: ['./location-riddle-post.component.scss'],
   standalone: true
@@ -38,7 +47,18 @@ export class LocationRiddlePostComponent {
   comments = input<string[]>();
   createdAt = input<number>();
 
+  showMap: boolean = false;
+  guessedLocation?: Coordinate;
+
   constructor() {
+  }
+
+  toggleMap() {
+    this.showMap = !this.showMap;
+  }
+
+  submitGuess() {
+    console.log(this.guessedLocation)
   }
 
 }

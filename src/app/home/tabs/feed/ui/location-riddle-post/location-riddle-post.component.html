@@ -13,8 +13,15 @@
     </ion-card-title>
   </ion-card-header>
   <ion-card-content>
-    <ion-img
-      src="{{ locationRiddleImage() }}">
-    </ion-img>
+    @if (showMap) {
+      <app-map [(markerCoordinates)]="guessedLocation"></app-map>
+    } @else {
+      <ion-img src="data:image;base64, {{ locationRiddleImage() }}"></ion-img>
+    }
+    <ion-fab horizontal="end" slot="fixed" vertical="bottom">
+      <ion-fab-button (click)="toggleMap()">
+        <ion-icon name="{{showMap ? 'image' : 'map'}}-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </ion-card-content>
 </ion-card>
