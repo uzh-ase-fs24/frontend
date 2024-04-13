@@ -1,5 +1,5 @@
 export type FollowRequestDto = {
-  username: string;
+  requester_username: string;
   requester_id: string;
   requestee_id: string;
   status: string;
@@ -7,7 +7,7 @@ export type FollowRequestDto = {
 };
 
 export type FollowRequest = {
-  username: string
+  requester_username: string
   requesterId: string;
   requesteeId: string;
   status: string;

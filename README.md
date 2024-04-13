@@ -31,3 +31,4 @@ A mobile social media guessing game app
 - Sync ionic with `ionic cap sync` or via the plugin
 - To use the native Run commands of the ionic plugin (Android/IOS) it is necessary to install Android Studio and XCode
   - It is possible that your SDK is not defined. Find a help here: [https://stackoverflow.com/questions/27620262/sdk-location-not-found-define-location-with-sdk-dir-in-the-local-properties-fil](https://stackoverflow.com/questions/27620262/sdk-location-not-found-define-location-with-sdk-dir-in-the-local-properties-fil)
+  
