@@ -1,41 +1,12 @@
-import {CommonModule} from '@angular/common';
 import {Component, effect, input} from '@angular/core';
-import {
-  IonAvatar,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonChip,
-  IonFab,
-  IonFabButton,
-  IonIcon,
-  IonImg,
-  IonItem,
-  IonLabel
-} from '@ionic/angular/standalone';
+import {IonChip, IonIcon} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-rating',
   templateUrl: './rating.component.html',
   imports: [
-    IonImg,
     IonChip,
-    IonButton,
     IonIcon,
-    IonFab,
-    IonFabButton,
-    IonCardContent,
-    IonCardTitle,
-    IonCardHeader,
-    IonCardSubtitle,
-    IonCard,
-    IonAvatar,
-    IonItem,
-    IonLabel,
-    CommonModule,
   ],
   styleUrls: ['./rating.component.scss'],
   standalone: true

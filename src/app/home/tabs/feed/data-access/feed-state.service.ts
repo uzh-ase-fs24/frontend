@@ -16,16 +16,20 @@ export class FeedStateService {
   // Services
   locationRiddleApiService = inject(LocationRiddleApiService);
   profileApiService = inject(ProfileApiService);
-  // Action Sources (Subjects)
-  public refresh = new Subject<void>();
+
   // State
   private state = signal<FeedState>({
     locationRiddles: [],
     users: [],
   });
+
   // Selectors
   public locationRiddles = computed(() => this.state().locationRiddles);
   public users = computed(() => this.state().users);
+
+  // Action Sources (Subjects)
+  public refresh = new Subject<void>();
+
   // Sources (Observables)
   private locationRiddlesSource = this.locationRiddleApiService.getLocationRiddles()
   private usersSource = this.locationRiddleApiService.getLocationRiddles().pipe(

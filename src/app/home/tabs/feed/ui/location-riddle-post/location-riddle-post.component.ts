@@ -2,11 +2,9 @@ import {CommonModule} from '@angular/common';
 import {Component, input, signal} from '@angular/core';
 import {
   IonAvatar,
-  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonFab,
   IonFabButton,
@@ -24,14 +22,12 @@ import {RatingComponent} from "./rating/rating.component";
   templateUrl: './location-riddle-post.component.html',
   imports: [
     IonImg,
-    IonButton,
     IonIcon,
     IonFab,
     IonFabButton,
     IonCardContent,
     IonCardTitle,
     IonCardHeader,
-    IonCardSubtitle,
     IonCard,
     IonAvatar,
     IonItem,
