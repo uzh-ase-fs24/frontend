@@ -1,26 +1,29 @@
-<ion-card>
+<ion-card style="width: 90vw; min-height: 30rem; max-width: 40rem">
   <ion-card-header class="ion-padding">
     <ion-card-title>
       <ion-item lines="none">
         <ion-avatar aria-hidden="true" slot="start">
           <ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
         </ion-avatar>
-        <ion-label>
-          <h2>{{ username() }}</h2>
-          <p>{{ createdAt() | date: 'short' }}</p>
-        </ion-label>
+        <div style="display: flex; justify-content: space-between; flex-grow: 1">
+          <ion-label>
+            <h2>{{ username() }}</h2>
+            <p>{{ createdAt() | date: 'short' }}</p>
+          </ion-label>
+          <app-rating [rating]="rating() || -1"></app-rating>
+        </div>
       </ion-item>
     </ion-card-title>
   </ion-card-header>
-  <ion-card-content>
-    @if (showMap) {
+  <ion-card-content style="height:40vh; min-height: 30rem">
+    @if (showMap()) {
       <app-map [(markerCoordinates)]="guessedLocation"></app-map>
     } @else {
       <ion-img src="data:image;base64, {{ locationRiddleImage() }}"></ion-img>
     }
     <ion-fab horizontal="end" slot="fixed" vertical="bottom">
       <ion-fab-button (click)="toggleMap()">
-        <ion-icon name="{{showMap ? 'image' : 'map'}}-outline"></ion-icon>
+        <ion-icon name="{{showMap() ? 'image' : 'map'}}-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </ion-card-content>
