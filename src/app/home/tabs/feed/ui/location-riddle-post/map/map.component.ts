@@ -1,4 +1,4 @@
-import {Component, ElementRef, input, OnInit, output, ViewChild} from '@angular/core';
+import {Component, ElementRef, input, output, ViewChild} from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
@@ -17,8 +17,11 @@ import {Coordinate} from 'ol/coordinate';
   styleUrls: ['./map.component.scss'],
   standalone: true
 })
-export class MapComponent implements OnInit {
-  @ViewChild('map', {static: true}) mapElement?: ElementRef;
+export class MapComponent {
+  @ViewChild('mapElement') set content(mapElement: ElementRef) {
+    this.initMap(mapElement);
+  }
+
   markerCoordinates = input<Coordinate>();
   markerCoordinatesChange = output<Coordinate>();
 
@@ -31,12 +34,11 @@ export class MapComponent implements OnInit {
   });
 
   constructor() {
-
   }
 
-  ngOnInit() {
+  initMap(mapElement: ElementRef) {
     this.map = new Map({
-      target: this.mapElement?.nativeElement,
+      target: mapElement.nativeElement,
       layers: [
         new TileLayer({
           source: new OSM(),
