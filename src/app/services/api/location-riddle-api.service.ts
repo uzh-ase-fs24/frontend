@@ -22,7 +22,8 @@ export class LocationRiddleApiService {
             userId: dto.user_id,
             comments: dto.comments,
             locationRiddleImage: dto.location_riddle_image,
-            createdAt: dto.created_at
+            createdAt: dto.created_at,
+            rating: dto.rating,
           }
         })
       })

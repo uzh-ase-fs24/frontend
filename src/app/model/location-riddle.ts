@@ -4,6 +4,7 @@ export type LocationRiddle = {
   locationRiddleImage: string;
   comments: string[];
   createdAt: number;
+  rating: number;
 };
 
 export type LocationRiddleDto = {
@@ -12,4 +13,5 @@ export type LocationRiddleDto = {
   location_riddle_image: string;
   comments: string[];
   created_at: number;
+  rating: number;
 };
