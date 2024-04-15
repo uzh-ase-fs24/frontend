@@ -3,12 +3,19 @@
     <ion-refresher-content>
     </ion-refresher-content>
   </ion-refresher>
-  @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
-    <app-location-riddle-post
-      [locationRiddleImage]="item.locationRiddleImage"
-      [username]="getUsername(item.userId)"
-      [createdAt]="item.createdAt"
-      [comments]="item.comments"
-    ></app-location-riddle-post>
-  }
+  <div class="center-container">
+    @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
+      <app-location-riddle-post
+        [locationRiddleImage]="item.locationRiddleImage"
+        [username]="getUsername(item.userId)"
+        [createdAt]="item.createdAt"
+        [rating]="item.rating"
+        [comments]="item.comments"
+      ></app-location-riddle-post>
+    } @empty {
+      <div class="base-container">
+        <p>No location riddles to solve...</p>
+      </div>
+    }
+  </div>
 </ion-content>
