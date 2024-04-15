@@ -21,7 +21,7 @@ export class FollowRequestsApiService {
         map((requests) => {
           return requests.map((request) => {
             return {
-              requester_username: request.requester_username,
+              requesterUsername: request.requester_username,
               requesterId: request.requester_id,
               requesteeId: request.requestee_id,
               status: request.status,

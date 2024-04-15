@@ -7,7 +7,7 @@ export type FollowRequestDto = {
 };
 
 export type FollowRequest = {
-  requester_username: string
+  requesterUsername: string
   requesterId: string;
   requesteeId: string;
   status: string;
