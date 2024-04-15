@@ -1,10 +1,21 @@
-<div>
-  <div class="title-bar-container">
-    <div class="center-container">
-      <h1>Feed</h1>
-    </div>
+<ion-content class="ion-padding">
+  <ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="center-container">
+    @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
+      <app-location-riddle-post
+        [locationRiddleImage]="item.locationRiddleImage"
+        [username]="getUsername(item.userId)"
+        [createdAt]="item.createdAt"
+        [rating]="item.rating"
+        [comments]="item.comments"
+      ></app-location-riddle-post>
+    } @empty {
+      <div class="base-container">
+        <p>No location riddles to solve...</p>
+      </div>
+    }
   </div>
-  <div class="base-container">
-    <p>Your Location Riddle feed is displayed here.</p>
-  </div>
-</div>
+</ion-content>

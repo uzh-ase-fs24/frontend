@@ -1,20 +1,14 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-import {
-  IonButton,
-  IonIcon,
-  IonSpinner,
-  IonInput,
-  IonItem,
-} from '@ionic/angular/standalone';
-import { ProfileApiService } from 'src/app/services/api/profile-api.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserFormComponent } from 'src/app/shared/user-form/user-form.component';
-import { User } from 'src/app/model/user';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CommonModule } from '@angular/common';
-import { catchError, EMPTY, tap } from 'rxjs';
-import { ToastService } from 'src/app/services/toast.service';
+import {Component, DestroyRef, inject, signal} from '@angular/core';
+import {AuthService} from '@auth0/auth0-angular';
+import {IonButton, IonIcon, IonInput, IonItem, IonSpinner,} from '@ionic/angular/standalone';
+import {ProfileApiService} from 'src/app/services/api/profile-api.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {UserFormComponent} from 'src/app/shared/user-form/user-form.component';
+import {User} from 'src/app/model/user';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {CommonModule} from '@angular/common';
+import {catchError, EMPTY, tap} from 'rxjs';
+import {ToastService} from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -32,7 +26,7 @@ import { ToastService } from 'src/app/services/toast.service';
     UserFormComponent,
     CommonModule,
   ],
-  providers: [ProfileApiService, ToastService],
+  providers: [ToastService],
 })
 export class ProfileComponent {
   // Services
@@ -45,7 +39,8 @@ export class ProfileComponent {
   updateProfileView = signal(false);
   profile$ = this.profileApiService.getProfile().pipe(takeUntilDestroyed());
 
-  constructor() {}
+  constructor() {
+  }
 
   submitForm(user: User) {
     this.profile$ = this.profileApiService
