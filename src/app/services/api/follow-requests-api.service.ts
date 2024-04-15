@@ -21,6 +21,7 @@ export class FollowRequestsApiService {
         map((requests) => {
           return requests.map((request) => {
             return {
+              requesterUsername: request.requester_username,
               requesterId: request.requester_id,
               requesteeId: request.requestee_id,
               status: request.status,
@@ -39,14 +40,14 @@ export class FollowRequestsApiService {
   }
 
   acceptFollowRequest(userId: string): Observable<void> {
-    return this.http.put<void>(
+    return this.http.patch<void>(
       `${environment.api.url}/users/${userId}/follow?action=accept`,
       {}
     );
   }
 
   declineFollowRequest(userId: string): Observable<void> {
-    return this.http.put<void>(
+    return this.http.patch<void>(
       `${environment.api.url}/users/${userId}/follow?action=decline`,
       {}
     );
