@@ -13,7 +13,7 @@ import {
   IonItem,
   IonLabel
 } from '@ionic/angular/standalone';
-import {MapComponent} from "./map/map.component";
+import {MapComponent} from "../../../../../shared/map/map.component";
 import {Coordinate} from 'ol/coordinate';
 import {RatingComponent} from "./rating/rating.component";
 
