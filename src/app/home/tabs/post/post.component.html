@@ -6,22 +6,33 @@
   </div>
 
   @if(!postState.imageSet()){
-  <div class="center-container" style="margin-top: 30px">
-    <input
-      type="file"
-      style="display: none"
-      (change)="uploadImage($event)"
-      accept=".jpg, .jpeg, .png"
-      #fileUpload
-    />
-    <ion-button (click)="fileUpload.click()" style="margin: 10px">
-      <span style="padding-right: 5px">Select image from gallery</span>
-      <ion-icon name="folder-outline"></ion-icon>
-    </ion-button>
-    <ion-button (click)="takePicture()" style="margin: 10px">
-      <span style="padding-right: 5px">Take picture</span>
-      <ion-icon name="camera-outline"></ion-icon>
-    </ion-button>
+  <div>
+    <div class="title-bar-container">
+      <div class="center-container">
+        <h2>Select an image</h2>
+      </div>
+    </div>
+
+    <div class="center-container" style="margin-top: 10px">
+      <input
+        type="file"
+        style="display: none"
+        (change)="uploadImage($event)"
+        accept=".jpg, .jpeg, .png"
+        #fileUpload
+      />
+    </div>
+
+    <div class="center-container">
+      <ion-button (click)="fileUpload.click()" style="margin: 10px">
+        <span style="padding-right: 5px">From Gallery</span>
+        <ion-icon name="folder-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="takePicture()" style="margin: 10px">
+        <span style="padding-right: 5px">Open Camera</span>
+        <ion-icon name="camera-outline"></ion-icon>
+      </ion-button>
+    </div>
   </div>
 
   } @else {
