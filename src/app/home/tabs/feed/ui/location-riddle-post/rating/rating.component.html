@@ -1,11 +1,15 @@
 <ion-chip color="warning">
   @for (item of getStars(); track item) {
-    <ion-icon class="ion-no-margin" name="star{{rating() < item ? '-outline' : ''}}"></ion-icon>
-  }
-  <ion-icon class="ion-no-margin" name="star-{{getHalfStar() ? 'half': 'outline'}}"></ion-icon>
-  @if (rating() < 5) {
-    @for (item of getEmptyStars(); track item) {
-      <ion-icon class="ion-no-margin" name="star-outline"></ion-icon>
-    }
-  }
+  <ion-icon
+    class="ion-no-margin"
+    name="star{{ rating() < item ? '-outline' : '' }}"
+  ></ion-icon>
+  } @if(rating() < 5) {
+  <ion-icon
+    class="ion-no-margin"
+    name="star-{{ getHalfStar() ? 'half' : 'outline' }}"
+  ></ion-icon>
+  } @if (rating() < 5) { @for (item of getEmptyStars(); track item) {
+  <ion-icon class="ion-no-margin" name="star-outline"></ion-icon>
+  } }
 </ion-chip>
