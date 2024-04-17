@@ -10,55 +10,55 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+@import '@ionic/angular/css/core.css';
 
 /* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
 
-@import "./theme/variables.scss";
+@import './theme/variables.scss';
 
 // Overwrites
 ion-spinner {
-  width: 70px;
-  height: 70px;
+	width: 70px;
+	height: 70px;
 }
 // Basic containers
 .base-container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5vh;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 5vh;
 }
 
 .form-container {
-  width: 100%;
-  max-width: 600px;
-  padding: 20px;
-  background-color: var(--ion-color-dark);
-  border-radius: 10px;
-  border: 1px solid var(--ion-color-dark);
+	width: 100%;
+	max-width: 600px;
+	padding: 20px;
+	background-color: var(--ion-color-dark);
+	border-radius: 10px;
+	border: 1px solid var(--ion-color-dark);
 }
 
 .center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .list-container {
-  max-width: 500px;
-  min-width: 200px;
-  width: 100%;
-  margin: 2vh;
+	max-width: 500px;
+	min-width: 200px;
+	width: 100%;
+	margin: 2vh;
 }

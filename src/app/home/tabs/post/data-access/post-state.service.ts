@@ -5,53 +5,53 @@ import { merge, Subject, switchMap } from 'rxjs';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 
 type PostState = {
-  image: string | null;
-  location: Coordinate | null;
+	image: string | null;
+	location: Coordinate | null;
 };
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root'
 })
 export class PostStateService {
-  // Services
-  private locationRiddleApi = inject(LocationRiddleApiService);
+	// Services
+	private locationRiddleApi = inject(LocationRiddleApiService);
 
-  // State
-  private state = signal<PostState>({
-    image: null,
-    location: null,
-  });
+	// State
+	private state = signal<PostState>({
+		image: null,
+		location: null
+	});
 
-  // Selectors
-  imageSet = computed(() => !!this.state().image);
-  locationSet = computed(() => !!this.state().location);
+	// Selectors
+	imageSet = computed(() => !!this.state().image);
+	locationSet = computed(() => !!this.state().location);
 
-  // Action Sources (Subjects)
-  uploadImage = new Subject<string>();
-  cancelPost = new Subject<void>();
-  setLocation = new Subject<Coordinate>();
-  completePost = new Subject<void>();
+	// Action Sources (Subjects)
+	uploadImage = new Subject<string>();
+	cancelPost = new Subject<void>();
+	setLocation = new Subject<Coordinate>();
+	completePost = new Subject<void>();
 
-  // Sources (Observables)
-  postLocationRiddle = this.completePost.pipe(
-    switchMap(() =>
-      this.locationRiddleApi.postLocationRiddle({
-        location: this.state().location!,
-        image: this.state().image!,
-      })
-    )
-  );
+	// Sources (Observables)
+	postLocationRiddle = this.completePost.pipe(
+		switchMap(() =>
+			this.locationRiddleApi.postLocationRiddle({
+				location: this.state().location!,
+				image: this.state().image!
+			})
+		)
+	);
 
-  constructor() {
-    connect(this.state)
-      .with(this.uploadImage, (state, image) => {
-        return { ...state, image };
-      })
-      .with(this.setLocation, (state, location) => {
-        return { ...state, location };
-      })
-      .with(merge(this.cancelPost, this.postLocationRiddle), (state) => {
-        return { image: null, location: null };
-      });
-  }
+	constructor() {
+		connect(this.state)
+			.with(this.uploadImage, (state, image) => {
+				return { ...state, image };
+			})
+			.with(this.setLocation, (state, location) => {
+				return { ...state, location };
+			})
+			.with(merge(this.cancelPost, this.postLocationRiddle), (state) => {
+				return { image: null, location: null };
+			});
+	}
 }

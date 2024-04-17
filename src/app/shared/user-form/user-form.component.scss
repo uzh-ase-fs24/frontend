@@ -1,10 +1,10 @@
-@use  "../../../theme/variables.scss";
+@use '../../../theme/variables.scss';
 
 h2 {
-  color: var(--ion-color-light);
+	color: var(--ion-color-light);
 }
 
 ion-item {
-  --background: var(--ion-color-dark);
-  --color: var(--ion-color-light);
+	--background: var(--ion-color-dark);
+	--color: var(--ion-color-light);
 }

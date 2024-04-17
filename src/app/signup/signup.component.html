@@ -1,12 +1,9 @@
 <div class="base-container">
-  @if(loading()){
-  <div><ion-spinner name="circular"></ion-spinner></div>
-  } @else {
-  <div class="form-container">
-    <app-user-form
-      (submitForm)="submitForm($event)"
-      formTitle="Complete Signup"
-    ></app-user-form>
-  </div>
-  }
+	@if(loading()){
+	<div><ion-spinner name="circular"></ion-spinner></div>
+	} @else {
+	<div class="form-container">
+		<app-user-form (submitForm)="submitForm($event)" formTitle="Complete Signup"></app-user-form>
+	</div>
+	}
 </div>
