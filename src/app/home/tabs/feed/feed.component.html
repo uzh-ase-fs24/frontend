@@ -1,7 +1,9 @@
 <ion-content class="ion-padding">
+  @if(!feedState.loading()){
   <ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
     <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
+  }
   <div class="center-container">
     <div>
       @if(!feedState.loading()){ @for (item of feedState.locationRiddles();
