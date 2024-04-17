@@ -1,10 +1,13 @@
 <ion-content class="ion-padding">
+  @if(!feedState.loading()){
   <ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
-    <ion-refresher-content>
-    </ion-refresher-content>
+    <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
+  }
   <div class="center-container">
-    @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
+    <div>
+      @if(!feedState.loading()){ @for (item of feedState.locationRiddles();
+      track item.locationRiddleId) {
       <app-location-riddle-post
         [locationRiddleImage]="item.locationRiddleImage"
         [username]="getUsername(item.userId)"
@@ -12,10 +15,15 @@
         [rating]="item.rating"
         [comments]="item.comments"
       ></app-location-riddle-post>
-    } @empty {
+      } @empty {
       <div class="base-container">
         <p>No location riddles to solve...</p>
       </div>
-    }
+      } } @else {
+      <div class="base-container">
+        <ion-spinner></ion-spinner>
+      </div>
+      }
+    </div>
   </div>
 </ion-content>

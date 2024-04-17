@@ -1,12 +1,12 @@
 import {Component, inject} from '@angular/core';
 import {LocationRiddlePostComponent} from './ui/location-riddle-post/location-riddle-post.component'
-import {IonContent, IonRefresher, IonRefresherContent} from '@ionic/angular/standalone';
+import {IonContent, IonRefresher, IonRefresherContent, IonSpinner } from '@ionic/angular/standalone';
 import {FeedStateService} from "./data-access/feed-state.service";
 
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
-  imports: [LocationRiddlePostComponent, IonRefresherContent, IonRefresher, IonContent],
+  imports: [IonSpinner, LocationRiddlePostComponent, IonRefresherContent, IonRefresher, IonContent],
   providers: [FeedStateService],
   styleUrls: ['./feed.component.scss'],
   standalone: true,
