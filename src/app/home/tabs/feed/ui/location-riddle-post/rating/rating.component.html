@@ -1,9 +1,25 @@
-<ion-chip color="warning">
-	@for (item of getStars(); track item) {
-	<ion-icon class="ion-no-margin" name="star{{ rating() < item ? '-outline' : '' }}"></ion-icon>
-	} @if(rating() < 5) {
-	<ion-icon class="ion-no-margin" name="star-{{ getHalfStar() ? 'half' : 'outline' }}"></ion-icon>
-	} @if (rating() < 5) { @for (item of getEmptyStars(); track item) {
-	<ion-icon class="ion-no-margin" name="star-outline"></ion-icon>
-	} }
-</ion-chip>
+<ion-button fill="clear" id="open-modal">
+	<ion-chip color="warning">
+		@for (item of getStars(); track item) {
+		<ion-icon class="ion-no-margin" name="star{{ rating() < item ? '-outline' : '' }}"></ion-icon>
+		} @if(rating() < 5) {
+		<ion-icon class="ion-no-margin" name="star-{{ getHalfStar() ? 'half' : 'outline' }}"></ion-icon>
+		} @if (rating() < 5) { @for (item of getEmptyStars(); track item) {
+		<ion-icon class="ion-no-margin" name="star-outline"></ion-icon>
+		} }
+	</ion-chip>
+</ion-button>
+
+<ion-modal trigger="open-modal">
+	<ng-template>
+		<ion-content class="ion-padding">
+			<ion-chip color="warning">
+				@for (item of getStars(); track item; let i = $index) {
+				<ion-button fill="clear" (click)="makeRating.emit(i + 1)">
+					<ion-icon class="ion-no-margin" name="star-outline"></ion-icon>
+				</ion-button>
+				}
+			</ion-chip>
+		</ion-content>
+	</ng-template>
+</ion-modal>

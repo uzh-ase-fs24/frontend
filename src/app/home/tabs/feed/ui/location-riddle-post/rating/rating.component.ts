@@ -1,15 +1,27 @@
-import { Component, effect, input } from '@angular/core';
-import { IonChip, IonIcon } from '@ionic/angular/standalone';
+import { Component, effect, input, output } from '@angular/core';
+import {
+	IonButton,
+	IonButtons,
+	IonChip,
+	IonContent,
+	IonHeader,
+	IonIcon,
+	IonInput,
+	IonModal,
+	IonTitle,
+	IonToolbar
+} from '@ionic/angular/standalone';
 
 @Component({
 	selector: 'app-rating',
 	templateUrl: './rating.component.html',
-	imports: [IonChip, IonIcon],
+	imports: [IonTitle, IonContent, IonInput, IonButtons, IonToolbar, IonHeader, IonModal, IonButton, IonChip, IonIcon],
 	styleUrls: ['./rating.component.scss'],
 	standalone: true
 })
 export class RatingComponent {
 	rating = input.required<number>();
+	makeRating = output<number>();
 
 	constructor() {
 		effect(() => {
