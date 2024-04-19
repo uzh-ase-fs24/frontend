@@ -10,7 +10,7 @@
 						<h2>{{ username() }}</h2>
 						<p>{{ createdAt() | date : 'short' }}</p>
 					</ion-label>
-					<app-rating [rating]="rating() || 0"></app-rating>
+					<app-rating [rating]="rating() || 0" (makeRating)="rateRiddle.emit($event)"></app-rating>
 				</div>
 			</ion-item>
 		</ion-card-title>

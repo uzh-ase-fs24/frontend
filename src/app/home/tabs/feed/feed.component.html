@@ -13,6 +13,9 @@
 				[createdAt]="item.createdAt"
 				[rating]="item.rating"
 				[comments]="item.comments"
+				(rateRiddle)="
+					feedState.rateLocationRiddle.next({ locationRiddleId: item.locationRiddleId, rating: $event })
+				"
 			></app-location-riddle-post>
 			} @empty {
 			<div class="base-container">

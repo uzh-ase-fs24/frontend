@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import {
 	IonAvatar,
 	IonCard,
@@ -45,6 +45,8 @@ export class LocationRiddlePostComponent {
 	comments = input<string[]>();
 	rating = input<number>();
 	createdAt = input<number>();
+
+	rateRiddle = output<number>();
 
 	showMap = signal(false);
 	guessedLocation?: Coordinate;
