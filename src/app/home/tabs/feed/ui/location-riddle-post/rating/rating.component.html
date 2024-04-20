@@ -1,4 +1,4 @@
-<ion-chip color="warning" id="open-modal">
+<ion-chip color="warning" (click)="setOpen(true)">
 	@for (item of getStars(); track item) {
 	<ion-icon class="ion-no-margin" color="warning" name="star{{ rating() < item ? '-outline' : '' }}"></ion-icon>
 	} @if(rating() < 5) {
@@ -8,7 +8,7 @@
 	} }
 </ion-chip>
 
-<ion-modal trigger="open-modal">
+<ion-modal [isOpen]="isRatingModalOpen()" (didDismiss)="setOpen(false)">
 	<ng-template>
 		<ion-content color="dark">
 			<div class="center-container" style="height: 70px">
@@ -18,7 +18,7 @@
 						color="warning"
 						class="ion-no-margin"
 						name="star{{ hoveredStarsIndex() < i ? '-outline' : '' }}"
-						(click)="makeRating.emit(i + 1)"
+						(click)="rate(i + 1)"
 						(mouseenter)="hoveredStarsIndex.set(i)"
 						(mouseleave)="hoveredStarsIndex.set(-1)"
 					></ion-icon>

@@ -24,6 +24,7 @@ export class RatingComponent {
 	makeRating = output<number>();
 
 	hoveredStarsIndex = signal<number>(-1);
+	isRatingModalOpen = signal<boolean>(false);
 
 	constructor() {
 		effect(() => {
@@ -44,5 +45,14 @@ export class RatingComponent {
 
 	getHalfStar(): boolean {
 		return this.rating() % 1 !== 0;
+	}
+
+	rate(rating: number): void {
+		this.makeRating.emit(rating);
+		this.setOpen(false);
+	}
+
+	setOpen(isOpen: boolean) {
+		this.isRatingModalOpen.set(isOpen);
 	}
 }
