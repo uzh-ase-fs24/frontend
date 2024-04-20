@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import {
 	IonAvatar,
 	IonCard,
@@ -46,8 +46,9 @@ export class LocationRiddlePostComponent {
 	rating = input<number>();
 	createdAt = input<number>();
 
+	submitGuess = output<Coordinate>();
+
 	showMap = signal(false);
-	guessedLocation?: Coordinate;
 	imageHeight = signal(null);
 
 	constructor() {}
@@ -56,7 +57,7 @@ export class LocationRiddlePostComponent {
 		this.showMap.set(!this.showMap());
 	}
 
-	submitGuess() {
-		console.log(this.guessedLocation);
+	placeGuess(guess: Coordinate) {
+		console.log(guess);
 	}
 }
