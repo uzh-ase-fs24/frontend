@@ -1,4 +1,4 @@
-import { Component, effect, input, output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import {
 	IonButton,
 	IonButtons,
@@ -22,6 +22,8 @@ import {
 export class RatingComponent {
 	rating = input.required<number>();
 	makeRating = output<number>();
+
+	hoveredStarsIndex = signal<number>(-1);
 
 	constructor() {
 		effect(() => {

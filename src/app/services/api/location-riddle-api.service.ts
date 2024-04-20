@@ -39,7 +39,7 @@ export class LocationRiddleApiService {
 			comments: dto.comments,
 			locationRiddleImage: dto.location_riddle_image.image_base64,
 			createdAt: dto.created_at,
-			rating: dto.rating
+			rating: dto.average_rating
 		};
 	}
 }
