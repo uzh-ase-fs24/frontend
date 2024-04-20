@@ -17,7 +17,7 @@
 	</ion-card-header>
 	<ion-card-content style="height: 40vh; min-height: 30rem">
 		@if (showMap()) {
-		<app-map [(markerCoordinates)]="guessedLocation"></app-map>
+		<app-map (placeMarker)="placeGuess($event)"></app-map>
 		} @else {
 		<ion-img src="data:image;base64, {{ locationRiddleImage() }}"></ion-img>
 		}
