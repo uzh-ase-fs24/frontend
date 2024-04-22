@@ -17,14 +17,21 @@
 	</ion-card-header>
 	<ion-card-content style="height: 40vh; min-height: 30rem">
 		@if (showMap()) {
-		<app-map [(markerCoordinates)]="guessedLocation"></app-map>
+		<app-map (placeMarker)="placeGuess($event)" [markerCoordinates]="[guess()]"></app-map>
 		} @else {
 		<ion-img src="data:image;base64, {{ locationRiddleImage() }}"></ion-img>
 		}
-		<ion-fab horizontal="end" slot="fixed" vertical="bottom">
+		<ion-fab horizontal="start" slot="fixed" vertical="bottom">
 			<ion-fab-button (click)="toggleMap()">
 				<ion-icon name="{{ showMap() ? 'image' : 'map' }}-outline"></ion-icon>
 			</ion-fab-button>
 		</ion-fab>
+		@if(guess() && !submitted()){
+		<ion-fab horizontal="end" slot="fixed" vertical="bottom">
+			<ion-fab-button color="success" (click)="submit()">
+				<ion-icon color="dark" name="checkmark-outline"></ion-icon>
+			</ion-fab-button>
+		</ion-fab>
+		}
 	</ion-card-content>
 </ion-card>

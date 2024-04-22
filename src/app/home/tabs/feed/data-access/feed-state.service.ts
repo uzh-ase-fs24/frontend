@@ -1,5 +1,6 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
+import { Coordinate } from 'ol/coordinate';
 import { forkJoin, map, Subject, switchMap } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { LocationRiddle } from '../../../../model/location-riddle';
@@ -32,6 +33,7 @@ export class FeedStateService {
 
 	// Action Sources (Subjects)
 	public refresh = new Subject<void>();
+	public submitGuess = new Subject<{ locationRiddleId: string; guess: Coordinate }>();
 
 	// Sources (Observables)
 	private locationRiddlesSource = this.locationRiddleApiService.getLocationRiddles();
@@ -45,6 +47,9 @@ export class FeedStateService {
 	);
 	private refreshLocationRiddlesSource = this.refresh.pipe(switchMap(() => this.locationRiddlesSource));
 	private refreshUsersSource = this.refresh.pipe(switchMap(() => this.usersSource));
+	private submitGuessSource = this.submitGuess.pipe(
+		switchMap(({ locationRiddleId, guess }) => this.locationRiddleApiService.postGuess(locationRiddleId, guess))
+	);
 
 	constructor() {
 		// Reducers
@@ -61,6 +66,11 @@ export class FeedStateService {
 			}))
 			.with(this.refreshUsersSource, (state, users) => ({
 				users: users
+			}))
+			.with(this.submitGuessSource, (state, updatedRiddle) => ({
+				locationRiddles: state.locationRiddles.map((riddle) =>
+					riddle.locationRiddleId === updatedRiddle.locationRiddleId ? updatedRiddle : riddle
+				)
 			}));
 
 		effect(() => console.info('Feed State Change: ', this.state()));
