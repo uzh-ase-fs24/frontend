@@ -46,11 +46,13 @@ export class LocationRiddlePostComponent {
 	rating = input<number>();
 	createdAt = input<number>();
 
+	submitGuess = output<Coordinate>();
+
 	rateRiddle = output<number>();
 
 	showMap = signal(false);
-	guessedLocation?: Coordinate;
-	imageHeight = signal(null);
+	guess = signal<Coordinate | null>(null);
+	submitted = signal(false);
 
 	constructor() {}
 
@@ -58,7 +60,15 @@ export class LocationRiddlePostComponent {
 		this.showMap.set(!this.showMap());
 	}
 
-	submitGuess() {
-		console.log(this.guessedLocation);
+	placeGuess(guess: Coordinate) {
+		this.guess.set(guess);
+	}
+
+	submit() {
+		if (this.guess()) {
+			// The flow prevents the guess from being null, but for the sake of typing we define a fallback
+			this.submitGuess.emit(this.guess() || []);
+			this.submitted.set(true);
+		}
 	}
 }

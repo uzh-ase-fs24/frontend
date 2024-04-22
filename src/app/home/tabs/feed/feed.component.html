@@ -13,6 +13,7 @@
 				[createdAt]="item.createdAt"
 				[rating]="item.rating"
 				[comments]="item.comments"
+				(submitGuess)="feedState.submitGuess.next({ locationRiddleId: item.locationRiddleId, guess: $event })"
 				(rateRiddle)="
 					feedState.rateLocationRiddle.next({ locationRiddleId: item.locationRiddleId, rating: $event })
 				"

@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LocationRiddle, LocationRiddleDto, LocationRiddlePostDto } from '../../model/location-riddle';
 import { AuthService } from '../auth/auth.service';
+import { Coordinate } from 'ol/coordinate';
 
 @Injectable()
 export class LocationRiddleApiService {
@@ -22,6 +23,23 @@ export class LocationRiddleApiService {
 
 	postLocationRiddle(locationRiddle: LocationRiddlePostDto): Observable<void> {
 		return this.http.post<void>(environment.api.url + '/location-riddles', locationRiddle);
+	}
+
+	postGuess(locationRiddleId: string, guess: Coordinate): Observable<LocationRiddle> {
+		return this.http.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/guess', {
+			guess: guess
+		}).pipe(
+			map((dto: LocationRiddleDto) => {
+				return {
+					locationRiddleId: dto.location_riddle_id,
+					userId: dto.user_id,
+					comments: dto.comments,
+					locationRiddleImage: dto.location_riddle_image.image_base64,
+					createdAt: dto.created_at,
+					rating: dto.rating
+				};
+			})
+		);
 	}
 
 	rateLocationRiddle(locationRiddleId: string, rating: number): Observable<LocationRiddle> {
