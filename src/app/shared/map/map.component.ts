@@ -22,7 +22,7 @@ export class MapComponent {
 	}
 
 	center = input<Coordinate>();
-	markerCoordinates = input<Coordinate[]>([]);
+	markerCoordinates = input<(Coordinate | null)[]>([]);
 	placeMarker = output<Coordinate>();
 
 	map?: Map;
@@ -55,7 +55,7 @@ export class MapComponent {
 		this.removeMapAttribution();
 
 		this.markerCoordinates().forEach((coordinate) => {
-			this.addMarker(coordinate);
+			if (coordinate) this.addMarker(coordinate);
 		});
 
 		this.map.on('click', (event) => {

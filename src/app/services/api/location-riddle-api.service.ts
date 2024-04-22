@@ -34,7 +34,7 @@ export class LocationRiddleApiService {
 		return this.http.post<void>(environment.api.url + '/location-riddles', locationRiddle);
 	}
 
-	postGuess(locationRiddleId: number, guess: Coordinate): Observable<LocationRiddle> {
+	postGuess(locationRiddleId: string, guess: Coordinate): Observable<LocationRiddle> {
 		return this.http.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/guess', {
 			guess: guess
 		}).pipe(
