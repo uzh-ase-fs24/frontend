@@ -17,7 +17,7 @@ export type LocationRiddleDto = {
 	};
 	comments: string[];
 	created_at: number;
-	rating: number;
+	average_rating: number;
 };
 
 export type LocationRiddlePostDto = {

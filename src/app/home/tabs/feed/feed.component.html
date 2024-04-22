@@ -14,6 +14,9 @@
 				[rating]="item.rating"
 				[comments]="item.comments"
 				(submitGuess)="feedState.submitGuess.next({ locationRiddleId: item.locationRiddleId, guess: $event })"
+				(rateRiddle)="
+					feedState.rateLocationRiddle.next({ locationRiddleId: item.locationRiddleId, rating: $event })
+				"
 			></app-location-riddle-post>
 			} @empty {
 			<div class="base-container">

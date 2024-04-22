@@ -13,6 +13,8 @@ type FeedState = {
 	loading: boolean;
 };
 
+type RateEvent = { locationRiddleId: string; rating: number };
+
 @Injectable()
 export class FeedStateService {
 	// Services
@@ -34,10 +36,11 @@ export class FeedStateService {
 	// Action Sources (Subjects)
 	public refresh = new Subject<void>();
 	public submitGuess = new Subject<{ locationRiddleId: string; guess: Coordinate }>();
+	public rateLocationRiddle = new Subject<RateEvent>();
 
 	// Sources (Observables)
-	private locationRiddlesSource = this.locationRiddleApiService.getLocationRiddles();
-	private usersSource = this.locationRiddleApiService.getLocationRiddles().pipe(
+	private locationRiddlesSource$ = this.locationRiddleApiService.getLocationRiddles();
+	private usersSource$ = this.locationRiddleApiService.getLocationRiddles().pipe(
 		map((locationRiddles) =>
 			forkJoin(
 				locationRiddles.map((locationRiddle) => this.profileApiService.getProfile(locationRiddle.userId || ''))
@@ -45,31 +48,39 @@ export class FeedStateService {
 		),
 		switchMap((users) => users)
 	);
-	private refreshLocationRiddlesSource = this.refresh.pipe(switchMap(() => this.locationRiddlesSource));
-	private refreshUsersSource = this.refresh.pipe(switchMap(() => this.usersSource));
+	private refreshLocationRiddlesSource$ = this.refresh.pipe(switchMap(() => this.locationRiddlesSource$));
+	private refreshUsersSource$ = this.refresh.pipe(switchMap(() => this.usersSource$));
 	private submitGuessSource = this.submitGuess.pipe(
 		switchMap(({ locationRiddleId, guess }) => this.locationRiddleApiService.postGuess(locationRiddleId, guess))
+	);
+	private rateLocationRiddleSource$ = this.rateLocationRiddle.pipe(
+		switchMap((event) => this.locationRiddleApiService.rateLocationRiddle(event.locationRiddleId, event.rating))
 	);
 
 	constructor() {
 		// Reducers
 		connect(this.state)
-			.with(this.locationRiddlesSource, (state, locationRiddles) => ({
+			.with(this.locationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles,
 				loading: false
 			}))
-			.with(this.usersSource, (state, users) => ({
+			.with(this.usersSource$, (state, users) => ({
 				users: users
 			}))
-			.with(this.refreshLocationRiddlesSource, (state, locationRiddles) => ({
+			.with(this.refreshLocationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles
 			}))
-			.with(this.refreshUsersSource, (state, users) => ({
+			.with(this.refreshUsersSource$, (state, users) => ({
 				users: users
 			}))
 			.with(this.submitGuessSource, (state, updatedRiddle) => ({
 				locationRiddles: state.locationRiddles.map((riddle) =>
 					riddle.locationRiddleId === updatedRiddle.locationRiddleId ? updatedRiddle : riddle
+				)
+			}))
+			.with(this.rateLocationRiddleSource$, (state, updatedLocationRiddle) => ({
+				locationRiddles: state.locationRiddles.map((riddle) =>
+					riddle.locationRiddleId === updatedLocationRiddle.locationRiddleId ? updatedLocationRiddle : riddle
 				)
 			}));
 

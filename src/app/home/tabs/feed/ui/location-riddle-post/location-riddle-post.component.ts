@@ -48,6 +48,8 @@ export class LocationRiddlePostComponent {
 
 	submitGuess = output<Coordinate>();
 
+	rateRiddle = output<number>();
+
 	showMap = signal(false);
 	guess = signal<Coordinate | null>(null);
 	submitted = signal(false);
