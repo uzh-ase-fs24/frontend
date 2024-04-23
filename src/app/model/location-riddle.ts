@@ -9,7 +9,7 @@ export type LocationRiddle = {
 	createdAt: number;
 	rating: number;
 	location?: Coordinate;
-	guesses?: Coordinate[];
+	guesses?: guess[];
 };
 
 export type LocationRiddleDto = {
@@ -21,10 +21,15 @@ export type LocationRiddleDto = {
 	created_at: number;
 	average_rating: number;
 	location?: Coordinate;
-	guesses?: Coordinate[];
+	guesses?: guess[];
 };
 
 export type LocationRiddlePostDto = {
 	image: string;
 	location: Coordinate;
+};
+
+export type guess = {
+	guess: Coordinate;
+	userId: string;
 };

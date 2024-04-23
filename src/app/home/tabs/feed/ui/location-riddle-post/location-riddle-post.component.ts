@@ -14,6 +14,7 @@ import {
 	IonLabel
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
+import { LocationRiddle } from 'src/app/model/location-riddle';
 import { MapComponent } from '../../../../../shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
 
@@ -40,11 +41,7 @@ import { RatingComponent } from './rating/rating.component';
 	standalone: true
 })
 export class LocationRiddlePostComponent {
-	username = input<string>();
-	locationRiddleImage = input<string>();
-	comments = input<string[]>();
-	rating = input<number>();
-	createdAt = input<number>();
+	locationRiddle = input.required<LocationRiddle>();
 
 	submitGuess = output<Coordinate>();
 
@@ -71,4 +68,16 @@ export class LocationRiddlePostComponent {
 			this.submitted.set(true);
 		}
 	}
+
+	get solution() {
+		return this.locationRiddle().solved ? this.locationRiddle().location : undefined;
+	}
+
+	// get filteredUserGuesses() {
+	// 	return this.locationRiddle()?.guesses.filter((guess) => guess.userId !== this.locationRiddle());
+	// }
+
+	// get userGuess() {
+	// 	return this.locationRiddle().guesses.find((guess) => guess.userId === this.locationRiddle().userId)?.guess;
+	// }
 }

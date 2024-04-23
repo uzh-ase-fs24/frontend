@@ -7,31 +7,40 @@
 				</ion-avatar>
 				<div style="display: flex; justify-content: space-between; flex-grow: 1">
 					<ion-label color="light">
-						<h2>{{ username() }}</h2>
-						<p>{{ createdAt() | date : 'short' }}</p>
+						<h2>{{ locationRiddle().userId }}</h2>
+						<p>{{ locationRiddle().createdAt | date: 'short' }}</p>
 					</ion-label>
-					<app-rating [rating]="rating() || 0" (makeRating)="rateRiddle.emit($event)"></app-rating>
+					<app-rating
+						[rating]="locationRiddle().rating || 0"
+						(makeRating)="rateRiddle.emit($event)"
+					></app-rating>
 				</div>
 			</ion-item>
 		</ion-card-title>
 	</ion-card-header>
 	<ion-card-content style="height: 40vh; min-height: 30rem">
 		@if (showMap()) {
-		<app-map (placeMarker)="placeGuess($event)" [markerCoordinates]="[guess()]"></app-map>
+			<app-map
+				(placeMarker)="placeGuess($event)"
+				[guesses]="locationRiddle().guesses || []"
+				[userGuess]="guess()"
+				[solution]="solution"
+				[solved]="locationRiddle().solved"
+			></app-map>
 		} @else {
-		<ion-img src="data:image;base64, {{ locationRiddleImage() }}"></ion-img>
+			<ion-img src="data:image;base64, {{ locationRiddle().locationRiddleImage }}"></ion-img>
 		}
 		<ion-fab horizontal="start" slot="fixed" vertical="bottom">
 			<ion-fab-button (click)="toggleMap()">
 				<ion-icon name="{{ showMap() ? 'image' : 'map' }}-outline"></ion-icon>
 			</ion-fab-button>
 		</ion-fab>
-		@if(guess() && !submitted()){
-		<ion-fab horizontal="end" slot="fixed" vertical="bottom">
-			<ion-fab-button color="success" (click)="submit()">
-				<ion-icon color="dark" name="checkmark-outline"></ion-icon>
-			</ion-fab-button>
-		</ion-fab>
+		@if (guess() && !submitted()) {
+			<ion-fab horizontal="end" slot="fixed" vertical="bottom">
+				<ion-fab-button color="success" (click)="submit()">
+					<ion-icon color="dark" name="checkmark-outline"></ion-icon>
+				</ion-fab-button>
+			</ion-fab>
 		}
 	</ion-card-content>
 </ion-card>

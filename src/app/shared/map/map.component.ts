@@ -9,6 +9,13 @@ import VectorLayer from 'ol/layer/Vector';
 import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
 import { Icon, Style } from 'ol/style';
+import { guess } from 'src/app/model/location-riddle';
+
+enum Marker {
+	USER,
+	GUESS,
+	SOLUTION
+}
 
 @Component({
 	selector: 'app-map',
@@ -22,7 +29,10 @@ export class MapComponent {
 	}
 
 	center = input<Coordinate>();
-	markerCoordinates = input<(Coordinate | null)[]>([]);
+	guesses = input<guess[]>([]);
+	userGuess = input<Coordinate | null>();
+	solution = input<Coordinate>();
+	solved = input<boolean>(false);
 	placeMarker = output<Coordinate>();
 
 	map?: Map;
@@ -54,31 +64,42 @@ export class MapComponent {
 
 		this.removeMapAttribution();
 
-		this.markerCoordinates().forEach((coordinate) => {
-			if (coordinate) this.addMarker(coordinate);
+		this.guesses().forEach((guess) => {
+			this.addMarker(guess.guess, Marker.GUESS, false);
 		});
 
-		this.map.on('click', (event) => {
-			this.addMarker(event.coordinate, true);
-			this.placedMarker = event.coordinate;
-		});
+		this.addMarker(this.solution(), Marker.SOLUTION, false);
+
+		if (!this.solved()) {
+			this.map.on('click', (event) => {
+				this.addMarker(event.coordinate, Marker.USER, true);
+				this.placedMarker = event.coordinate;
+			});
+		}
 	}
 
-	addMarker(coordinate: Coordinate, emit = false) {
-		this.vectorSource.clear();
+	addMarker(coordinate: Coordinate | undefined, markerType: Marker, emit = false) {
+		if (!coordinate) return;
+		if (emit) this.vectorSource.clear();
 
 		const marker = new Feature({
 			geometry: new Point(coordinate)
 		});
 
-		marker.setStyle(
-			new Style({
-				image: new Icon({
-					anchor: [0.5, 1],
-					src: 'assets/icons/marker.png'
+		console.log(markerType);
+		if (markerType === Marker.USER || markerType === Marker.SOLUTION) {
+			marker.setStyle(
+				new Style({
+					image: new Icon({
+						anchor: [0.5, 1],
+						src:
+							markerType === Marker.SOLUTION
+								? 'assets/icons/location-sign-solution.svg'
+								: 'assets/icons/location-sign.svg'
+					})
 				})
-			})
-		);
+			);
+		}
 
 		this.vectorSource.addFeature(marker);
 		if (emit) this.placeMarker.emit(coordinate);
