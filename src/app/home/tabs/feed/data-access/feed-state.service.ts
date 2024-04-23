@@ -1,7 +1,7 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
-import { forkJoin, map, Subject, switchMap } from 'rxjs';
+import { forkJoin, map, share, Subject, switchMap } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { LocationRiddle } from '../../../../model/location-riddle';
 import { LocationRiddleApiService } from '../../../../services/api/location-riddle-api.service';
@@ -39,8 +39,8 @@ export class FeedStateService {
 	public rateLocationRiddle = new Subject<RateEvent>();
 
 	// Sources (Observables)
-	private locationRiddlesSource$ = this.locationRiddleApiService.getLocationRiddles();
-	private usersSource$ = this.locationRiddleApiService.getLocationRiddles().pipe(
+	private locationRiddlesSource$ = this.locationRiddleApiService.getLocationRiddles().pipe(share());
+	private usersSource$ = this.locationRiddlesSource$.pipe(
 		map((locationRiddles) =>
 			forkJoin(
 				locationRiddles.map((locationRiddle) => this.profileApiService.getProfile(locationRiddle.userId || ''))
@@ -61,7 +61,9 @@ export class FeedStateService {
 		// Reducers
 		connect(this.state)
 			.with(this.locationRiddlesSource$, (state, locationRiddles) => ({
-				locationRiddles: locationRiddles
+				locationRiddles: locationRiddles,
+				// If no users must be loaded, loading ends here
+				loading: !(locationRiddles.length === 0)
 			}))
 			.with(this.usersSource$, (state, users) => ({
 				users: users,
@@ -73,9 +75,11 @@ export class FeedStateService {
 			.with(this.refreshUsersSource$, (state, users) => ({
 				users: users
 			}))
-			.with(this.submitGuessSource, (state, updatedRiddle) => ({
+			.with(this.submitGuessSource, (state, guessResult) => ({
 				locationRiddles: state.locationRiddles.map((riddle) =>
-					riddle.locationRiddleId === updatedRiddle.locationRiddleId ? updatedRiddle : riddle
+					riddle.locationRiddleId === guessResult.locationRiddle.locationRiddleId
+						? guessResult.locationRiddle
+						: riddle
 				)
 			}))
 			.with(this.rateLocationRiddleSource$, (state, updatedLocationRiddle) => ({

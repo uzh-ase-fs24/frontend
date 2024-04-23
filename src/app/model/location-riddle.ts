@@ -33,3 +33,19 @@ export type guess = {
 	guess: Coordinate;
 	userId: string;
 };
+
+export type GuessResult = {
+	guessResult: {
+		distance: number;
+		score: number;
+	},
+	locationRiddle: LocationRiddle;
+};
+
+export type guessResultDto = {
+	guess_result: {
+		distance: number;
+		score: number;
+	},
+	location_riddle: LocationRiddleDto;
+};
