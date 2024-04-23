@@ -61,11 +61,11 @@ export class FeedStateService {
 		// Reducers
 		connect(this.state)
 			.with(this.locationRiddlesSource$, (state, locationRiddles) => ({
-				locationRiddles: locationRiddles,
-				loading: false
+				locationRiddles: locationRiddles
 			}))
 			.with(this.usersSource$, (state, users) => ({
-				users: users
+				users: users,
+				loading: false
 			}))
 			.with(this.refreshLocationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles
