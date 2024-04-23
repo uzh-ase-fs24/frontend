@@ -1,31 +1,38 @@
 <ion-content class="ion-padding">
-	@if(!feedState.loading()){
-	<ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
-		<ion-refresher-content> </ion-refresher-content>
-	</ion-refresher>
+	@if (!feedState.loading()) {
+		<ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
+			<ion-refresher-content> </ion-refresher-content>
+		</ion-refresher>
 	}
-	<div class="center-container">
-		<div>
-			@if(!feedState.loading()){ @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
-			<app-location-riddle-post
-				[locationRiddleImage]="item.locationRiddleImage"
-				[username]="getUsername(item.userId)"
-				[createdAt]="item.createdAt"
-				[rating]="item.rating"
-				[comments]="item.comments"
-				(submitGuess)="feedState.submitGuess.next({ locationRiddleId: item.locationRiddleId, guess: $event })"
-				(rateRiddle)="
-					feedState.rateLocationRiddle.next({ locationRiddleId: item.locationRiddleId, rating: $event })
-				"
-			></app-location-riddle-post>
-			} @empty {
-			<div class="base-container">
-				<p>No location riddles to solve...</p>
-			</div>
-			} } @else {
-			<div class="base-container">
-				<ion-spinner></ion-spinner>
-			</div>
+	<div class="center-container" style="height: 100%">
+		<div style="height: 100%">
+			@if (!feedState.loading()) {
+				@for (item of feedState.locationRiddles(); track item.locationRiddleId) {
+					<app-location-riddle-post
+						[locationRiddleImage]="item.locationRiddleImage"
+						[username]="getUsername(item.userId)"
+						[createdAt]="item.createdAt"
+						[rating]="item.rating"
+						[comments]="item.comments"
+						(submitGuess)="
+							feedState.submitGuess.next({ locationRiddleId: item.locationRiddleId, guess: $event })
+						"
+						(rateRiddle)="
+							feedState.rateLocationRiddle.next({
+								locationRiddleId: item.locationRiddleId,
+								rating: $event
+							})
+						"
+					></app-location-riddle-post>
+				} @empty {
+					<div style="height: 100%; align-content: center">
+						<p>No location riddles to solve...</p>
+					</div>
+				}
+			} @else {
+				<div style="height: 100%; align-content: center">
+					<ion-spinner></ion-spinner>
+				</div>
 			}
 		</div>
 	</div>
