@@ -1,7 +1,7 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
-import { forkJoin, map, Subject, switchMap } from 'rxjs';
+import { forkJoin, map, mergeAll, share, Subject, switchMap } from 'rxjs';
 import { User } from 'src/app/model/user';
 import { LocationRiddle } from '../../../../model/location-riddle';
 import { LocationRiddleApiService } from '../../../../services/api/location-riddle-api.service';
@@ -39,14 +39,16 @@ export class FeedStateService {
 	public rateLocationRiddle = new Subject<RateEvent>();
 
 	// Sources (Observables)
-	private locationRiddlesSource$ = this.locationRiddleApiService.getLocationRiddles();
-	private usersSource$ = this.locationRiddleApiService.getLocationRiddles().pipe(
+	private locationRiddlesSource$ = this.locationRiddleApiService.getLocationRiddles().pipe(share());
+	private usersSource$ = this.locationRiddlesSource$.pipe(
 		map((locationRiddles) =>
 			forkJoin(
-				locationRiddles.map((locationRiddle) => this.profileApiService.getProfile(locationRiddle.username || ''))
+				locationRiddles.map((locationRiddle) =>
+					this.profileApiService.getProfile(locationRiddle.username || '')
+				)
 			)
 		),
-		switchMap((users) => users)
+		mergeAll()
 	);
 	private refreshLocationRiddlesSource$ = this.refresh.pipe(switchMap(() => this.locationRiddlesSource$));
 	private refreshUsersSource$ = this.refresh.pipe(switchMap(() => this.usersSource$));
@@ -61,7 +63,8 @@ export class FeedStateService {
 		// Reducers
 		connect(this.state)
 			.with(this.locationRiddlesSource$, (state, locationRiddles) => ({
-				locationRiddles: locationRiddles
+				locationRiddles: locationRiddles,
+				loading: !(locationRiddles.length === 0)
 			}))
 			.with(this.usersSource$, (state, users) => ({
 				users: users,
