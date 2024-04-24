@@ -43,7 +43,7 @@ export class FeedStateService {
 	private usersSource$ = this.locationRiddleApiService.getLocationRiddles().pipe(
 		map((locationRiddles) =>
 			forkJoin(
-				locationRiddles.map((locationRiddle) => this.profileApiService.getProfile(locationRiddle.userId || ''))
+				locationRiddles.map((locationRiddle) => this.profileApiService.getProfile(locationRiddle.username || ''))
 			)
 		),
 		switchMap((users) => users)

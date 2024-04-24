@@ -30,13 +30,13 @@ export class SearchComponent {
 
 	constructor() {}
 
-	follow(userId: string | undefined) {
-		if (!userId) {
+	follow(username: string | undefined) {
+		if (!username) {
 			console.error('User ID in follow request is undefined');
 			return;
 		}
 		this.followRequestsApiService
-			.makeFollowRequests(userId)
+			.makeFollowRequests(username)
 			.pipe(tap(() => this.toastService.success('Follow request sent!')))
 			.subscribe();
 	}

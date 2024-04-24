@@ -22,8 +22,4 @@ export class FeedComponent {
 			event.target.complete();
 		}, 800);
 	}
-
-	getUsername(userId: string) {
-		return this.feedState.users().find((user) => user.userId === userId)?.username || '';
-	}
 }

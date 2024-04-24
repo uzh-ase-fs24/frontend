@@ -10,7 +10,7 @@
 				@for (item of feedState.locationRiddles(); track item.locationRiddleId) {
 					<app-location-riddle-post
 						[locationRiddleImage]="item.locationRiddleImage"
-						[username]="getUsername(item.userId)"
+						[username]="item.username"
 						[createdAt]="item.createdAt"
 						[rating]="item.rating"
 						[comments]="item.comments"

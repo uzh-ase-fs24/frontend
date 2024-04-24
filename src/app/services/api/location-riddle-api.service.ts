@@ -45,7 +45,7 @@ export class LocationRiddleApiService {
 		return {
 			solved: dto.solved,
 			locationRiddleId: dto.location_riddle_id,
-			userId: dto.user_id,
+			username: dto.username,
 			comments: dto.comments,
 			locationRiddleImage: dto.image_base64,
 			createdAt: dto.created_at,
