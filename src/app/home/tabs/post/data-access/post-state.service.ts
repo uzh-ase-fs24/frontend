@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
-import { merge, Subject, switchMap } from 'rxjs';
+import { merge, Subject, switchMap, tap } from 'rxjs';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 
 type PostState = {
@@ -34,10 +34,12 @@ export class PostStateService {
 
 	// Sources (Observables)
 	postLocationRiddle = this.completePost.pipe(
+		tap(() => console.log(this.state().image?.split('base64,'))),
 		switchMap(() =>
 			this.locationRiddleApi.postLocationRiddle({
 				location: this.state().location!,
-				image: this.state().image!
+				// ensure the base64 prefix is not included
+				image: this.state().image?.split('base64,')[1] || this.state().image!
 			})
 		)
 	);

@@ -11,28 +11,28 @@
 	</div>
 	<div class="center-container">
 		<div class="list-container">
-			@for(item of networkState.followRequests(); track item.requesterId) {
-			<ion-card>
-				<ion-card-header>
-					<ion-card-title>{{ item.requesterUsername }}</ion-card-title>
-				</ion-card-header>
-				<ion-card-content>
-					<ion-button
-						expand="block"
-						fill="outline"
-						(click)="networkState.acceptFollowRequest.next(item.requesterId)"
-						>Accept</ion-button
-					>
-					<ion-button
-						expand="block"
-						fill="outline"
-						style="margin-top: 10px"
-						color="medium"
-						(click)="networkState.declineFollowRequest.next(item.requesterId)"
-						>Decline</ion-button
-					>
-				</ion-card-content>
-			</ion-card>
+			@for (item of networkState.followRequests(); track item.requester) {
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title>{{ item.requester }}</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-button
+							expand="block"
+							fill="outline"
+							(click)="networkState.acceptFollowRequest.next(item.requester)"
+							>Accept</ion-button
+						>
+						<ion-button
+							expand="block"
+							fill="outline"
+							style="margin-top: 10px"
+							color="medium"
+							(click)="networkState.declineFollowRequest.next(item.requester)"
+							>Decline</ion-button
+						>
+					</ion-card-content>
+				</ion-card>
 			}
 		</div>
 	</div>

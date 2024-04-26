@@ -5,22 +5,6 @@
 		</div>
 	</div>
 	<form [formGroup]="userForm" (ngSubmit)="submit()">
-		@if(displayUsername()) {
-		<ion-item lines="full">
-			<ion-input
-				formControlName="username"
-				type="text"
-				label="Username"
-				labelPlacement="floating"
-				ngDefaultControl
-			></ion-input>
-		</ion-item>
-		@if (userForm.controls.username.touched && userForm.controls.username.invalid) {
-		<app-user-form-exceptions
-			[field]="'Username'"
-			[errors]="userForm.controls.username.errors"
-		></app-user-form-exceptions>
-		} }
 		<ion-item lines="full">
 			<ion-input
 				formControlName="firstName"

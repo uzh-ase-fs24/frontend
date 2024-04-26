@@ -16,6 +16,7 @@ import {
 import { Coordinate } from 'ol/coordinate';
 import { MapComponent } from '../../../../../shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
+import { LocationRiddle } from 'src/app/model/location-riddle';
 
 @Component({
 	selector: 'app-location-riddle-post',
@@ -40,11 +41,7 @@ import { RatingComponent } from './rating/rating.component';
 	standalone: true
 })
 export class LocationRiddlePostComponent {
-	username = input<string>();
-	locationRiddleImage = input<string>();
-	comments = input<string[]>();
-	rating = input<number>();
-	createdAt = input<number>();
+	locationRiddle = input.required<LocationRiddle>();
 
 	submitGuess = output<Coordinate>();
 

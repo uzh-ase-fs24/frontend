@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Coordinate } from 'ol/coordinate';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { LocationRiddle, LocationRiddleDto, LocationRiddlePostDto } from '../../model/location-riddle';
 import { AuthService } from '../auth/auth.service';
-import { Coordinate } from 'ol/coordinate';
 
 @Injectable()
 export class LocationRiddleApiService {
@@ -26,25 +26,16 @@ export class LocationRiddleApiService {
 	}
 
 	postGuess(locationRiddleId: string, guess: Coordinate): Observable<LocationRiddle> {
-		return this.http.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/guess', {
-			guess: guess
-		}).pipe(
-			map((dto: LocationRiddleDto) => {
-				return {
-					locationRiddleId: dto.location_riddle_id,
-					userId: dto.user_id,
-					comments: dto.comments,
-					locationRiddleImage: dto.location_riddle_image.image_base64,
-					createdAt: dto.created_at,
-					rating: dto.rating
-				};
+		return this.http
+			.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/guess', {
+				guess: guess
 			})
-		);
+			.pipe(map((dto: LocationRiddleDto) => this.mapDtoToLocationRiddle(dto)));
 	}
 
 	rateLocationRiddle(locationRiddleId: string, rating: number): Observable<LocationRiddle> {
 		return this.http
-			.patch<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/rate', {
+			.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/rate', {
 				rating: rating
 			})
 			.pipe(map((dto) => this.mapDtoToLocationRiddle(dto)));
@@ -52,12 +43,15 @@ export class LocationRiddleApiService {
 
 	private mapDtoToLocationRiddle(dto: LocationRiddleDto): LocationRiddle {
 		return {
+			solved: dto.solved,
 			locationRiddleId: dto.location_riddle_id,
-			userId: dto.user_id,
+			username: dto.username,
 			comments: dto.comments,
-			locationRiddleImage: dto.location_riddle_image.image_base64,
+			locationRiddleImage: dto.image_base64,
 			createdAt: dto.created_at,
-			rating: dto.average_rating
+			rating: dto.average_rating,
+			location: dto.location,
+			guesses: dto.guesses
 		};
 	}
 }
