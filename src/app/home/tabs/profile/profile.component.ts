@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
 import { IonButton, IonIcon, IonInput, IonItem, IonSpinner } from '@ionic/angular/standalone';
 import { catchError, EMPTY, tap } from 'rxjs';
-import { User, UserForm } from 'src/app/model/user';
+import { UserForm } from 'src/app/model/user';
 import { ProfileApiService } from 'src/app/services/api/profile-api.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { UserFormComponent } from 'src/app/shared/user-form/user-form.component';

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonButton, IonInput, IonItem, IonLabel, IonSpinner, IonText } from '@ionic/angular/standalone';
 import { Subject, takeUntil, tap } from 'rxjs';
-import { User, UserForm } from '../model/user';
+import { UserForm } from '../model/user';
 import { ProfileApiService } from '../services/api/profile-api.service';
 import { AuthService } from '../services/auth/auth.service';
 import { UserFormComponent } from '../shared/user-form/user-form.component';
