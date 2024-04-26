@@ -9,12 +9,7 @@
 			@if (!feedState.loading()) {
 				@for (item of feedState.locationRiddles(); track item.locationRiddleId) {
 					<app-location-riddle-post
-            [locationRiddleId]="item.locationRiddleId"
-            [locationRiddleImage]="item.locationRiddleImage"
-            [username]="item.username"
-            [createdAt]="item.createdAt"
-            [rating]="item.rating"
-            [comments]="item.comments"
+            [locationRiddle]="item"
             (submitGuess)="
 							feedState.submitGuess.next({ locationRiddleId: item.locationRiddleId, guess: $event })
 						"

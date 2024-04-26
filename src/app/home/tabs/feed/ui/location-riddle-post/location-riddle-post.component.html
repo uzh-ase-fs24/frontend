@@ -7,10 +7,13 @@
 				</ion-avatar>
 				<div style="display: flex; justify-content: space-between; flex-grow: 1">
           <ion-label>
-						<h2>{{ username() }}</h2>
-            <p>{{ createdAt() | date: 'short' }}</p>
+            <h2>{{ locationRiddle()?.username }}</h2>
+            <p>{{ locationRiddle()?.createdAt | date: 'short' }}</p>
 					</ion-label>
-					<app-rating [rating]="rating() || 0" (makeRating)="rateRiddle.emit($event)"></app-rating>
+          <app-rating
+            (makeRating)="rateRiddle.emit($event)"
+            [rating]="locationRiddle()?.rating || 0"
+          ></app-rating>
 				</div>
 			</ion-item>
 		</ion-card-title>
@@ -19,8 +22,13 @@
 		@if (showMap()) {
       <app-map (placeMarker)="placeGuess($event)" [markerCoordinates]="[guess()]"></app-map>
 		} @else {
-      <ion-img src="data:image;base64, {{ locationRiddleImage() }}"></ion-img>
-      <ion-item id="open-modal{{ locationRiddleId() }}" expand="block" class="ion-no-padding" lines="none">
+      <ion-img src="data:image;base64, {{ locationRiddle()?.locationRiddleImage }}"></ion-img>
+      <ion-item
+        id="open-modal-{{ locationRiddle()?.locationRiddleId }}"
+        expand="block"
+        class="ion-no-padding"
+        lines="none"
+      >
         <ion-icon size="small" name="chatbox-outline"></ion-icon>
         <p style="padding-left: 0.3rem">add a comment...</p>
       </ion-item>
@@ -40,7 +48,12 @@
 	</ion-card-content>
 </ion-card>
 
-<ion-modal #modal [breakpoints]="[0, 0.5]" [initialBreakpoint]="0.5" trigger="open-modal{{ locationRiddleId() }}">
+<ion-modal
+  #modal
+  [breakpoints]="[0, 0.5]"
+  [initialBreakpoint]="0.5"
+  trigger="open-modal-{{ locationRiddle()?.locationRiddleId }}"
+>
   <ng-template>
     <ion-item lines="full">
       <ion-label class="ion-text-center">
@@ -48,7 +61,7 @@
       </ion-label>
     </ion-item>
     <ion-content>
-      @for (comment of comments(); track comment.username) {
+      @for (comment of locationRiddle()?.comments; track comment.username) {
         <ion-item lines="none">
           <ion-label class="ion-text-wrap">
             <h3>{{ comment.username }}</h3>

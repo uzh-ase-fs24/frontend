@@ -20,7 +20,7 @@ import {
 import { Coordinate } from 'ol/coordinate';
 import { MapComponent } from '../../../../../shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
-import { Comment } from '../../../../../model/location-riddle';
+import { LocationRiddle } from '../../../../../model/location-riddle';
 
 @Component({
 	selector: 'app-location-riddle-post',
@@ -49,15 +49,9 @@ import { Comment } from '../../../../../model/location-riddle';
 	standalone: true
 })
 export class LocationRiddlePostComponent {
-	username = input<string>();
-	locationRiddleId = input<string>();
-	locationRiddleImage = input<string>();
-	comments = input<Comment[]>();
-	rating = input<number>();
-	createdAt = input<number>();
+	locationRiddle = input<LocationRiddle>();
 
 	submitGuess = output<Coordinate>();
-
 	rateRiddle = output<number>();
 
 	showMap = signal(false);
