@@ -1,7 +1,6 @@
 <div>
   @if (profile$ | async; as profile) {
     @if (updateProfileView()) {
-
       <div class="base-container">
         <div class="form-container">
           <app-user-form
@@ -19,36 +18,44 @@
               expand="block"
               size="default"
             >Cancel
-            </ion-button
-            >
+            </ion-button>
           </app-user-form>
         </div>
       </div>
-
     } @else {
-
       <div class="title-bar-container">
-        <div class="center-container">
-          <h1>Profile</h1>
+        <div class="ion-padding-start ion-padding-top">
+          <div style="display: flex; justify-content: space-between">
+            <div style="display: flex; align-items: center">
+              <div class="circle ion-margin" style="background-color: blueviolet">
+                <h1 class="initials">{{ getInitials(profile.firstName, profile.lastName) }}</h1>
+              </div>
+              <ion-label>
+                <h1 style="font-weight: normal">{{ profile.firstName }} {{ profile.lastName }}</h1>
+                <p style="margin-bottom: 0.5rem">{{ '@' + profile.username }}</p>
+                <ion-button fill="solid" size="small" (click)="updateProfileView.set(true)">
+                  Edit Profile
+                  <ion-icon slot="end" name="create-outline"></ion-icon>
+                </ion-button>
+              </ion-label>
+            </div>
+            <div style="display: flex; align-items: flex-start">
+              <ion-button fill="clear" (click)="logout()" style="margin: 10px">
+                <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="center-container" style="margin-top: 30px">
-        <ion-button (click)="updateProfileView.set(true)" style="margin: 10px">
-          Update Profile
-          <ion-icon name="create-outline"></ion-icon>
-        </ion-button>
-        <ion-button (click)="logout()" style="margin: 10px">
-          Logout
-          <ion-icon name="log-out-outline"></ion-icon>
-        </ion-button>
+      <div class="ion-padding ion-margin-horizontal">
+        <ion-label>
+          <div class="ion-text-start">{{ profile.bio }}</div>
+        </ion-label>
       </div>
-
     }
   } @else {
-
     <div class="center-container">
       <ion-spinner name="circular"></ion-spinner>
     </div>
-
   }
 </div>
