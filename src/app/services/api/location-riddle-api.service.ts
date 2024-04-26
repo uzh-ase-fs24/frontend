@@ -48,7 +48,7 @@ export class LocationRiddleApiService {
 			username: dto.username,
 			comments: dto.comments,
 			locationRiddleImage: dto.image_base64,
-			createdAt: dto.created_at,
+			createdAt: dto.created_at * 1000,
 			rating: dto.average_rating,
 			location: dto.location,
 			guesses: dto.guesses
