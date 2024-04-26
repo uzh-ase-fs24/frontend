@@ -2,7 +2,7 @@ import { Coordinate } from 'ol/coordinate';
 
 export type LocationRiddle = {
 	solved: boolean;
-	userId: string;
+	username: string;
 	locationRiddleId: string;
 	locationRiddleImage: string;
 	comments: string[];
@@ -15,7 +15,7 @@ export type LocationRiddle = {
 export type LocationRiddleDto = {
 	solved: boolean;
 	location_riddle_id: string;
-	user_id: string;
+	username: string;
 	image_base64: string;
 	comments: string[];
 	created_at: number;

@@ -49,7 +49,7 @@ export class LocationRiddleApiService {
 
 	rateLocationRiddle(locationRiddleId: string, rating: number): Observable<LocationRiddle> {
 		return this.http
-			.patch<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/rate', {
+			.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/rate', {
 				rating: rating
 			})
 			.pipe(map((dto) => this.mapDtoToLocationRiddle(dto)));
@@ -59,7 +59,7 @@ export class LocationRiddleApiService {
 		return {
 			solved: dto.solved,
 			locationRiddleId: dto.location_riddle_id,
-			userId: dto.user_id,
+			username: dto.username,
 			comments: dto.comments,
 			locationRiddleImage: dto.image_base64,
 			createdAt: dto.created_at,
