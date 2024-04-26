@@ -1,7 +1,7 @@
 import { Component, effect, EventEmitter, input, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonButton, IonIcon, IonInput, IonItem } from '@ionic/angular/standalone';
-import { User, UserForm } from 'src/app/model/user';
+import { UserForm } from 'src/app/model/user';
 import { UserFormExceptionsComponent } from './ui/user-form-exceptions/user-form-exceptions.component';
 
 @Component({

@@ -64,7 +64,7 @@ export class FeedStateService {
 		connect(this.state)
 			.with(this.locationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles,
-				loading: !(locationRiddles.length === 0)
+				loading: locationRiddles.length !== 0
 			}))
 			.with(this.usersSource$, (state, users) => ({
 				users: users,
