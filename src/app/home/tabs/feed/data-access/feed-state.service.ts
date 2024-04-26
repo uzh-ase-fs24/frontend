@@ -1,15 +1,13 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
-import { forkJoin, map, mergeAll, share, Subject, switchMap } from 'rxjs';
-import { User } from 'src/app/model/user';
+import { share, Subject, switchMap, tap } from 'rxjs';
 import { LocationRiddle } from '../../../../model/location-riddle';
 import { LocationRiddleApiService } from '../../../../services/api/location-riddle-api.service';
 import { ProfileApiService } from '../../../../services/api/profile-api.service';
 
 type FeedState = {
 	locationRiddles: LocationRiddle[];
-	users: User[];
 	loading: boolean;
 };
 
@@ -24,13 +22,11 @@ export class FeedStateService {
 	// State
 	private state = signal<FeedState>({
 		locationRiddles: [],
-		users: [],
 		loading: true
 	});
 
 	// Selectors
 	public locationRiddles = computed(() => this.state().locationRiddles);
-	public users = computed(() => this.state().users);
 	public loading = computed(() => this.state().loading);
 
 	// Action Sources (Subjects)
@@ -40,23 +36,14 @@ export class FeedStateService {
 
 	// Sources (Observables)
 	private locationRiddlesSource$ = this.locationRiddleApiService.getLocationRiddles().pipe(share());
-	private usersSource$ = this.locationRiddlesSource$.pipe(
-		map((locationRiddles) =>
-			forkJoin(
-				locationRiddles.map((locationRiddle) =>
-					this.profileApiService.getProfile(locationRiddle.username || '')
-				)
-			)
-		),
-		mergeAll()
-	);
 	private refreshLocationRiddlesSource$ = this.refresh.pipe(switchMap(() => this.locationRiddlesSource$));
-	private refreshUsersSource$ = this.refresh.pipe(switchMap(() => this.usersSource$));
 	private submitGuessSource = this.submitGuess.pipe(
-		switchMap(({ locationRiddleId, guess }) => this.locationRiddleApiService.postGuess(locationRiddleId, guess))
+		switchMap(({ locationRiddleId, guess }) => this.locationRiddleApiService.postGuess(locationRiddleId, guess)),
+		tap((response) => console.log(response))
 	);
 	private rateLocationRiddleSource$ = this.rateLocationRiddle.pipe(
-		switchMap((event) => this.locationRiddleApiService.rateLocationRiddle(event.locationRiddleId, event.rating))
+		switchMap((event) => this.locationRiddleApiService.rateLocationRiddle(event.locationRiddleId, event.rating)),
+		tap((response) => console.log(response))
 	);
 
 	constructor() {
@@ -64,17 +51,10 @@ export class FeedStateService {
 		connect(this.state)
 			.with(this.locationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles,
-				loading: !(locationRiddles.length === 0)
-			}))
-			.with(this.usersSource$, (state, users) => ({
-				users: users,
 				loading: false
 			}))
 			.with(this.refreshLocationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles
-			}))
-			.with(this.refreshUsersSource$, (state, users) => ({
-				users: users
 			}))
 			.with(this.submitGuessSource, (state, updatedRiddle) => ({
 				locationRiddles: state.locationRiddles.map((riddle) =>

@@ -1,11 +1,15 @@
 <ion-chip color="warning" (click)="setOpen(true)">
 	@for (item of getStars(); track item) {
-	<ion-icon class="ion-no-margin" color="warning" name="star{{ rating() < item ? '-outline' : '' }}"></ion-icon>
-	} @if(rating() < 5) {
-	<ion-icon class="ion-no-margin" color="warning" name="star-{{ getHalfStar() ? 'half' : 'outline' }}"></ion-icon>
-	} @if (rating() < 5) { @for (item of getEmptyStars(); track item) {
-	<ion-icon class="ion-no-margin" color="warning" name="star-outline"></ion-icon>
-	} }
+		<ion-icon class="ion-no-margin" color="warning" name="star{{ rating() < item ? '-outline' : '' }}"></ion-icon>
+	}
+	@if (rating() < 5) {
+		<ion-icon class="ion-no-margin" color="warning" name="star-{{ getHalfStar() ? 'half' : 'outline' }}"></ion-icon>
+	}
+	@if (rating() < 5) {
+		@for (item of getEmptyStars(); track item) {
+			<ion-icon class="ion-no-margin" color="warning" name="star-outline"></ion-icon>
+		}
+	}
 </ion-chip>
 
 <ion-modal [isOpen]="isRatingModalOpen()" (didDismiss)="setOpen(false)">
@@ -14,14 +18,14 @@
 			<div class="center-container" style="height: 70px">
 				<ion-chip>
 					@for (item of [0, 1, 2, 3, 4]; track item; let i = $index) {
-					<ion-icon
-						color="warning"
-						class="ion-no-margin"
-						name="star{{ hoveredStarsIndex() < i ? '-outline' : '' }}"
-						(click)="rate(i + 1)"
-						(mouseenter)="hoveredStarsIndex.set(i)"
-						(mouseleave)="hoveredStarsIndex.set(-1)"
-					></ion-icon>
+						<ion-icon
+							color="warning"
+							class="ion-no-margin"
+							name="star{{ hoveredStarsIndex() < i ? '-outline' : '' }}"
+							(click)="rate(i + 1)"
+							(mouseenter)="hoveredStarsIndex.set(i)"
+							(mouseleave)="hoveredStarsIndex.set(-1)"
+						></ion-icon>
 					}
 				</ion-chip>
 			</div>
