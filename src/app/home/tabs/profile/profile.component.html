@@ -5,12 +5,10 @@
 		<div class="form-container">
 			<app-user-form
 				(submitForm)="submitForm($event)"
-				[username]="profile.username"
 				[firstName]="profile.firstName"
 				[lastName]="profile.lastName"
 				formTitle="Update Profile"
 				submitButtonTitle="Save"
-				[displayUsername]="false"
 			>
 				<ion-button
 					(click)="updateProfileView.set(false)"

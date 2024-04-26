@@ -1,36 +1,43 @@
-<ion-card style="width: 90vw; min-height: 30rem; max-width: 40rem">
-  <ion-card-header class="ion-padding">
-    <ion-card-title>
-      <ion-item lines="none">
-        <ion-avatar aria-hidden="true" slot="start">
-          <ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
-        </ion-avatar>
-        <div style="display: flex; justify-content: space-between; flex-grow: 1">
-          <ion-label>
-            <h2>{{ username() }}</h2>
-            <p>{{ createdAt() | date : 'short' }}</p>
-          </ion-label>
-          <app-rating [rating]="rating() || 0"></app-rating>
-        </div>
-      </ion-item>
-    </ion-card-title>
-  </ion-card-header>
-  <ion-card-content style="height: 40vh; min-height: 30rem">
-    @if (showMap()) {
-      <app-map [(markerCoordinates)]="guessedLocation"></app-map>
-    } @else {
-      <ion-img src="data:image;base64, {{ locationRiddleImage() }}"></ion-img>
-      <ion-item id="open-modal" expand="block" class="ion-no-padding" lines="none">
-        <ion-icon size="small" name="chatbox-outline"></ion-icon>
-        <p style="padding-left: 0.3rem">add a comment...</p>
-      </ion-item>
-    }
-    <ion-fab horizontal="end" slot="fixed" vertical="bottom">
-      <ion-fab-button (click)="toggleMap()">
-        <ion-icon name="{{ showMap() ? 'image' : 'map' }}-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </ion-card-content>
+<ion-card style="width: 90vw; min-height: 30rem; max-width: 40rem" color="dark">
+	<ion-card-header class="ion-padding">
+		<ion-card-title>
+			<ion-item lines="none">
+				<ion-avatar aria-hidden="true" slot="start">
+					<ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
+				</ion-avatar>
+				<div style="display: flex; justify-content: space-between; flex-grow: 1">
+					<ion-label color="light">
+						<h2>{{ username() }}</h2>
+						<p>{{ createdAt() | date : 'short' }}</p>
+					</ion-label>
+					<app-rating [rating]="rating() || 0" (makeRating)="rateRiddle.emit($event)"></app-rating>
+				</div>
+			</ion-item>
+		</ion-card-title>
+	</ion-card-header>
+	<ion-card-content style="height: 40vh; min-height: 30rem">
+		@if (showMap()) {
+		<app-map (placeMarker)="placeGuess($event)" [markerCoordinates]="[guess()]"></app-map>
+		} @else {
+		<ion-img src="data:image;base64, {{ locationRiddleImage() }}"></ion-img>
+    <ion-item id="open-modal" expand="block" class="ion-no-padding" lines="none">
+      <ion-icon size="small" name="chatbox-outline"></ion-icon>
+      <p style="padding-left: 0.3rem">add a comment...</p>
+    </ion-item>
+		}
+		<ion-fab horizontal="start" slot="fixed" vertical="bottom">
+			<ion-fab-button (click)="toggleMap()">
+				<ion-icon name="{{ showMap() ? 'image' : 'map' }}-outline"></ion-icon>
+			</ion-fab-button>
+		</ion-fab>
+		@if(guess() && !submitted()){
+		<ion-fab horizontal="end" slot="fixed" vertical="bottom">
+			<ion-fab-button color="success" (click)="submit()">
+				<ion-icon color="dark" name="checkmark-outline"></ion-icon>
+			</ion-fab-button>
+		</ion-fab>
+		}
+	</ion-card-content>
 </ion-card>
 
 <ion-modal #modal [breakpoints]="[0, 1]" [initialBreakpoint]="1" trigger="open-modal">

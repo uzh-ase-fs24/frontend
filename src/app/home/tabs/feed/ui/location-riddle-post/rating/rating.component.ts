@@ -1,15 +1,30 @@
-import { Component, effect, input } from '@angular/core';
-import { IonChip, IonIcon } from '@ionic/angular/standalone';
+import { Component, effect, input, output, signal } from '@angular/core';
+import {
+	IonButton,
+	IonButtons,
+	IonChip,
+	IonContent,
+	IonHeader,
+	IonIcon,
+	IonInput,
+	IonModal,
+	IonTitle,
+	IonToolbar
+} from '@ionic/angular/standalone';
 
 @Component({
 	selector: 'app-rating',
 	templateUrl: './rating.component.html',
-	imports: [IonChip, IonIcon],
+	imports: [IonTitle, IonContent, IonInput, IonButtons, IonToolbar, IonHeader, IonModal, IonButton, IonChip, IonIcon],
 	styleUrls: ['./rating.component.scss'],
 	standalone: true
 })
 export class RatingComponent {
 	rating = input.required<number>();
+	makeRating = output<number>();
+
+	hoveredStarsIndex = signal<number>(-1);
+	isRatingModalOpen = signal<boolean>(false);
 
 	constructor() {
 		effect(() => {
@@ -30,5 +45,14 @@ export class RatingComponent {
 
 	getHalfStar(): boolean {
 		return this.rating() % 1 !== 0;
+	}
+
+	rate(rating: number): void {
+		this.makeRating.emit(rating);
+		this.setOpen(false);
+	}
+
+	setOpen(isOpen: boolean) {
+		this.isRatingModalOpen.set(isOpen);
 	}
 }

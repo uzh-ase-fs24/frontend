@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonButton, IonInput, IonItem, IonLabel, IonSpinner, IonText } from '@ionic/angular/standalone';
 import { Subject, takeUntil, tap } from 'rxjs';
-import { User } from '../model/user';
+import { UserForm } from '../model/user';
 import { ProfileApiService } from '../services/api/profile-api.service';
 import { AuthService } from '../services/auth/auth.service';
 import { UserFormComponent } from '../shared/user-form/user-form.component';
@@ -41,11 +41,10 @@ export class SignupComponent implements OnDestroy {
 
 	constructor() {}
 
-	submitForm(user: User) {
+	submitForm(user: UserForm) {
 		this.loading.set(true);
 		this.profileApiService
 			.postProfile({
-				username: user.username,
 				first_name: user.firstName,
 				last_name: user.lastName
 			})

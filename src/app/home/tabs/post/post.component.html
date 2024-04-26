@@ -44,7 +44,7 @@
 		</div>
 
 		<div class="center-container">
-			<app-map class="map-container" (markerCoordinatesChange)="postState.setLocation.next($event)"></app-map>
+			<app-map class="map-container" (placeMarker)="postState.setLocation.next($event)"></app-map>
 		</div>
 
 		<div class="center-container" style="margin-top: 5vh">

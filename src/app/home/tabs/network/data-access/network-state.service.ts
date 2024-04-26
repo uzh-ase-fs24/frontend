@@ -27,10 +27,10 @@ export class NetworkStateService {
 	// Sources (Observables)
 	private followRequests$ = this.followRequestsApi.getFollowRequests();
 	private acceptFollowRequest$ = this.acceptFollowRequest.pipe(
-		switchMap((userId) => this.followRequestsApi.acceptFollowRequest(userId).pipe(map(() => userId)))
+		switchMap((username) => this.followRequestsApi.acceptFollowRequest(username).pipe(map(() => username)))
 	);
 	private declineFollowRequest$ = this.declineFollowRequest.pipe(
-		switchMap((userId) => this.followRequestsApi.declineFollowRequest(userId).pipe(map(() => userId)))
+		switchMap((username) => this.followRequestsApi.declineFollowRequest(username).pipe(map(() => username)))
 	);
 
 	constructor() {
@@ -38,11 +38,11 @@ export class NetworkStateService {
 			.with(this.followRequests$, (state, followRequests) => ({
 				followRequests: followRequests
 			}))
-			.with(this.acceptFollowRequest$, (state, userId) => ({
-				followRequests: state.followRequests.filter((request) => request.requesterId !== userId)
+			.with(this.acceptFollowRequest$, (state, username) => ({
+				followRequests: state.followRequests.filter((request) => request.requester !== username)
 			}))
-			.with(this.declineFollowRequest$, (state, userId) => ({
-				followRequests: state.followRequests.filter((request) => request.requesterId !== userId)
+			.with(this.declineFollowRequest$, (state, username) => ({
+				followRequests: state.followRequests.filter((request) => request.requester !== username)
 			}));
 	}
 }

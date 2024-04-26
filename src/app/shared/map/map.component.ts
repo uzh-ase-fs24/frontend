@@ -12,20 +12,22 @@ import { Icon, Style } from 'ol/style';
 
 @Component({
 	selector: 'app-map',
-	templateUrl: './map.component.html',
 	styleUrls: ['./map.component.scss'],
-	standalone: true
+	standalone: true,
+	template: ` <div #mapElement class="map"></div> `
 })
 export class MapComponent {
 	@ViewChild('mapElement') set content(mapElement: ElementRef) {
 		this.initMap(mapElement);
 	}
 
-	markerCoordinates = input<Coordinate>();
-	markerCoordinatesChange = output<Coordinate>();
+	center = input<Coordinate>();
+	markerCoordinates = input<(Coordinate | null)[]>([]);
+	placeMarker = output<Coordinate>();
 
 	map?: Map;
 	defaultMapCenter = [914135.8295099558, 5901532.510434296]; // central of europe
+	placedMarker?: Coordinate;
 
 	private vectorSource = new VectorSource();
 	private vectorLayer = new VectorLayer({
@@ -45,17 +47,20 @@ export class MapComponent {
 			],
 			controls: [],
 			view: new View({
-				center: this.markerCoordinates() || this.defaultMapCenter, // central of europe
-				zoom: this.markerCoordinates() ? 16 : 4
+				center: this.center() || this.placedMarker || this.defaultMapCenter, // central of europe
+				zoom: this.center() || this.placeMarker ? 4 : 16
 			})
 		});
 
 		this.removeMapAttribution();
 
-		if (this.markerCoordinates()) this.addMarker(this.markerCoordinates()!);
+		this.markerCoordinates().forEach((coordinate) => {
+			if (coordinate) this.addMarker(coordinate);
+		});
 
 		this.map.on('click', (event) => {
 			this.addMarker(event.coordinate, true);
+			this.placedMarker = event.coordinate;
 		});
 	}
 
@@ -76,7 +81,7 @@ export class MapComponent {
 		);
 
 		this.vectorSource.addFeature(marker);
-		if (emit) this.markerCoordinatesChange.emit(coordinate);
+		if (emit) this.placeMarker.emit(coordinate);
 	}
 
 	removeMapAttribution() {

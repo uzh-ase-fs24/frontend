@@ -241,3 +241,8 @@ html {
    */
 	--ion-dynamic-font: var(--ion-default-dynamic-font);
 }
+
+ion-modal,
+ion-card {
+	border-radius: 6px;
+}
