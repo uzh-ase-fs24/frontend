@@ -48,8 +48,8 @@
     </ion-item>
     @if (userForm.controls.bio.touched && userForm.controls.bio.invalid) {
       <app-user-form-exceptions
-        [field]="'bio'"
-        [errors]="userForm.controls.bio"
+        [field]="'Bio'"
+        [errors]="userForm.controls.bio.errors"
       ></app-user-form-exceptions>
     }
     <div>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { IonText } from '@ionic/angular/standalone';
 
@@ -11,7 +11,11 @@ import { IonText } from '@ionic/angular/standalone';
 	imports: [IonText, CommonModule]
 })
 export class UserFormExceptionsComponent {
-	constructor() {}
+	constructor() {
+		effect(() => {
+			console.error(this.errors());
+		});
+	}
 
 	errors = input<ValidationErrors | null>();
 	field = input<string>();
