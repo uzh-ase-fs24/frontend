@@ -46,7 +46,8 @@ export class SignupComponent implements OnDestroy {
 		this.profileApiService
 			.postProfile({
 				first_name: user.firstName,
-				last_name: user.lastName
+				last_name: user.lastName,
+				bio: user.bio
 			})
 			.pipe(
 				takeUntil(this.onDestory),

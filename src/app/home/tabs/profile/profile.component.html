@@ -1,50 +1,54 @@
 <div>
-	@if(profile$ | async; as profile){ @if(updateProfileView()) {
+  @if (profile$ | async; as profile) {
+    @if (updateProfileView()) {
 
-	<div class="base-container">
-		<div class="form-container">
-			<app-user-form
-				(submitForm)="submitForm($event)"
-				[firstName]="profile.firstName"
-				[lastName]="profile.lastName"
-				formTitle="Update Profile"
-				submitButtonTitle="Save"
-			>
-				<ion-button
-					(click)="updateProfileView.set(false)"
-					style="margin-top: 10px"
-					color="medium"
-					expand="block"
-					size="default"
-					>Cancel</ion-button
-				>
-			</app-user-form>
-		</div>
-	</div>
+      <div class="base-container">
+        <div class="form-container">
+          <app-user-form
+            (submitForm)="submitForm($event)"
+            [firstName]="profile.firstName"
+            [lastName]="profile.lastName"
+            [bio]="profile.bio"
+            formTitle="Update Profile"
+            submitButtonTitle="Save"
+          >
+            <ion-button
+              (click)="updateProfileView.set(false)"
+              style="margin-top: 10px"
+              color="medium"
+              expand="block"
+              size="default"
+            >Cancel
+            </ion-button
+            >
+          </app-user-form>
+        </div>
+      </div>
 
-	} @else {
+    } @else {
 
-	<div class="title-bar-container">
-		<div class="center-container">
-			<h1>Profile</h1>
-		</div>
-	</div>
-	<div class="center-container" style="margin-top: 30px">
-		<ion-button (click)="updateProfileView.set(true)" style="margin: 10px">
-			Update Profile
-			<ion-icon name="create-outline"></ion-icon>
-		</ion-button>
-		<ion-button (click)="logout()" style="margin: 10px">
-			Logout
-			<ion-icon name="log-out-outline"></ion-icon>
-		</ion-button>
-	</div>
+      <div class="title-bar-container">
+        <div class="center-container">
+          <h1>Profile</h1>
+        </div>
+      </div>
+      <div class="center-container" style="margin-top: 30px">
+        <ion-button (click)="updateProfileView.set(true)" style="margin: 10px">
+          Update Profile
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="logout()" style="margin: 10px">
+          Logout
+          <ion-icon name="log-out-outline"></ion-icon>
+        </ion-button>
+      </div>
 
-	} } @else {
+    }
+  } @else {
 
-	<div class="center-container">
-		<ion-spinner name="circular"></ion-spinner>
-	</div>
+    <div class="center-container">
+      <ion-spinner name="circular"></ion-spinner>
+    </div>
 
-	}
+  }
 </div>

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
-import { User, UserDto, UserFormDto } from 'src/app/model/user';
+import { User, UserDto, UserForm, UserFormDto } from 'src/app/model/user';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 
@@ -13,15 +13,9 @@ export class ProfileApiService {
 	constructor() {}
 
 	getProfile(username?: string): Observable<User> {
-		return this.http.get<UserDto>(environment.api.url + '/users' + (username ? `/${username}` : '')).pipe(
-			map((user) => {
-				return {
-					username: user.username,
-					firstName: user.first_name,
-					lastName: user.last_name
-				};
-			})
-		);
+		return this.http
+			.get<UserDto>(environment.api.url + '/users' + (username ? `/${username}` : ''))
+			.pipe(map((dto) => this.mapDtoToUser(dto)));
 	}
 
 	getProfilesByNamePrefix(prefix: string): Observable<User[]> {
@@ -34,13 +28,7 @@ export class ProfileApiService {
 			})
 			.pipe(
 				map((users) => {
-					return users.map((user) => {
-						return {
-							username: user.username,
-							firstName: user.first_name,
-							lastName: user.last_name
-						};
-					});
+					return users.map((user) => this.mapDtoToUser(user));
 				})
 			);
 	}
@@ -51,26 +39,29 @@ export class ProfileApiService {
 				return {
 					username: user.username,
 					firstName: user.first_name,
-					lastName: user.last_name
+					lastName: user.last_name,
+					bio: user.bio
 				};
 			})
 		);
 	}
 
-	updateProfile(user: UserFormDto): Observable<User> {
+	updateProfile(user: UserForm): Observable<User> {
 		return this.http
 			.put<UserDto>(environment.api.url + '/users', {
-				first_name: user.first_name,
-				last_name: user.last_name
+				first_name: user.firstName,
+				last_name: user.lastName,
+				bio: user.bio
 			})
-			.pipe(
-				map((user) => {
-					return {
-						username: user.username,
-						firstName: user.first_name,
-						lastName: user.last_name
-					};
-				})
-			);
+			.pipe(map((dto) => this.mapDtoToUser(dto)));
+	}
+
+	private mapDtoToUser(dto: UserDto): User {
+		return {
+			username: dto.username,
+			firstName: dto.first_name,
+			lastName: dto.last_name,
+			bio: dto.bio
+		};
 	}
 }
