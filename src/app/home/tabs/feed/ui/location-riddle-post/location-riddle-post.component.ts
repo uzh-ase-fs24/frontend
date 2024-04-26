@@ -17,7 +17,6 @@ import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
 import { MapComponent } from '../../../../../shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
-import { LocationRiddle } from 'src/app/model/location-riddle';
 
 @Component({
 	selector: 'app-location-riddle-post',
