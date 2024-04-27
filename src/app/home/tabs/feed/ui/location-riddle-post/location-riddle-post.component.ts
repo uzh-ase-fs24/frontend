@@ -14,7 +14,7 @@ import {
 	IonLabel
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
-import { Guess, LocationRiddle } from 'src/app/model/location-riddle';
+import { LocationRiddle } from 'src/app/model/location-riddle';
 import { MapComponent } from '../../../../../shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
 
@@ -53,9 +53,13 @@ export class LocationRiddlePostComponent {
 	showMap = signal(false);
 	marker = signal<Coordinate | null>(null);
 	submitted = signal(false);
-	solution = computed(() => this.locationRiddle().solved ? this.locationRiddle().location : undefined);
-	guesses = computed(() => this.locationRiddle().guesses?.filter((guess) => guess.username !== this.username()) || []);
-	userGuess = computed(() => this.locationRiddle().guesses?.find((guess) => guess.username === this.username())?.guess || null);
+	solution = computed(() => (this.locationRiddle().solved ? this.locationRiddle().location : undefined));
+	guesses = computed(
+		() => this.locationRiddle().guesses?.filter((guess) => guess.username !== this.username()) || []
+	);
+	userGuess = computed(
+		() => this.locationRiddle().guesses?.find((guess) => guess.username === this.username())?.guess || null
+	);
 
 	constructor() {}
 

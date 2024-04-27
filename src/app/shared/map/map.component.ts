@@ -71,13 +71,8 @@ export class MapComponent {
 		});
 
 		this.addMarker(this.solution(), Marker.SOLUTION, 'Solution', false);
-		if (this.userGuess()) {
-			this.addMarker(this.userGuess()!, Marker.USER, 'Your Guess', false);
-		}
-
-		if (this.marker()) {
-			this.addMarker(this.marker()!, Marker.USER, '', true);
-		}
+		this.addMarker(this.userGuess()!, Marker.USER, 'Your Guess', false);
+		this.addMarker(this.marker()!, Marker.USER, '', true);
 
 		if (!this.solved()) {
 			this.map.on('click', (event) => {
