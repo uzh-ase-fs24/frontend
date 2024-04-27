@@ -8,30 +8,41 @@
 				<div style="display: flex; justify-content: space-between; flex-grow: 1">
 					<ion-label color="dark">
 						<h2>{{ locationRiddle().username }}</h2>
-						<p>{{ locationRiddle().createdAt| date : 'short' }}</p>
+						<p>{{ locationRiddle().createdAt | date: 'short' }}</p>
 					</ion-label>
-					<app-rating [rating]="locationRiddle().rating" (makeRating)="rateRiddle.emit($event)" [ratingEnabled]="locationRiddle().solved"></app-rating>
+					<app-rating
+						[rating]="locationRiddle().rating"
+						(makeRating)="rateRiddle.emit($event)"
+						[ratingEnabled]="locationRiddle().solved"
+					></app-rating>
 				</div>
 			</ion-item>
 		</ion-card-title>
 	</ion-card-header>
 	<ion-card-content style="height: 40vh; min-height: 30rem">
 		@if (showMap()) {
-		<app-map (placeMarker)="placeGuess($event)" [markerCoordinates]="[guess()]"></app-map>
+			<app-map
+				(placeMarker)="placeGuess($event)"
+				[marker]="marker()"
+				[guesses]="guesses()"
+				[userGuess]="userGuess()"
+				[solution]="solution()"
+				[solved]="locationRiddle().solved"
+			></app-map>
 		} @else {
-		<ion-img src="data:image;base64, {{ locationRiddle().locationRiddleImage }}"></ion-img>
+			<ion-img src="data:image;base64, {{ locationRiddle().locationRiddleImage }}"></ion-img>
 		}
 		<ion-fab horizontal="start" slot="fixed" vertical="bottom">
 			<ion-fab-button (click)="toggleMap()">
 				<ion-icon name="{{ showMap() ? 'image' : 'map' }}-outline"></ion-icon>
 			</ion-fab-button>
 		</ion-fab>
-		@if(guess() && !submitted()){
-		<ion-fab horizontal="end" slot="fixed" vertical="bottom">
-			<ion-fab-button color="success" (click)="submit()">
-				<ion-icon color="dark" name="checkmark-outline"></ion-icon>
-			</ion-fab-button>
-		</ion-fab>
+		@if (marker() && !submitted()) {
+			<ion-fab horizontal="end" slot="fixed" vertical="bottom">
+				<ion-fab-button color="success" (click)="submit()">
+					<ion-icon color="dark" name="checkmark-outline"></ion-icon>
+				</ion-fab-button>
+			</ion-fab>
 		}
 	</ion-card-content>
 </ion-card>
