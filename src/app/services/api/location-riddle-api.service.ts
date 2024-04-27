@@ -33,6 +33,14 @@ export class LocationRiddleApiService {
 			.pipe(map((dto: LocationRiddleDto) => this.mapDtoToLocationRiddle(dto)));
 	}
 
+	postComment(locationRiddleId: string, comment: string): Observable<LocationRiddle> {
+		return this.http
+			.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/comment', {
+				comment: comment
+			})
+			.pipe(map((dto: LocationRiddleDto) => this.mapDtoToLocationRiddle(dto)));
+	}
+
 	rateLocationRiddle(locationRiddleId: string, rating: number): Observable<LocationRiddle> {
 		return this.http
 			.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/rate', {

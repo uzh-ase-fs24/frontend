@@ -52,7 +52,8 @@ export class LocationRiddlePostComponent {
 	locationRiddle = input.required<LocationRiddle>();
 
 	submitGuess = output<Coordinate>();
-	rateRiddle = output<number>();
+	commentLocationRiddle = output<string>();
+	rateLocationRiddle = output<number>();
 
 	showMap = signal(false);
 	guess = signal<Coordinate | null>(null);
@@ -66,6 +67,13 @@ export class LocationRiddlePostComponent {
 
 	placeGuess(guess: Coordinate) {
 		this.guess.set(guess);
+	}
+
+	comment(commentInputRef: IonInput) {
+		if (commentInputRef.value) {
+			this.commentLocationRiddle.emit(commentInputRef.value.toString());
+			commentInputRef.value = '';
+		}
 	}
 
 	submit() {

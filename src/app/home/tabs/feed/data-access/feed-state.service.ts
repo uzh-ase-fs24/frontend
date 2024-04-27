@@ -4,7 +4,6 @@ import { Coordinate } from 'ol/coordinate';
 import { share, Subject, switchMap, tap } from 'rxjs';
 import { LocationRiddle } from '../../../../model/location-riddle';
 import { LocationRiddleApiService } from '../../../../services/api/location-riddle-api.service';
-import { ProfileApiService } from '../../../../services/api/profile-api.service';
 
 type FeedState = {
 	locationRiddles: LocationRiddle[];
@@ -17,7 +16,6 @@ type RateEvent = { locationRiddleId: string; rating: number };
 export class FeedStateService {
 	// Services
 	locationRiddleApiService = inject(LocationRiddleApiService);
-	profileApiService = inject(ProfileApiService);
 
 	// State
 	private state = signal<FeedState>({
@@ -32,6 +30,7 @@ export class FeedStateService {
 	// Action Sources (Subjects)
 	public refresh = new Subject<void>();
 	public submitGuess = new Subject<{ locationRiddleId: string; guess: Coordinate }>();
+	public commentOnLocationRiddle = new Subject<{ locationRiddleId: string; comment: string }>();
 	public rateLocationRiddle = new Subject<RateEvent>();
 
 	// Sources (Observables)
@@ -39,6 +38,12 @@ export class FeedStateService {
 	private refreshLocationRiddlesSource$ = this.refresh.pipe(switchMap(() => this.locationRiddlesSource$));
 	private submitGuessSource = this.submitGuess.pipe(
 		switchMap(({ locationRiddleId, guess }) => this.locationRiddleApiService.postGuess(locationRiddleId, guess)),
+		tap((response) => console.log(response))
+	);
+	private commentOnLocationRiddleSource$ = this.commentOnLocationRiddle.pipe(
+		switchMap(({ locationRiddleId, comment }) =>
+			this.locationRiddleApiService.postComment(locationRiddleId, comment)
+		),
 		tap((response) => console.log(response))
 	);
 	private rateLocationRiddleSource$ = this.rateLocationRiddle.pipe(
@@ -59,6 +64,11 @@ export class FeedStateService {
 			.with(this.submitGuessSource, (state, updatedRiddle) => ({
 				locationRiddles: state.locationRiddles.map((riddle) =>
 					riddle.locationRiddleId === updatedRiddle.locationRiddleId ? updatedRiddle : riddle
+				)
+			}))
+			.with(this.commentOnLocationRiddleSource$, (state, updatedLocationRiddle) => ({
+				locationRiddles: state.locationRiddles.map((riddle) =>
+					riddle.locationRiddleId === updatedLocationRiddle.locationRiddleId ? updatedLocationRiddle : riddle
 				)
 			}))
 			.with(this.rateLocationRiddleSource$, (state, updatedLocationRiddle) => ({
