@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
-import { User, UserDto, UserForm, UserFormDto } from 'src/app/model/user';
+import { map, Observable, of, switchMap } from 'rxjs';
+import { User, UserConnections, UserConnectionsDto, UserDto, UserForm, UserFormDto } from 'src/app/model/user';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth/auth.service';
 
@@ -34,16 +34,7 @@ export class ProfileApiService {
 	}
 
 	postProfile(user: UserFormDto): Observable<User> {
-		return this.http.post<UserDto>(environment.api.url + '/users', user).pipe(
-			map((user) => {
-				return {
-					username: user.username,
-					firstName: user.first_name,
-					lastName: user.last_name,
-					bio: user.bio
-				};
-			})
-		);
+		return this.http.post<UserDto>(environment.api.url + '/users', user).pipe(map((dto) => this.mapDtoToUser(dto)));
 	}
 
 	updateProfile(user: UserForm): Observable<User> {
@@ -56,12 +47,29 @@ export class ProfileApiService {
 			.pipe(map((dto) => this.mapDtoToUser(dto)));
 	}
 
+	getConnections(username?: string): Observable<UserConnections> {
+		return this.auth.user$.pipe(
+			switchMap((profile) => {
+				const user = username || profile?.['https://findme.ch/username'];
+				return this.http.get<UserConnectionsDto>(environment.api.url + `/users/${user}/follow`).pipe(
+					map((dto) => {
+						return {
+							following: dto.following.map((userDto) => this.mapDtoToUser(userDto)),
+							followers: dto.followers.map((userDto) => this.mapDtoToUser(userDto))
+						};
+					})
+				);
+			})
+		);
+	}
+
 	private mapDtoToUser(dto: UserDto): User {
 		return {
 			username: dto.username,
 			firstName: dto.first_name,
 			lastName: dto.last_name,
-			bio: dto.bio
+			bio: dto.bio,
+			averageScore: dto.average_score
 		};
 	}
 }

@@ -3,7 +3,7 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
-import { IonButton, IonIcon, IonInput, IonItem, IonLabel, IonSpinner } from '@ionic/angular/standalone';
+import { IonButton, IonChip, IonIcon, IonInput, IonItem, IonLabel, IonSpinner } from '@ionic/angular/standalone';
 import { catchError, EMPTY, tap } from 'rxjs';
 import { UserForm } from 'src/app/model/user';
 import { ProfileApiService } from 'src/app/services/api/profile-api.service';
@@ -23,6 +23,7 @@ import { UserFormComponent } from 'src/app/shared/user-form/user-form.component'
 		IonIcon,
 		IonLabel,
 		FormsModule,
+		IonChip,
 		ReactiveFormsModule,
 		UserFormComponent,
 		CommonModule
@@ -39,6 +40,7 @@ export class ProfileComponent {
 	// Class variables
 	updateProfileView = signal(false);
 	profile$ = this.profileApiService.getProfile().pipe(takeUntilDestroyed());
+	connections$ = this.profileApiService.getConnections().pipe(takeUntilDestroyed());
 
 	constructor() {}
 

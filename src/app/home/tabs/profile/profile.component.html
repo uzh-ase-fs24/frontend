@@ -52,6 +52,40 @@
           <div class="ion-text-start">{{ profile.bio }}</div>
         </ion-label>
       </div>
+      <div class="ion-padding-horizontal ion-padding-top ion-margin-horizontal center-container"
+           style="display: flex; align-items: flex-end">
+        <div class="ion-padding-horizontal">
+          <ion-label class="ion-text-center">
+            <ion-chip color="warning">
+              <div style="display: flex; align-items: center">
+                <ion-icon class="ion-padding-end" name="trophy-outline"></ion-icon>
+                <h2>{{ profile.averageScore || 0 }}</h2>
+              </div>
+            </ion-chip>
+            <p>Score</p>
+          </ion-label>
+        </div>
+        @if (connections$ | async; as connections) {
+          <div class="center-container">
+            <div class="ion-padding-horizontal">
+              <ion-label class="ion-text-center">
+                <h1>
+                  {{ connections.followers.length }}
+                </h1>
+                <p>followers</p>
+              </ion-label>
+            </div>
+            <div class="ion-padding-horizontal">
+              <ion-label class="ion-text-center">
+                <h1>
+                  {{ connections.following.length }}
+                </h1>
+                <p>following</p>
+              </ion-label>
+            </div>
+          </div>
+        }
+      </div>
     }
   } @else {
     <div class="center-container">
