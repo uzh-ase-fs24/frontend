@@ -50,7 +50,7 @@ export class ProfileApiService {
 	getConnections(username?: string): Observable<UserConnections> {
 		return this.auth.user$.pipe(
 			switchMap((profile) => {
-				const user = username || profile?.['https://findme.ch/username'];
+				const user = username ?? profile?.[`${environment.auth.namespace}/username`];
 				return this.http.get<UserConnectionsDto>(environment.api.url + `/users/${user}/follow`).pipe(
 					map((dto) => {
 						return {
