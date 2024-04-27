@@ -1,4 +1,4 @@
-import { Component, effect, input, output, signal } from '@angular/core';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
 import {
 	IonButton,
 	IonButtons,
@@ -7,24 +7,42 @@ import {
 	IonHeader,
 	IonIcon,
 	IonInput,
+	IonLabel,
 	IonModal,
 	IonTitle,
 	IonToolbar
 } from '@ionic/angular/standalone';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
 	selector: 'app-rating',
 	templateUrl: './rating.component.html',
-	imports: [IonTitle, IonContent, IonInput, IonButtons, IonToolbar, IonHeader, IonModal, IonButton, IonChip, IonIcon],
+	imports: [
+		IonLabel,
+		IonTitle,
+		IonContent,
+		IonInput,
+		IonButtons,
+		IonToolbar,
+		IonHeader,
+		IonModal,
+		IonButton,
+		IonChip,
+		IonIcon
+	],
 	styleUrls: ['./rating.component.scss'],
 	standalone: true
 })
 export class RatingComponent {
+	toastService = inject(ToastService);
+
 	rating = input.required<number>();
+	ratingEnabled = input.required<boolean>();
 	makeRating = output<number>();
 
 	hoveredStarsIndex = signal<number>(-1);
 	isRatingModalOpen = signal<boolean>(false);
+	ratingAttempted = signal(false);
 
 	constructor() {
 		effect(() => {
@@ -53,6 +71,11 @@ export class RatingComponent {
 	}
 
 	setOpen(isOpen: boolean) {
-		this.isRatingModalOpen.set(isOpen);
+		this.ratingAttempted.set(true);
+		if (this.ratingEnabled()) {
+			this.isRatingModalOpen.set(isOpen);
+		} else {
+			this.toastService.error('You need to solve the riddle first to rate it');
+		}
 	}
 }

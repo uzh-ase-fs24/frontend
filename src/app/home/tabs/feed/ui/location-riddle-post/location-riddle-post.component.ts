@@ -18,9 +18,9 @@ import {
 	IonModal
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
-import { MapComponent } from '../../../../../shared/map/map.component';
+import { MapComponent } from 'src/app/shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
-import { LocationRiddle } from '../../../../../model/location-riddle';
+import { LocationRiddle } from 'src/app/model/location-riddle';
 
 @Component({
 	selector: 'app-location-riddle-post',
@@ -49,7 +49,7 @@ import { LocationRiddle } from '../../../../../model/location-riddle';
 	standalone: true
 })
 export class LocationRiddlePostComponent {
-	locationRiddle = input<LocationRiddle>();
+	locationRiddle = input.required<LocationRiddle>();
 
 	submitGuess = output<Coordinate>();
 	rateRiddle = output<number>();

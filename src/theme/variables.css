@@ -72,7 +72,7 @@
 	--ion-color-medium-tint: #9d9fa6;
 
 	/** light **/
-	--ion-color-light: #f4f5f8;
+	--ion-color-light: #ececec;
 	--ion-color-light-rgb: 244, 245, 248;
 	--ion-color-light-contrast: #000000;
 	--ion-color-light-contrast-rgb: 0, 0, 0;
@@ -142,7 +142,7 @@
 		--ion-color-medium-shade: #86888f;
 		--ion-color-medium-tint: #a2a4ab;
 
-		--ion-color-light: #222428;
+		--ion-color-light: #434343;
 		--ion-color-light-rgb: 34, 36, 40;
 		--ion-color-light-contrast: #ffffff;
 		--ion-color-light-contrast-rgb: 255, 255, 255;
