@@ -71,8 +71,8 @@ export class MapComponent {
 		});
 
 		this.addMarker(this.solution(), Marker.SOLUTION, 'Solution', false);
-		this.addMarker(this.userGuess()!, Marker.USER, 'Your Guess', false);
-		this.addMarker(this.marker()!, Marker.USER, '', true);
+		this.addMarker(this.userGuess(), Marker.USER, 'Your Guess', false);
+		this.addMarker(this.marker(), Marker.USER, '', true);
 
 		if (!this.solved()) {
 			this.map.on('click', (event) => {
@@ -94,7 +94,7 @@ export class MapComponent {
 		}, 800);
 	}
 
-	addMarker(coordinate: Coordinate | undefined, markerType: Marker, name: string, emit = false) {
+	addMarker(coordinate: Coordinate | undefined | null, markerType: Marker, name: string, emit = false) {
 		if (!coordinate) return;
 		if (emit) this.vectorSource.clear();
 
