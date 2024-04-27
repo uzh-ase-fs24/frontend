@@ -8,8 +8,9 @@ import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
-import { Icon, Style } from 'ol/style';
-import { guess } from 'src/app/model/location-riddle';
+import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
+import CircleStyle from 'ol/style/Circle';
+import { Guess } from 'src/app/model/location-riddle';
 
 enum Marker {
 	USER,
@@ -29,7 +30,7 @@ export class MapComponent {
 	}
 
 	center = input<Coordinate>();
-	guesses = input<guess[]>([]);
+	guesses = input<Guess[]>([]);
 	userGuess = input<Coordinate | null>();
 	solution = input<Coordinate>();
 	solved = input<boolean>(false);
@@ -65,20 +66,35 @@ export class MapComponent {
 		this.removeMapAttribution();
 
 		this.guesses().forEach((guess) => {
-			this.addMarker(guess.guess, Marker.GUESS, false);
+			this.addMarker(guess.guess, Marker.GUESS, guess.username, false);
 		});
 
-		this.addMarker(this.solution(), Marker.SOLUTION, false);
+		this.addMarker(this.solution(), Marker.SOLUTION, 'Solution', false);
+		if (this.userGuess()) {
+			this.addMarker(this.userGuess()!, Marker.USER, 'Your Guess', false);
+		}
 
 		if (!this.solved()) {
 			this.map.on('click', (event) => {
-				this.addMarker(event.coordinate, Marker.USER, true);
+				this.addMarker(event.coordinate, Marker.USER, '', true);
 				this.placedMarker = event.coordinate;
 			});
 		}
 	}
 
-	addMarker(coordinate: Coordinate | undefined, markerType: Marker, emit = false) {
+	public refreshMap() {
+		setTimeout(() => {
+			this.removeMapAttribution();
+
+			this.guesses().forEach((guess) => {
+				this.addMarker(guess.guess, Marker.GUESS, guess.username, false);
+			});
+
+			this.addMarker(this.solution(), Marker.SOLUTION, 'Solution', false);
+		}, 800);
+	}
+
+	addMarker(coordinate: Coordinate | undefined, markerType: Marker, name: string, emit = false) {
 		if (!coordinate) return;
 		if (emit) this.vectorSource.clear();
 
@@ -86,7 +102,6 @@ export class MapComponent {
 			geometry: new Point(coordinate)
 		});
 
-		console.log(markerType);
 		if (markerType === Marker.USER || markerType === Marker.SOLUTION) {
 			marker.setStyle(
 				new Style({
@@ -96,6 +111,45 @@ export class MapComponent {
 							markerType === Marker.SOLUTION
 								? 'assets/icons/location-sign-solution.svg'
 								: 'assets/icons/location-sign.svg'
+					}),
+					text: new Text({
+						font: '12px Calibri,sans-serif',
+						fill: new Fill({
+							color: '#000'
+						}),
+						stroke: new Stroke({
+							color: '#fff',
+							width: 2
+						}),
+						offsetY: -36,
+						text: name
+					})
+				})
+			);
+		} else {
+			marker.setStyle(
+				new Style({
+					image: new CircleStyle({
+						radius: 5,
+						stroke: new Stroke({
+							color: 'rgba(0, 0, 0)',
+							width: 0.5
+						}),
+						fill: new Fill({
+							color: 'rgba(66, 140, 255, 0.7)'
+						})
+					}),
+					text: new Text({
+						font: '12px Calibri,sans-serif',
+						fill: new Fill({
+							color: '#000'
+						}),
+						stroke: new Stroke({
+							color: '#fff',
+							width: 2
+						}),
+						offsetY: -24,
+						text: name
 					})
 				})
 			);

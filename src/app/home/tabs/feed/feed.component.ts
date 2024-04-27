@@ -3,12 +3,13 @@ import { IonContent, IonRefresher, IonRefresherContent, IonSpinner } from '@ioni
 import { ToastService } from 'src/app/services/toast.service';
 import { FeedStateService } from './data-access/feed-state.service';
 import { LocationRiddlePostComponent } from './ui/location-riddle-post/location-riddle-post.component';
+import { ProfileApiService } from 'src/app/services/api/profile-api.service';
 
 @Component({
 	selector: 'app-feed',
 	templateUrl: './feed.component.html',
 	imports: [IonSpinner, LocationRiddlePostComponent, IonRefresherContent, IonRefresher, IonContent],
-	providers: [FeedStateService, ToastService],
+	providers: [FeedStateService, ToastService, ProfileApiService],
 	styleUrls: ['./feed.component.scss'],
 	standalone: true
 })

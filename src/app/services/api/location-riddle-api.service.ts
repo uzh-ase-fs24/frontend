@@ -64,8 +64,11 @@ export class LocationRiddleApiService {
 			locationRiddleImage: dto.image_base64,
 			createdAt: dto.created_at,
 			rating: dto.average_rating,
-			location: dto.location,
-			guesses: dto.guesses
+			location: dto.location?.coordinate,
+			guesses: dto.guesses?.map((guess) => ({
+				guess: guess.guess.coordinate,
+				username: guess.username
+			}))
 		};
 	}
 }
