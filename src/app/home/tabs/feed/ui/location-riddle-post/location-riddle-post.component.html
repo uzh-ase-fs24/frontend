@@ -23,6 +23,7 @@
 		@if (showMap()) {
 			<app-map
 				(placeMarker)="placeGuess($event)"
+				[marker]="marker()"
 				[guesses]="guesses()"
 				[userGuess]="userGuess()"
 				[solution]="solution()"
@@ -36,7 +37,7 @@
 				<ion-icon name="{{ showMap() ? 'image' : 'map' }}-outline"></ion-icon>
 			</ion-fab-button>
 		</ion-fab>
-		@if (guess() && !submitted()) {
+		@if (marker() && !submitted()) {
 			<ion-fab horizontal="end" slot="fixed" vertical="bottom">
 				<ion-fab-button color="success" (click)="submit()">
 					<ion-icon color="dark" name="checkmark-outline"></ion-icon>

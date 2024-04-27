@@ -2,14 +2,14 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
 import { share, Subject, switchMap } from 'rxjs';
-import { User } from 'src/app/model/user';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { environment } from 'src/environments/environment';
 import { LocationRiddle } from '../../../../model/location-riddle';
 import { LocationRiddleApiService } from '../../../../services/api/location-riddle-api.service';
-import { ProfileApiService } from '../../../../services/api/profile-api.service';
 
 type FeedState = {
 	locationRiddles: LocationRiddle[];
-	user: User | null;
+	username: string;
 	riddlesLoading: boolean;
 };
 
@@ -19,17 +19,17 @@ type RateEvent = { locationRiddleId: string; rating: number };
 export class FeedStateService {
 	// Services
 	locationRiddleApiService = inject(LocationRiddleApiService);
-	profileApiService = inject(ProfileApiService);
+	authService = inject(AuthService);
 
 	// State
 	private state = signal<FeedState>({
 		locationRiddles: [],
-		user: null,
+		username: '',
 		riddlesLoading: true
 	});
 
 	// Selectors
-	public username = computed(() => this.state().user?.username);
+	public username = computed(() => this.state().username);
 	public locationRiddles = computed(() => this.state().locationRiddles);
 	public loading = computed(() => this.state().riddlesLoading || !this.username());
 
@@ -39,7 +39,7 @@ export class FeedStateService {
 	public rateLocationRiddle = new Subject<RateEvent>();
 
 	// Sources (Observables)
-	private userSource$ = this.profileApiService.getProfile();
+	private userSource$ = this.authService.user$;
 	private locationRiddlesSource$ = this.locationRiddleApiService.getLocationRiddles().pipe(share());
 	private refreshLocationRiddlesSource$ = this.refresh.pipe(switchMap(() => this.locationRiddlesSource$));
 	private submitGuessSource = this.submitGuess.pipe(
@@ -52,7 +52,7 @@ export class FeedStateService {
 	constructor() {
 		// Reducers
 		connect(this.state)
-			.with(this.userSource$, (state, user) => ({ user: user }))
+			.with(this.userSource$, (state, user) => ({ username: user?.[environment.auth.usernameClaim] || '' }))
 			.with(this.locationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles,
 				riddlesLoading: false

@@ -5,62 +5,57 @@
 		</div>
 	</div>
 
-	@if(!postState.imageSet()){
-	<div>
-		<div class="title-bar-container">
+	@if (!postState.imageSet()) {
+		<div>
+			<div class="title-bar-container">
+				<div class="center-container">
+					<h2>Select an image</h2>
+				</div>
+			</div>
+
+			<div class="center-container" style="margin-top: 10px">
+				<input
+					type="file"
+					style="display: none"
+					(change)="uploadImage($event)"
+					accept=".jpg, .jpeg, .png"
+					#fileUpload
+				/>
+			</div>
+
 			<div class="center-container">
-				<h2>Select an image</h2>
+				<ion-button (click)="takePicture()" style="margin: 10px">
+					<span style="padding-right: 5px">Open Camera</span>
+					<ion-icon name="camera-outline"></ion-icon>
+				</ion-button>
 			</div>
 		</div>
-
-		<div class="center-container" style="margin-top: 10px">
-			<input
-				type="file"
-				style="display: none"
-				(change)="uploadImage($event)"
-				accept=".jpg, .jpeg, .png"
-				#fileUpload
-			/>
-		</div>
-
-		<div class="center-container">
-			<!-- <ion-button (click)="fileUpload.click()" style="margin: 10px">
-				<span style="padding-right: 5px">From Gallery</span>
-				<ion-icon name="folder-outline"></ion-icon>
-			</ion-button> -->
-			<ion-button (click)="takePicture()" style="margin: 10px">
-				<span style="padding-right: 5px">Open Camera</span>
-				<ion-icon name="camera-outline"></ion-icon>
-			</ion-button>
-		</div>
-	</div>
-
 	} @else {
-	<div>
-		<div class="title-bar-container">
+		<div>
+			<div class="title-bar-container">
+				<div class="center-container">
+					<h2>Mark the image location on the map</h2>
+				</div>
+			</div>
+
 			<div class="center-container">
-				<h2>Mark the image location on the map</h2>
+				<app-map class="map-container" (placeMarker)="postState.setLocation.next($event)"></app-map>
+			</div>
+
+			<div class="center-container" style="margin-top: 5vh">
+				<ion-button (click)="postState.cancelPost.next()" style="margin: 10px" color="medium">
+					<span style="padding-right: 5px">Cancel</span>
+					<ion-icon name="close-outline"></ion-icon>
+				</ion-button>
+				<ion-button
+					(click)="postState.completePost.next()"
+					style="margin: 10px"
+					[disabled]="!postState.locationSet()"
+				>
+					<span style="padding-right: 5px">Post Riddle</span>
+					<ion-icon name="location-outline"></ion-icon>
+				</ion-button>
 			</div>
 		</div>
-
-		<div class="center-container">
-			<app-map class="map-container" (placeMarker)="postState.setLocation.next($event)"></app-map>
-		</div>
-
-		<div class="center-container" style="margin-top: 5vh">
-			<ion-button (click)="postState.cancelPost.next()" style="margin: 10px" color="medium">
-				<span style="padding-right: 5px">Cancel</span>
-				<ion-icon name="close-outline"></ion-icon>
-			</ion-button>
-			<ion-button
-				(click)="postState.completePost.next()"
-				style="margin: 10px"
-				[disabled]="!postState.locationSet()"
-			>
-				<span style="padding-right: 5px">Post Riddle</span>
-				<ion-icon name="location-outline"></ion-icon>
-			</ion-button>
-		</div>
-	</div>
 	}
 </div>

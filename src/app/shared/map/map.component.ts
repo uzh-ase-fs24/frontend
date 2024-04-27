@@ -34,6 +34,7 @@ export class MapComponent {
 	userGuess = input<Coordinate | null>();
 	solution = input<Coordinate>();
 	solved = input<boolean>(false);
+	marker = input<Coordinate | null>();
 	placeMarker = output<Coordinate>();
 
 	map?: Map;
@@ -72,6 +73,10 @@ export class MapComponent {
 		this.addMarker(this.solution(), Marker.SOLUTION, 'Solution', false);
 		if (this.userGuess()) {
 			this.addMarker(this.userGuess()!, Marker.USER, 'Your Guess', false);
+		}
+
+		if (this.marker()) {
+			this.addMarker(this.marker()!, Marker.USER, '', true);
 		}
 
 		if (!this.solved()) {
@@ -148,7 +153,7 @@ export class MapComponent {
 							color: '#fff',
 							width: 2
 						}),
-						offsetY: -24,
+						offsetY: -12,
 						text: name
 					})
 				})

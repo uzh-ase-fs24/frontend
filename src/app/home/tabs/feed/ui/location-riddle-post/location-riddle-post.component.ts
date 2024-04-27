@@ -51,7 +51,7 @@ export class LocationRiddlePostComponent {
 	@ViewChild(MapComponent) mapComponent!: MapComponent;
 
 	showMap = signal(false);
-	guess = signal<Coordinate | null>(null);
+	marker = signal<Coordinate | null>(null);
 	submitted = signal(false);
 	solution = computed(() => this.locationRiddle().solved ? this.locationRiddle().location : undefined);
 	guesses = computed(() => this.locationRiddle().guesses?.filter((guess) => guess.username !== this.username()) || []);
@@ -64,13 +64,13 @@ export class LocationRiddlePostComponent {
 	}
 
 	placeGuess(guess: Coordinate) {
-		this.guess.set(guess);
+		this.marker.set(guess);
 	}
 
 	submit() {
-		if (this.guess()) {
+		if (this.marker()) {
 			// The flow prevents the guess from being null, but for the sake of typing we define a fallback
-			this.submitGuess.emit(this.guess() || []);
+			this.submitGuess.emit(this.marker() || []);
 			this.submitted.set(true);
 			this.mapComponent.refreshMap();
 		}

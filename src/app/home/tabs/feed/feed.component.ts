@@ -4,12 +4,13 @@ import { ToastService } from 'src/app/services/toast.service';
 import { FeedStateService } from './data-access/feed-state.service';
 import { LocationRiddlePostComponent } from './ui/location-riddle-post/location-riddle-post.component';
 import { ProfileApiService } from 'src/app/services/api/profile-api.service';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
 	selector: 'app-feed',
 	templateUrl: './feed.component.html',
 	imports: [IonSpinner, LocationRiddlePostComponent, IonRefresherContent, IonRefresher, IonContent],
-	providers: [FeedStateService, ToastService, ProfileApiService],
+	providers: [FeedStateService, ToastService, AuthService],
 	styleUrls: ['./feed.component.scss'],
 	standalone: true
 })
