@@ -39,7 +39,7 @@ export class AuthService {
 		});
 	}
 
-	public aquireTokenSilently(): Observable<string> {
+	public acquireTokenSilently(): Observable<string> {
 		return this.auth0.getAccessTokenSilently({
 			authorizationParams: {
 				redirect_uri: AuthService.redirectCallback,
