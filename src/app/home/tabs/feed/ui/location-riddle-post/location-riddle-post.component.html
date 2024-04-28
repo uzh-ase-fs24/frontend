@@ -32,7 +32,7 @@
     } @else {
       <ion-img src="data:image;base64, {{ locationRiddle().locationRiddleImage }}"></ion-img>
       <ion-item
-        id="open-modal-{{ locationRiddle()?.locationRiddleId }}"
+        id="open-modal-{{ locationRiddle().locationRiddleId }}"
         expand="block"
         class="ion-no-padding"
         lines="none"
@@ -60,7 +60,7 @@
   #modal
   [breakpoints]="[0, 0.5]"
   [initialBreakpoint]="0.5"
-  trigger="open-modal-{{ locationRiddle()?.locationRiddleId }}"
+  trigger="open-modal-{{ locationRiddle().locationRiddleId }}"
 >
   <ng-template>
     <ion-item lines="full">
@@ -69,7 +69,7 @@
       </ion-label>
     </ion-item>
     <ion-content>
-      @for (comment of locationRiddle()?.comments; track comment.username) {
+      @for (comment of locationRiddle().comments; track comment.username) {
         <ion-item lines="none">
           <ion-label class="ion-text-wrap">
             <h3>{{ comment.username }}</h3>

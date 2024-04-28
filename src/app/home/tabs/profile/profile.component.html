@@ -59,7 +59,7 @@
             <ion-chip color="warning">
               <div style="display: flex; align-items: center">
                 <ion-icon class="ion-padding-end" name="trophy-outline"></ion-icon>
-                <h2>{{ profile.averageScore || 0 }}</h2>
+                <h2>{{ profile.averageScore || 0 | number:'1.0-0' }}</h2>
               </div>
             </ion-chip>
             <p>Score</p>
