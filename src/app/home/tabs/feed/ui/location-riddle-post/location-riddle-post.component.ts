@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output, signal } from '@angular/core';
+import { Component, computed, input, output, signal, ViewChild } from '@angular/core';
 import {
 	IonAvatar,
 	IonButton,
@@ -50,14 +50,24 @@ import { LocationRiddle } from 'src/app/model/location-riddle';
 })
 export class LocationRiddlePostComponent {
 	locationRiddle = input.required<LocationRiddle>();
+	username = input<string>();
 
 	submitGuess = output<Coordinate>();
 	commentLocationRiddle = output<string>();
 	rateLocationRiddle = output<number>();
 
+	@ViewChild(MapComponent) mapComponent!: MapComponent;
+
 	showMap = signal(false);
-	guess = signal<Coordinate | null>(null);
+	marker = signal<Coordinate | null>(null);
 	submitted = signal(false);
+	solution = computed(() => (this.locationRiddle().solved ? this.locationRiddle().location : undefined));
+	guesses = computed(
+		() => this.locationRiddle().guesses?.filter((guess) => guess.username !== this.username()) || []
+	);
+	userGuess = computed(
+		() => this.locationRiddle().guesses?.find((guess) => guess.username === this.username())?.guess || null
+	);
 
 	constructor() {}
 
@@ -66,7 +76,7 @@ export class LocationRiddlePostComponent {
 	}
 
 	placeGuess(guess: Coordinate) {
-		this.guess.set(guess);
+		this.marker.set(guess);
 	}
 
 	comment(commentInputRef: IonInput) {
@@ -77,10 +87,11 @@ export class LocationRiddlePostComponent {
 	}
 
 	submit() {
-		if (this.guess()) {
+		if (this.marker()) {
 			// The flow prevents the guess from being null, but for the sake of typing we define a fallback
-			this.submitGuess.emit(this.guess() || []);
+			this.submitGuess.emit(this.marker() || []);
 			this.submitted.set(true);
+			this.mapComponent.refreshMap();
 		}
 	}
 }
