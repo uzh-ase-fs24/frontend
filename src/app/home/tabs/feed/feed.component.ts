@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 import { IonContent, IonRefresher, IonRefresherContent, IonSpinner } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
 import { FeedStateService } from './data-access/feed-state.service';
@@ -8,7 +9,7 @@ import { LocationRiddlePostComponent } from './ui/location-riddle-post/location-
 	selector: 'app-feed',
 	templateUrl: './feed.component.html',
 	imports: [IonSpinner, LocationRiddlePostComponent, IonRefresherContent, IonRefresher, IonContent],
-	providers: [FeedStateService, ToastService],
+	providers: [FeedStateService, ToastService, AuthService],
 	styleUrls: ['./feed.component.scss'],
 	standalone: true
 })

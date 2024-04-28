@@ -5,11 +5,11 @@ export type LocationRiddle = {
 	username: string;
 	locationRiddleId: string;
 	locationRiddleImage: string;
-	comments: string[];
+	comments: Comment[];
 	createdAt: number;
 	rating: number;
 	location?: Coordinate;
-	guesses?: Coordinate[];
+	guesses?: Guess[];
 };
 
 export type LocationRiddleDto = {
@@ -17,14 +17,47 @@ export type LocationRiddleDto = {
 	location_riddle_id: string;
 	username: string;
 	image_base64: string;
-	comments: string[];
+	comments: Comment[];
 	created_at: number;
 	average_rating: number;
-	location?: Coordinate;
-	guesses?: Coordinate[];
+	location?: { coordinate: Coordinate };
+	guesses?: GuessDto[];
+};
+
+export type Comment = {
+	username: string;
+	comment: string;
 };
 
 export type LocationRiddlePostDto = {
 	image: string;
 	location: Coordinate;
+};
+
+export type Guess = {
+	guess: Coordinate;
+	username: string;
+};
+
+export type GuessDto = {
+	guess: {
+		coordinate: Coordinate;
+	};
+	username: string;
+};
+
+export type GuessResult = {
+	guessResult: {
+		distance: number;
+		score: number;
+	};
+	locationRiddle: LocationRiddle;
+};
+
+export type guessResultDto = {
+	guess_result: {
+		distance: number;
+		score: number;
+	};
+	location_riddle: LocationRiddleDto;
 };

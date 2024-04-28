@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
 	const authService = inject(AuthService);
-	return authService.aquireTokenSilently().pipe(
+	return authService.acquireTokenSilently().pipe(
 		switchMap((token) => {
 			const authReq = req.clone({
 				headers: req.headers.set('Authorization', `Bearer ${token}`)
