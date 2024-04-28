@@ -47,6 +47,14 @@ export class LocationRiddleApiService {
 			);
 	}
 
+	postComment(locationRiddleId: string, comment: string): Observable<LocationRiddle> {
+		return this.http
+			.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/comment', {
+				comment: comment
+			})
+			.pipe(map((dto: LocationRiddleDto) => this.mapDtoToLocationRiddle(dto)));
+	}
+
 	rateLocationRiddle(locationRiddleId: string, rating: number): Observable<LocationRiddle> {
 		return this.http
 			.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/rate', {
@@ -62,7 +70,7 @@ export class LocationRiddleApiService {
 			username: dto.username,
 			comments: dto.comments,
 			locationRiddleImage: dto.image_base64,
-			createdAt: dto.created_at,
+			createdAt: dto.created_at * 1000,
 			rating: dto.average_rating,
 			location: dto.location?.coordinate,
 			guesses: dto.guesses?.map((guess) => ({

@@ -29,16 +29,28 @@
 
 // Overwrites
 ion-spinner {
-	width: 70px;
-	height: 70px;
+  width: 70px;
+  height: 70px;
 }
+
+ion-modal {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+ion-modal > .ion-page {
+  height: 50% !important;
+}
+
 // Basic containers
 .base-container {
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 5vh;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5vh;
 }
 
 .form-container {
@@ -51,14 +63,14 @@ ion-spinner {
 }
 
 .center-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .list-container {
-	max-width: 500px;
-	min-width: 200px;
-	width: 100%;
-	margin: 2vh;
+  max-width: 500px;
+  min-width: 200px;
+  width: 100%;
+  margin: 2vh;
 }

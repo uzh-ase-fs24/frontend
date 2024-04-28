@@ -5,7 +5,7 @@ export type LocationRiddle = {
 	username: string;
 	locationRiddleId: string;
 	locationRiddleImage: string;
-	comments: string[];
+	comments: Comment[];
 	createdAt: number;
 	rating: number;
 	location?: Coordinate;
@@ -17,11 +17,16 @@ export type LocationRiddleDto = {
 	location_riddle_id: string;
 	username: string;
 	image_base64: string;
-	comments: string[];
+	comments: Comment[];
 	created_at: number;
 	average_rating: number;
 	location?: { coordinate: Coordinate };
 	guesses?: GuessDto[];
+};
+
+export type Comment = {
+	username: string;
+	comment: string;
 };
 
 export type LocationRiddlePostDto = {

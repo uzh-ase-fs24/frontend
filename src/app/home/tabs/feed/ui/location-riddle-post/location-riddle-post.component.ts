@@ -2,21 +2,25 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, output, signal, ViewChild } from '@angular/core';
 import {
 	IonAvatar,
+	IonButton,
 	IonCard,
 	IonCardContent,
 	IonCardHeader,
 	IonCardTitle,
+	IonContent,
 	IonFab,
 	IonFabButton,
 	IonIcon,
 	IonImg,
+	IonInput,
 	IonItem,
-	IonLabel
+	IonLabel,
+	IonModal
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
-import { LocationRiddle } from 'src/app/model/location-riddle';
-import { MapComponent } from '../../../../../shared/map/map.component';
+import { MapComponent } from 'src/app/shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
+import { LocationRiddle } from 'src/app/model/location-riddle';
 
 @Component({
 	selector: 'app-location-riddle-post',
@@ -31,8 +35,12 @@ import { RatingComponent } from './rating/rating.component';
 		IonCardHeader,
 		IonCard,
 		IonAvatar,
+		IonModal,
+		IonContent,
+		IonInput,
 		IonItem,
 		IonLabel,
+		IonButton,
 		CommonModule,
 		MapComponent,
 		RatingComponent
@@ -45,8 +53,8 @@ export class LocationRiddlePostComponent {
 	username = input<string>();
 
 	submitGuess = output<Coordinate>();
-
-	rateRiddle = output<number>();
+	commentLocationRiddle = output<string>();
+	rateLocationRiddle = output<number>();
 
 	@ViewChild(MapComponent) mapComponent!: MapComponent;
 
@@ -69,6 +77,13 @@ export class LocationRiddlePostComponent {
 
 	placeGuess(guess: Coordinate) {
 		this.marker.set(guess);
+	}
+
+	comment(commentInputRef: IonInput) {
+		if (commentInputRef.value) {
+			this.commentLocationRiddle.emit(commentInputRef.value.toString());
+			commentInputRef.value = '';
+		}
 	}
 
 	submit() {

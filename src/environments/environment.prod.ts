@@ -7,7 +7,7 @@ export const environment = {
 		webCallbackUri: 'http://localhost:8100/home',
 		logoutRedirectUri: 'http://localhost:8100/login',
 		audience: 'http://findme.execute-api.localhost.localstack.cloud:4566/local/',
-		usernameClaim: 'https://findme.ch/username'
+		namespace: 'https://findme.ch'
 	},
 	api: {
 		url: 'http://localhost:3000'
