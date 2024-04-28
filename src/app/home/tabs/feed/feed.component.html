@@ -1,17 +1,17 @@
 <ion-content class="ion-padding">
-	@if (!feedState.loading()) {
-		<ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
-			<ion-refresher-content> </ion-refresher-content>
-		</ion-refresher>
-	}
-	<div class="center-container" style="height: 100%">
-		<div style="height: 100%">
-			@if (!feedState.loading()) {
-				@for (item of feedState.locationRiddles(); track item.locationRiddleId) {
-					<app-location-riddle-post
-						[locationRiddle]="item"
-						[username]="feedState.username()"
-						(submitGuess)="
+  @if (!feedState.loading()) {
+    <ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  }
+  <div class="center-container" style="height: 100%">
+    <div style="height: 100%">
+      @if (!feedState.loading()) {
+        @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
+          <app-location-riddle-post
+            [locationRiddle]="item"
+            [username]="feedState.username()"
+            (submitGuess)="
 							feedState.submitGuess.next({ locationRiddleId: item.locationRiddleId, guess: $event })
 						"
             (rateLocationRiddle)="
@@ -21,11 +21,11 @@
 							})
 						"
             (commentLocationRiddle)="
-            feedState.commentOnLocationRiddle.next({
-              locationRiddleId: item.locationRiddleId,
-              comment: $event
-            })
-            "
+							feedState.commentOnLocationRiddle.next({
+								locationRiddleId: item.locationRiddleId,
+								comment: $event
+							})
+						"
           ></app-location-riddle-post>
         } @empty {
           <div style="height: 100%; align-content: center">

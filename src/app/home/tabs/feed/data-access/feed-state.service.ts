@@ -6,7 +6,6 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { environment } from 'src/environments/environment';
 import { LocationRiddle } from '../../../../model/location-riddle';
 import { LocationRiddleApiService } from '../../../../services/api/location-riddle-api.service';
-import { ProfileApiService } from '../../../../services/api/profile-api.service';
 
 type FeedState = {
 	locationRiddles: LocationRiddle[];
@@ -47,10 +46,10 @@ export class FeedStateService {
 	private submitGuessSource = this.submitGuess.pipe(
 		switchMap(({ locationRiddleId, guess }) => this.locationRiddleApiService.postGuess(locationRiddleId, guess))
 	);
-  private commentOnLocationRiddleSource$ = this.commentOnLocationRiddle.pipe(
+	private commentOnLocationRiddleSource$ = this.commentOnLocationRiddle.pipe(
 		switchMap(({ locationRiddleId, comment }) =>
 			this.locationRiddleApiService.postComment(locationRiddleId, comment)
-		),
+		)
 	);
 	private rateLocationRiddleSource$ = this.rateLocationRiddle.pipe(
 		switchMap((event) => this.locationRiddleApiService.rateLocationRiddle(event.locationRiddleId, event.rating))
@@ -59,7 +58,9 @@ export class FeedStateService {
 	constructor() {
 		// Reducers
 		connect(this.state)
-			.with(this.userSource$, (state, user) => ({ username: user?.[environment.auth.usernameClaim] || '' }))
+			.with(this.userSource$, (state, user) => ({
+				username: user?.[environment.auth.namespace + '/username'] || ''
+			}))
 			.with(this.locationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles,
 				riddlesLoading: false
