@@ -28,6 +28,10 @@
 				[userGuess]="userGuess()"
 				[solution]="solution()"
 				[solved]="locationRiddle().solved"
+				[zoom]="mapZoom()"
+				[center]="mapCenter()"
+				(zoomChange)="mapZoom.set($event)"
+				(centerChange)="mapCenter.set($event)"
 			></app-map>
 		} @else {
 			<ion-img src="data:image;base64, {{ locationRiddle().locationRiddleImage }}"></ion-img>
@@ -62,7 +66,7 @@
 	[breakpoints]="[0, 0.5]"
 	[initialBreakpoint]="0.5"
 	trigger="open-modal-{{ locationRiddle().locationRiddleId }}"
-  class="comments"
+	class="comments"
 >
 	<ng-template>
 		<ion-item lines="full">

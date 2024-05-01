@@ -18,9 +18,9 @@ import {
 	IonModal
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
+import { LocationRiddle } from 'src/app/model/location-riddle';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
-import { LocationRiddle } from 'src/app/model/location-riddle';
 
 @Component({
 	selector: 'app-location-riddle-post',
@@ -49,6 +49,8 @@ import { LocationRiddle } from 'src/app/model/location-riddle';
 	standalone: true
 })
 export class LocationRiddlePostComponent {
+	@ViewChild(MapComponent) mapComponent!: MapComponent;
+
 	locationRiddle = input.required<LocationRiddle>();
 	username = input<string>();
 
@@ -56,11 +58,11 @@ export class LocationRiddlePostComponent {
 	commentLocationRiddle = output<string>();
 	rateLocationRiddle = output<number>();
 
-	@ViewChild(MapComponent) mapComponent!: MapComponent;
-
 	showMap = signal(false);
 	marker = signal<Coordinate | null>(null);
 	submitted = signal(false);
+	mapZoom = signal(4);
+	mapCenter = signal<Coordinate | undefined>(undefined);
 	solution = computed(() => (this.locationRiddle().solved ? this.locationRiddle().location : undefined));
 	guesses = computed(
 		() => this.locationRiddle().guesses?.filter((guess) => guess.username !== this.username()) || []
