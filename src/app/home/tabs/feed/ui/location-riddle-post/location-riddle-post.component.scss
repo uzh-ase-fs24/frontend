@@ -1,8 +1,12 @@
 ion-item {
-  --background: transparent;
-  --color: white;
+	--background: transparent;
+	--color: white;
 }
 
 ion-card-header {
-  --ion-padding: 8px;
+	--ion-padding: 8px;
+}
+
+::ng-deep .comments > .ion-page {
+	height: 50% !important;
 }
