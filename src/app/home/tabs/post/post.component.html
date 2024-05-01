@@ -39,7 +39,13 @@
 			</div>
 
 			<div class="center-container">
-				<app-map class="map-container" (placeMarker)="postState.setLocation.next($event)"></app-map>
+				<app-map
+					class="map-container"
+					(placeMarker)="postState.setLocation.next($event)"
+					[marker]="postState.location()"
+					[center]="postState.location()"
+					[zoom]="postState.locationSet() ? 10 : 4"
+				></app-map>
 			</div>
 
 			<div class="center-container" style="margin-top: 5vh">

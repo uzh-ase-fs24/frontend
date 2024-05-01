@@ -30,12 +30,15 @@ export class MapComponent {
 	}
 
 	center = input<Coordinate>();
+	zoom = input<number>(4);
 	guesses = input<Guess[]>([]);
 	userGuess = input<Coordinate | null>();
 	solution = input<Coordinate>();
 	solved = input<boolean>(false);
 	marker = input<Coordinate | null>();
 	placeMarker = output<Coordinate>();
+	zoomChange = output<number>();
+	centerChange = output<Coordinate>();
 
 	map?: Map;
 	defaultMapCenter = [914135.8295099558, 5901532.510434296]; // central of europe
@@ -45,6 +48,8 @@ export class MapComponent {
 	private vectorLayer = new VectorLayer({
 		source: this.vectorSource
 	});
+	private lastZoomEvent = 0;
+	private lastCenterEvent = [0, 0];
 
 	constructor() {}
 
@@ -60,7 +65,7 @@ export class MapComponent {
 			controls: [],
 			view: new View({
 				center: this.center() || this.placedMarker || this.defaultMapCenter, // central of europe
-				zoom: this.center() || this.placeMarker ? 4 : 16
+				zoom: this.zoom()
 			})
 		});
 
@@ -80,6 +85,25 @@ export class MapComponent {
 				this.placedMarker = event.coordinate;
 			});
 		}
+
+		this.map.getView().on('change:resolution', (event) => {
+			const zoom = this.map?.getView().getZoom();
+			const center = this.map?.getView().getCenter();
+			// Ensure that zoom and center change events are only emitted when they actually changed to prevent an event flood
+			if (zoom && Math.abs(zoom - this.lastZoomEvent) > 0.5) {
+				this.zoomChange.emit(zoom);
+				this.lastZoomEvent = zoom;
+			}
+
+			if (
+				center &&
+				Math.abs(center[0] - this.lastCenterEvent[0]) > 0.1 &&
+				Math.abs(center[1] - this.lastCenterEvent[1]) > 0.1
+			) {
+				this.centerChange.emit(center);
+				this.lastCenterEvent = center;
+			}
+		});
 	}
 
 	public refreshMap() {
