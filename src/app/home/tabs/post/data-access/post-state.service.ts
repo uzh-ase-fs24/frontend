@@ -1,12 +1,14 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { Geolocation } from '@capacitor/geolocation';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
-import { merge, Subject, switchMap, tap } from 'rxjs';
+import { fromLonLat } from 'ol/proj';
+import { from, merge, Subject, switchMap, tap } from 'rxjs';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 
 type PostState = {
-	image: string | null;
-	location: Coordinate | null;
+	image: string | undefined;
+	location: Coordinate | undefined;
 };
 
 @Injectable({
@@ -18,13 +20,14 @@ export class PostStateService {
 
 	// State
 	private state = signal<PostState>({
-		image: null,
-		location: null
+		image: undefined,
+		location: undefined
 	});
 
 	// Selectors
 	imageSet = computed(() => !!this.state().image);
 	locationSet = computed(() => !!this.state().location);
+	location = computed(() => this.state().location);
 
 	// Action Sources (Subjects)
 	uploadImage = new Subject<string>();
@@ -44,16 +47,21 @@ export class PostStateService {
 		)
 	);
 
+	userLocation = from(Geolocation.getCurrentPosition());
+
 	constructor() {
 		connect(this.state)
-			.with(this.uploadImage, (state, image) => {
-				return { ...state, image };
+			.with(this.uploadImage, (state, image) => ({ image }))
+			.with(this.setLocation, (state, location) => ({ location }))
+			.with(this.userLocation, (state, location) => {
+				const { latitude, longitude } = location.coords;
+				const olCoordinates = fromLonLat([longitude, latitude]);
+				console.log('User location:', location, olCoordinates);
+				return { location: olCoordinates };
 			})
-			.with(this.setLocation, (state, location) => {
-				return { ...state, location };
-			})
-			.with(merge(this.cancelPost, this.postLocationRiddle), (state) => {
-				return { image: null, location: null };
-			});
+			.with(merge(this.cancelPost, this.postLocationRiddle), (state) => ({
+				image: undefined,
+				location: undefined
+			}));
 	}
 }
