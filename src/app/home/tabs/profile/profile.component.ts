@@ -11,6 +11,8 @@ import {
 	IonInput,
 	IonItem,
 	IonLabel,
+	IonRefresher,
+	IonRefresherContent,
 	IonSpinner,
 	IonTitle
 } from '@ionic/angular/standalone';
@@ -28,6 +30,8 @@ import { UserFormComponent } from 'src/app/shared/user-form/user-form.component'
 	styleUrls: ['./profile.component.scss'],
 	standalone: true,
 	imports: [
+		IonRefresherContent,
+		IonRefresher,
 		IonTitle,
 		IonItem,
 		IonInput,
@@ -75,6 +79,13 @@ export class ProfileComponent {
 
 	getInitials(firstName: string, lastName: string): string {
 		return (firstName[0] + lastName[0]).toUpperCase();
+	}
+
+	refresh(event: any) {
+		this.profile$ = this.profileApiService.getProfile();
+		this.connections$ = this.profileApiService.getConnections();
+		this.locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles();
+		event.target.complete();
 	}
 
 	logout(): void {

@@ -1,4 +1,7 @@
 <ion-content class="ion-padding">
+	<ion-refresher (ionRefresh)="refresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
 	@if (profile$ | async; as profile) {
 		@if (updateProfileView()) {
 			<div class="base-container">
