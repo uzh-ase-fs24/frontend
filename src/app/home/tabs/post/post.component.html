@@ -52,7 +52,9 @@
         <ion-item>
             <ion-select [(ngModel)]="arenas" aria-label="Arenas" placeholder="Select all arenas that apply" [multiple]="true">
               @for (arenaOption of arenaOptions; track arenaOption) {
-                <ion-select-option value="{{ arenaOption }}">{{ arenaOption }}</ion-select-option>
+                @if (arenaOption !== "My Friends"){
+                  <ion-select-option value="{{ arenaOption }}">{{ arenaOption }}</ion-select-option>
+                }
               }
             </ion-select>
         </ion-item>
