@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, input, output, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, input, output, signal } from '@angular/core';
 import {
 	IonAvatar,
 	IonButton,
