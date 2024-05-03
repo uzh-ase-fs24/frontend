@@ -2,16 +2,9 @@
   <ion-list>
     <ion-item>
       <ion-select  [(ngModel)]="feedMode" (ionChange)="onFeedModeChange()" aria-label="Arenas" interface="popover" placeholder="Select arena">
-        <ion-select-option value="My Friends">My Friends</ion-select-option>
-        <ion-select-option value="UZH">UZH</ion-select-option>
-        <ion-select-option value="Zurich">Zurich</ion-select-option>
-        <ion-select-option value="Lake">Lake</ion-select-option>
-        <ion-select-option value="Beach">Beach</ion-select-option>
-        <ion-select-option value="Mountain">Mountain</ion-select-option>
-        <ion-select-option value="Forest">Forest</ion-select-option>
-        <ion-select-option value="City">City</ion-select-option>
-        <ion-select-option value="Park">Park</ion-select-option>
-        <ion-select-option value="River">River</ion-select-option>
+        @for (arenaOption of arenaOptions; track arenaOption) {
+          <ion-select-option value="{{ arenaOption }}">{{ arenaOption }}</ion-select-option>
+        }
       </ion-select>
     </ion-item>
   </ion-list>

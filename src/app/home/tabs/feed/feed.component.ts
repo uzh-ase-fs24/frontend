@@ -4,6 +4,7 @@ import { IonContent, IonRefresher, IonRefresherContent, IonSpinner, IonList, Ion
 import { FormsModule } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
 import { LocationRiddlePostComponent } from '../../../shared/location-riddle-post/location-riddle-post.component';
+import { Arenas } from '../../../model/arenas';
 import { FeedStateService } from './data-access/feed-state.service';
 
 @Component({
@@ -17,6 +18,7 @@ import { FeedStateService } from './data-access/feed-state.service';
 export class FeedComponent {
 	feedState = inject(FeedStateService);
   feedMode= "My Friends";
+  arenaOptions = Object.values(Arenas);
 
 	constructor() {}
 
