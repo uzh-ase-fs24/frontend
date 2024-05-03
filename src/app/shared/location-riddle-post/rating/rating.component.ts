@@ -37,7 +37,7 @@ export class RatingComponent {
 	toastService = inject(ToastService);
 
 	rating = input.required<number>();
-	ratingEnabled = input.required<boolean>();
+	ratingError = input<string>();
 	makeRating = output<number>();
 
 	hoveredStarsIndex = signal<number>(-1);
@@ -72,10 +72,10 @@ export class RatingComponent {
 
 	setOpen(isOpen: boolean) {
 		this.ratingAttempted.set(true);
-		if (this.ratingEnabled()) {
+		if (!this.ratingError()) {
 			this.isRatingModalOpen.set(isOpen);
 		} else {
-			this.toastService.error('You need to solve the riddle first to rate it');
+			this.toastService.error(this.ratingError()!);
 		}
 	}
 }

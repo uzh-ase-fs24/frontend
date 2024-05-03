@@ -73,6 +73,16 @@ export class LocationRiddlePostComponent {
 
 	constructor() {}
 
+	get ratingError() {
+		if (!this.locationRiddle().solved) {
+			return 'You can only rate a solved riddle';
+		} else if (this.locationRiddle().username === this.username()) {
+			return 'You cannot rate your own riddle';
+		} else{
+			return undefined;
+		}
+	}
+
 	toggleMap() {
 		this.showMap.set(!this.showMap());
 	}
