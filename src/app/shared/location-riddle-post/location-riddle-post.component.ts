@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, output, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, input, output, signal } from '@angular/core';
 import {
 	IonAvatar,
 	IonButton,
@@ -18,9 +18,9 @@ import {
 	IonModal
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
+import { LocationRiddle } from 'src/app/model/location-riddle';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { RatingComponent } from './rating/rating.component';
-import { LocationRiddle } from 'src/app/model/location-riddle';
 
 @Component({
 	selector: 'app-location-riddle-post',
@@ -56,11 +56,11 @@ export class LocationRiddlePostComponent {
 	commentLocationRiddle = output<string>();
 	rateLocationRiddle = output<number>();
 
-	@ViewChild(MapComponent) mapComponent!: MapComponent;
-
 	showMap = signal(false);
 	marker = signal<Coordinate | null>(null);
 	submitted = signal(false);
+	mapZoom = signal(4);
+	mapCenter = signal<Coordinate | undefined>(undefined);
 	solution = computed(() => (this.locationRiddle().solved ? this.locationRiddle().location : undefined));
 	guesses = computed(
 		() => this.locationRiddle().guesses?.filter((guess) => guess.username !== this.username()) || []
@@ -69,7 +69,11 @@ export class LocationRiddlePostComponent {
 		() => this.locationRiddle().guesses?.find((guess) => guess.username === this.username())?.guess || null
 	);
 
-	constructor() {}
+	constructor() {
+		effect(() => {
+			console.log(this.solution());
+		});
+	}
 
 	toggleMap() {
 		this.showMap.set(!this.showMap());
@@ -91,7 +95,6 @@ export class LocationRiddlePostComponent {
 			// The flow prevents the guess from being null, but for the sake of typing we define a fallback
 			this.submitGuess.emit(this.marker() || []);
 			this.submitted.set(true);
-			this.mapComponent.refreshMap();
 		}
 	}
 }

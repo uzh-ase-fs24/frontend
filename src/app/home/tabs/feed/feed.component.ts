@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { IonContent, IonRefresher, IonRefresherContent, IonSpinner } from '@ionic/angular/standalone';
 import { ToastService } from 'src/app/services/toast.service';
+import { LocationRiddlePostComponent } from '../../../shared/location-riddle-post/location-riddle-post.component';
 import { FeedStateService } from './data-access/feed-state.service';
-import { LocationRiddlePostComponent } from './ui/location-riddle-post/location-riddle-post.component';
 
 @Component({
 	selector: 'app-feed',
