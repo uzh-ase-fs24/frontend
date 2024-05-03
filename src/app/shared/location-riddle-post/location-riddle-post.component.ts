@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, output, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, input, output, signal } from '@angular/core';
 import {
 	IonAvatar,
 	IonButton,
@@ -49,8 +49,6 @@ import { RatingComponent } from './rating/rating.component';
 	standalone: true
 })
 export class LocationRiddlePostComponent {
-	@ViewChild(MapComponent) mapComponent!: MapComponent;
-
 	locationRiddle = input.required<LocationRiddle>();
 	username = input<string>();
 
@@ -71,7 +69,11 @@ export class LocationRiddlePostComponent {
 		() => this.locationRiddle().guesses?.find((guess) => guess.username === this.username())?.guess || null
 	);
 
-	constructor() {}
+	constructor() {
+		effect(() => {
+			console.log(this.solution());
+		});
+	}
 
 	get ratingError() {
 		if (!this.locationRiddle().solved) {
@@ -103,7 +105,6 @@ export class LocationRiddlePostComponent {
 			// The flow prevents the guess from being null, but for the sake of typing we define a fallback
 			this.submitGuess.emit(this.marker() || []);
 			this.submitted.set(true);
-			this.mapComponent.refreshMap();
 		}
 	}
 }

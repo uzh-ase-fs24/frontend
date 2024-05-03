@@ -9,6 +9,7 @@ import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-a
 type PostState = {
 	image: string | undefined;
 	location: Coordinate | undefined;
+	userLocation: Coordinate | undefined;
 	uploading: boolean;
 };
 
@@ -23,6 +24,7 @@ export class PostStateService {
 	private state = signal<PostState>({
 		image: undefined,
 		location: undefined,
+		userLocation: undefined,
 		uploading: false
 	});
 
@@ -58,13 +60,12 @@ export class PostStateService {
 			.with(this.userLocation, (state, location) => {
 				const { latitude, longitude } = location.coords;
 				const olCoordinates = fromLonLat([longitude, latitude]);
-				console.log('User location:', location, olCoordinates);
-				return { location: olCoordinates };
+				return { location: olCoordinates, userLocation: olCoordinates };
 			})
 			.with(this.postLocationRiddle, (state) => ({ uploading: true }))
 			.with(merge(this.cancelPost, this.postLocationRiddle), (state) => ({
 				image: undefined,
-				location: undefined
+				location: state.userLocation
 			}));
 	}
 }
