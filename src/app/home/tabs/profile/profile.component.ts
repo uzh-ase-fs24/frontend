@@ -82,10 +82,10 @@ export class ProfileComponent {
 	}
 
 	refresh(event: any) {
+		event.target.complete();
 		this.profile$ = this.profileApiService.getProfile();
 		this.connections$ = this.profileApiService.getConnections();
 		this.locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles();
-		event.target.complete();
 	}
 
 	logout(): void {
