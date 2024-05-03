@@ -80,7 +80,6 @@ export class MapComponent {
 			this.addMarker(guess.guess, Marker.GUESS, guess.username, false);
 		});
 
-		console.log(this.solution());
 		this.addMarker(this.solution(), Marker.SOLUTION, 'Solution', false);
 		this.addMarker(this.userGuess(), Marker.USER, 'Your Guess', false);
 		this.addMarker(this.marker(), Marker.USER, '', true);
@@ -123,8 +122,6 @@ export class MapComponent {
 	addMarker(coordinate: Coordinate | undefined | null, markerType: Marker, name: string, emit = false) {
 		if (!coordinate) return;
 		if (emit) this.vectorSource.clear();
-
-		console.log(markerType, name, coordinate);
 
 		const marker = new Feature({
 			geometry: new Point(coordinate)
