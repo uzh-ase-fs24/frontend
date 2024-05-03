@@ -1,10 +1,14 @@
 # findMe
 
-A mobile social media guessing game app
+A mobile social media guessing game app. 
+
+## Tech-Stack 
+This app is built with Angular and Ionic. This combination enables the app to work as progressive web app as well as a mobile app. Furthermore, Ionic provides standardized GUI elements that are optimized for the various platforms.
+For authentication Auth0 is deployed due to its simple and intuitive integration with Angular apps. 
 
 ## Setup
 
--   First install dependenies using `npm install`
+-   First install dependencies using `npm install`
 -   Install the Ionic plugin for vscode
 
 ### Dev
@@ -15,7 +19,7 @@ A mobile social media guessing game app
 -   Alternatively you can run the web build via the ionic plugin: Run > Web
 -   Navigate inside your browser to [http://localhost:8100](http://localhost:8100)
 
-#### REMARK: CURRENTLY THE AUTHENTICATION ONLY WORKS IN THE PROGRESSIV WEB APP
+#### REMARK: CURRENTLY THE AUTHENTICATION ONLY WORKS IN THE PROGRESSIVE WEB APP
 
 -> Use the mobile screen setting provided by chrome dev tools
 -> More information about PWA: [https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DAndroid&oco=0](https://support.google.com/chrome/answer/9658361?hl=en&co=GENIE.Platform%3DAndroid&oco=0)
