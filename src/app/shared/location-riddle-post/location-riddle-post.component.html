@@ -35,17 +35,17 @@
 			></app-map>
 		} @else {
 			<ion-img src="data:image;base64, {{ locationRiddle().locationRiddleImage }}"></ion-img>
-			<ion-item
-				id="open-modal-{{ locationRiddle().locationRiddleId }}"
-				expand="block"
-				class="ion-no-padding"
-				lines="none"
-				style="margin-top: 15px; margin-bottom: 5px"
-			>
-				<ion-icon size="small" name="chatbox-outline"></ion-icon>
-				<p style="padding-left: 0.3rem">add a comment...</p>
-			</ion-item>
 		}
+		<ion-item
+			id="open-modal-{{ locationRiddle().locationRiddleId }}"
+			expand="block"
+			class="ion-no-padding"
+			lines="none"
+			style="margin-top: 15px; margin-bottom: 5px"
+		>
+			<ion-icon size="small" name="chatbox-outline"></ion-icon>
+			<p style="padding-left: 0.3rem">add a comment...</p>
+		</ion-item>
 		<ion-fab horizontal="start" slot="fixed" vertical="bottom">
 			<ion-fab-button (click)="toggleMap()">
 				<ion-icon name="{{ showMap() ? 'image' : 'map' }}-outline"></ion-icon>
