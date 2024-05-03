@@ -1,74 +1,74 @@
 <div>
   @if (profile$ | async; as profile) {
-    @if (updateProfileView()) {
-      <div class="base-container">
-        <div class="form-container">
-          <app-user-form
-            (submitForm)="submitForm($event)"
-            [firstName]="profile.firstName"
-            [lastName]="profile.lastName"
-            [bio]="profile.bio"
-            formTitle="Update Profile"
-            submitButtonTitle="Save"
-          >
-            <ion-button
-              (click)="updateProfileView.set(false)"
-              style="margin-top: 10px"
-              color="medium"
-              expand="block"
-              size="default"
-            >Cancel
-            </ion-button>
-          </app-user-form>
-        </div>
-      </div>
-    } @else {
-      <div class="title-bar-container">
-        <div class="ion-padding-start ion-padding-top">
-          <div style="display: flex; justify-content: space-between">
-            <div style="display: flex; align-items: center">
-              <div class="circle ion-margin" style="background-color: blueviolet">
-                <h1 class="initials">{{ getInitials(profile.firstName, profile.lastName) }}</h1>
-              </div>
-              <ion-label>
-                <h1 style="font-weight: normal">{{ profile.firstName }} {{ profile.lastName }}</h1>
-                <p style="margin-bottom: 0.5rem">{{ '@' + profile.username }}</p>
-                <ion-button fill="solid" size="small" (click)="updateProfileView.set(true)">
-                  Edit Profile
-                  <ion-icon slot="end" name="create-outline"></ion-icon>
-                </ion-button>
-              </ion-label>
-            </div>
-            <div style="display: flex; align-items: flex-start">
-              <ion-button fill="clear" (click)="logout()" style="margin: 10px">
-                <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+    @if (connections$ | async; as connections) {
+      @if (updateProfileView()) {
+        <div class="base-container">
+          <div class="form-container">
+            <app-user-form
+              (submitForm)="submitForm($event)"
+              [firstName]="profile.firstName"
+              [lastName]="profile.lastName"
+              [bio]="profile.bio"
+              formTitle="Update Profile"
+              submitButtonTitle="Save"
+            >
+              <ion-button
+                (click)="updateProfileView.set(false)"
+                style="margin-top: 10px"
+                color="medium"
+                expand="block"
+                size="default"
+              >Cancel
               </ion-button>
+            </app-user-form>
+          </div>
+        </div>
+      } @else {
+        <div class="title-bar-container">
+          <div class="ion-padding-start ion-padding-top">
+            <div style="display: flex; justify-content: space-between">
+              <div style="display: flex; align-items: center">
+                <div class="circle ion-margin" style="background-color: blueviolet">
+                  <h1 class="initials">{{ getInitials(profile.firstName, profile.lastName) }}</h1>
+                </div>
+                <ion-label>
+                  <h1 style="font-weight: normal">{{ profile.firstName }} {{ profile.lastName }}</h1>
+                  <p style="margin-bottom: 0.5rem">{{ '@' + profile.username }}</p>
+                  <ion-button fill="solid" size="small" (click)="updateProfileView.set(true)">
+                    Edit Profile
+                    <ion-icon slot="end" name="create-outline"></ion-icon>
+                  </ion-button>
+                </ion-label>
+              </div>
+              <div style="display: flex; align-items: flex-start">
+                <ion-button fill="clear" (click)="logout()" style="margin: 10px">
+                  <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+                </ion-button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="ion-padding ion-margin-horizontal">
-        <ion-label>
-          <div class="ion-text-start">{{ profile.bio }}</div>
-        </ion-label>
-      </div>
-      <div class="ion-padding-horizontal ion-padding-top ion-margin-horizontal center-container"
-           style="display: flex; align-items: flex-end">
-        <div class="ion-padding-horizontal">
-          <ion-label class="ion-text-center">
-            <ion-chip color="warning">
-              <div style="display: flex; align-items: center">
-                <ion-icon class="ion-padding-end" name="trophy-outline"></ion-icon>
-                <h2>{{ profile.averageScore || 0 | number:'1.0-0' }}</h2>
-              </div>
-            </ion-chip>
-            <p>Score</p>
+        <div class="ion-padding ion-margin-horizontal">
+          <ion-label>
+            <div class="ion-text-start">{{ profile.bio }}</div>
           </ion-label>
         </div>
-        @if (connections$ | async; as connections) {
+        <div class="ion-padding-horizontal ion-padding-top ion-margin-horizontal center-container"
+             style="display: flex; align-items: flex-end">
+          <div class="ion-padding-horizontal">
+            <ion-label class="ion-text-center">
+              <ion-chip color="warning">
+                <div style="display: flex; align-items: center">
+                  <ion-icon class="ion-padding-end" name="trophy-outline"></ion-icon>
+                  <h2>{{ profile.averageScore || 0 | number:'1.0-0' }}</h2>
+                </div>
+              </ion-chip>
+              <p>Score</p>
+            </ion-label>
+          </div>
           <div class="center-container">
             <div class="ion-padding-horizontal">
-              <ion-label class="ion-text-center">
+              <ion-label (click)="openConnections('Followers', connections.followers)" class="ion-text-center">
                 <h1>
                   {{ connections.followers.length }}
                 </h1>
@@ -76,7 +76,7 @@
               </ion-label>
             </div>
             <div class="ion-padding-horizontal">
-              <ion-label class="ion-text-center">
+              <ion-label (click)="openConnections('Following', connections.following)" class="ion-text-center">
                 <h1>
                   {{ connections.following.length }}
                 </h1>
@@ -84,8 +84,8 @@
               </ion-label>
             </div>
           </div>
-        }
-      </div>
+        </div>
+      }
     }
   } @else {
     <div class="center-container">

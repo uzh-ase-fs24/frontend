@@ -3,12 +3,24 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
-import { IonButton, IonChip, IonIcon, IonInput, IonItem, IonLabel, IonSpinner } from '@ionic/angular/standalone';
+import {
+	IonButton,
+	IonChip,
+	IonContent,
+	IonIcon,
+	IonInput,
+	IonItem,
+	IonLabel,
+	IonModal,
+	IonSpinner
+} from '@ionic/angular/standalone';
 import { catchError, EMPTY, tap } from 'rxjs';
-import { UserForm } from 'src/app/model/user';
+import { User, UserForm } from 'src/app/model/user';
 import { ProfileApiService } from 'src/app/services/api/profile-api.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { UserFormComponent } from 'src/app/shared/user-form/user-form.component';
+import { ModalController } from '@ionic/angular';
+import { ConnectionsModalComponent } from './ui/connections-modal/connections-modal.component';
 
 @Component({
 	selector: 'app-profile',
@@ -22,6 +34,8 @@ import { UserFormComponent } from 'src/app/shared/user-form/user-form.component'
 		IonButton,
 		IonIcon,
 		IonLabel,
+		IonModal,
+		IonContent,
 		FormsModule,
 		IonChip,
 		ReactiveFormsModule,
@@ -36,6 +50,7 @@ export class ProfileComponent {
 	authService = inject(AuthService);
 	toastService = inject(ToastService);
 	destroyRef = inject(DestroyRef);
+	modalController = inject(ModalController);
 
 	// Class variables
 	updateProfileView = signal(false);
@@ -58,6 +73,16 @@ export class ProfileComponent {
 
 	getInitials(firstName: string, lastName: string): string {
 		return (firstName[0] + lastName[0]).toUpperCase();
+	}
+
+	async openConnections(connection: 'Following' | 'Followers', connections: User[]) {
+		const modal = await this.modalController.create({
+			component: ConnectionsModalComponent,
+			componentProps: { connection: connection, connections: connections },
+			breakpoints: [0, 0.5, 0.8],
+			initialBreakpoint: 0.5
+		});
+		modal.present();
 	}
 
 	logout(): void {
