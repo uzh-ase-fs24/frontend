@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, input, output, signal } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import {
 	IonAvatar,
 	IonButton,
@@ -19,7 +19,9 @@ import {
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
+import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
+import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
 import { RatingComponent } from './rating/rating.component';
 
 @Component({
@@ -46,9 +48,14 @@ import { RatingComponent } from './rating/rating.component';
 		RatingComponent
 	],
 	styleUrls: ['./location-riddle-post.component.scss'],
+	providers: [LocationRiddleStateService, LocationRiddleApiService],
 	standalone: true
 })
 export class LocationRiddlePostComponent {
+	// Services
+	locationRiddleState = inject(LocationRiddleStateService);
+
+	// Input/Output
 	locationRiddle = input.required<LocationRiddle>();
 	username = input<string>();
 
@@ -56,23 +63,19 @@ export class LocationRiddlePostComponent {
 	commentLocationRiddle = output<string>();
 	rateLocationRiddle = output<number>();
 
-	showMap = signal(false);
-	marker = signal<Coordinate | null>(null);
-	submitted = signal(false);
-	mapZoom = signal(4);
-	mapCenter = signal<Coordinate | undefined>(undefined);
-	solution = computed(() => (this.locationRiddle().solved ? this.locationRiddle().location : undefined));
-	guesses = computed(
-		() => this.locationRiddle().guesses?.filter((guess) => guess.username !== this.username()) || []
-	);
-	userGuess = computed(
-		() => this.locationRiddle().guesses?.find((guess) => guess.username === this.username())?.guess || null
-	);
-
 	constructor() {
-		effect(() => {
-			console.log(this.solution());
-		});
+		effect(
+			() => {
+				this.locationRiddleState.setLocationRiddle.next(this.locationRiddle());
+			},
+			{ allowSignalWrites: true }
+		);
+		effect(
+			() => {
+				this.locationRiddleState.setUsername.next(this.username());
+			},
+			{ allowSignalWrites: true }
+		);
 	}
 
 	get ratingError() {
@@ -80,31 +83,23 @@ export class LocationRiddlePostComponent {
 			return 'You can only rate a solved riddle';
 		} else if (this.locationRiddle().username === this.username()) {
 			return 'You cannot rate your own riddle';
-		} else{
+		} else {
 			return undefined;
 		}
 	}
 
-	toggleMap() {
-		this.showMap.set(!this.showMap());
-	}
-
-	placeGuess(guess: Coordinate) {
-		this.marker.set(guess);
-	}
-
 	comment(commentInputRef: IonInput) {
 		if (commentInputRef.value) {
-			this.commentLocationRiddle.emit(commentInputRef.value.toString());
+			this.locationRiddleState.commentOnLocationRiddle.next(commentInputRef.value.toString());
 			commentInputRef.value = '';
 		}
 	}
 
 	submit() {
-		if (this.marker()) {
+		if (this.locationRiddleState.marker()) {
 			// The flow prevents the guess from being null, but for the sake of typing we define a fallback
-			this.submitGuess.emit(this.marker() || []);
-			this.submitted.set(true);
+			this.submitGuess.emit(this.locationRiddleState.marker() || []);
+			this.locationRiddleState.submittedGuess.next();
 		}
 	}
 }

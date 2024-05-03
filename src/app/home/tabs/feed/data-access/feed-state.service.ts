@@ -36,7 +36,6 @@ export class FeedStateService {
 	// Action Sources (Subjects)
 	public refresh = new Subject<void>();
 	public submitGuess = new Subject<{ locationRiddleId: string; guess: Coordinate }>();
-	public commentOnLocationRiddle = new Subject<{ locationRiddleId: string; comment: string }>();
 	public rateLocationRiddle = new Subject<RateEvent>();
 
 	// Sources (Observables)
@@ -45,11 +44,6 @@ export class FeedStateService {
 	private refreshLocationRiddlesSource$ = this.refresh.pipe(switchMap(() => this.locationRiddlesSource$));
 	private submitGuessSource = this.submitGuess.pipe(
 		switchMap(({ locationRiddleId, guess }) => this.locationRiddleApiService.postGuess(locationRiddleId, guess))
-	);
-	private commentOnLocationRiddleSource$ = this.commentOnLocationRiddle.pipe(
-		switchMap(({ locationRiddleId, comment }) =>
-			this.locationRiddleApiService.postComment(locationRiddleId, comment)
-		)
 	);
 	private rateLocationRiddleSource$ = this.rateLocationRiddle.pipe(
 		switchMap((event) => this.locationRiddleApiService.rateLocationRiddle(event.locationRiddleId, event.rating))
@@ -73,11 +67,6 @@ export class FeedStateService {
 					riddle.locationRiddleId === guessResult.locationRiddle.locationRiddleId
 						? guessResult.locationRiddle
 						: riddle
-				)
-			}))
-			.with(this.commentOnLocationRiddleSource$, (state, updatedLocationRiddle) => ({
-				locationRiddles: state.locationRiddles.map((riddle) =>
-					riddle.locationRiddleId === updatedLocationRiddle.locationRiddleId ? updatedLocationRiddle : riddle
 				)
 			}))
 			.with(this.rateLocationRiddleSource$, (state, updatedLocationRiddle) => ({
