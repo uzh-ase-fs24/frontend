@@ -44,7 +44,7 @@
 					(placeMarker)="postState.setLocation.next($event)"
 					[marker]="postState.location()"
 					[center]="postState.location()"
-					[zoom]="postState.locationSet() ? 10 : 4"
+					[zoom]="!!postState.location() ? 10 : 4"
 				></app-map>
 			</div>
 
@@ -56,7 +56,7 @@
 				<ion-button
 					(click)="postState.completePost.next()"
 					style="margin: 10px"
-					[disabled]="!postState.locationSet()"
+					[disabled]="!postState.postingEnabled()"
 				>
 					<span style="padding-right: 5px">Post Riddle</span>
 					<ion-icon name="location-outline"></ion-icon>
