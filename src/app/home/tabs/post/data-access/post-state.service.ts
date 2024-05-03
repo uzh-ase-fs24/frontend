@@ -3,7 +3,7 @@ import { Geolocation } from '@capacitor/geolocation';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
 import { fromLonLat } from 'ol/proj';
-import { filter, from, merge, Subject, switchMap } from 'rxjs';
+import { filter, from, Subject, switchMap } from 'rxjs';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 
 type PostState = {
@@ -62,8 +62,12 @@ export class PostStateService {
 				const olCoordinates = fromLonLat([longitude, latitude]);
 				return { location: olCoordinates, userLocation: olCoordinates };
 			})
-			.with(this.postLocationRiddle, (state) => ({ uploading: true }))
-			.with(merge(this.cancelPost, this.postLocationRiddle), (state) => ({
+			.with(this.postLocationRiddle, (state) => ({
+				uploading: true,
+				image: undefined,
+				location: state.userLocation
+			}))
+			.with(this.cancelPost, (state) => ({
 				image: undefined,
 				location: state.userLocation
 			}));
