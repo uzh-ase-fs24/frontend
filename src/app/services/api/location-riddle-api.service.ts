@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Coordinate } from 'ol/coordinate';
-import { map, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { of, map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
 	GuessResult,
@@ -19,11 +20,14 @@ export class LocationRiddleApiService {
 
 	constructor() {}
 
-	getLocationRiddles(): Observable<LocationRiddle[]> {
-		return this.http.get<LocationRiddleDto[]>(environment.api.url + '/location-riddles').pipe(
+	getLocationRiddles(arena?: string): Observable<LocationRiddle[]> {
+		return this.http.get<LocationRiddleDto[]>(environment.api.url + '/location-riddles' + (arena ? `/arena/${arena}` : '')).pipe(
 			map((dtos: LocationRiddleDto[]) => {
 				return dtos.map((dto) => this.mapDtoToLocationRiddle(dto));
-			})
+			}),
+      catchError((error) => {
+        return of([]);
+      })
 		);
 	}
 
