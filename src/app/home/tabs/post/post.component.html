@@ -48,13 +48,29 @@
 				></app-map>
 			</div>
 
+      <ion-list class="ion-padding ion-margin">
+        <ion-item>
+            <ion-select [(ngModel)]="arenas" aria-label="Arenas" placeholder="Select all arenas that apply" [multiple]="true">
+              <ion-select-option value="UZH">UZH</ion-select-option>
+              <ion-select-option value="Zurich">Zurich</ion-select-option>
+              <ion-select-option value="Lake">Lake</ion-select-option>
+              <ion-select-option value="Beach">Beach</ion-select-option>
+              <ion-select-option value="Mountain">Mountain</ion-select-option>
+              <ion-select-option value="Forest">Forest</ion-select-option>
+              <ion-select-option value="City">City</ion-select-option>
+              <ion-select-option value="Park">Park</ion-select-option>
+              <ion-select-option value="River">River</ion-select-option>
+            </ion-select>
+        </ion-item>
+      </ion-list>
+
 			<div class="center-container" style="margin-top: 5vh">
 				<ion-button (click)="postState.cancelPost.next()" style="margin: 10px" color="medium">
 					<span style="padding-right: 5px">Cancel</span>
 					<ion-icon name="close-outline"></ion-icon>
 				</ion-button>
 				<ion-button
-					(click)="postState.completePost.next()"
+					(click)="completePost()"
 					style="margin: 10px"
 					[disabled]="!postState.locationSet()"
 				>
