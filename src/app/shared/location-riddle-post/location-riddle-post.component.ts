@@ -49,8 +49,6 @@ import { RatingComponent } from './rating/rating.component';
 	standalone: true
 })
 export class LocationRiddlePostComponent {
-	@ViewChild(MapComponent) mapComponent!: MapComponent;
-
 	locationRiddle = input.required<LocationRiddle>();
 	username = input<string>();
 
@@ -73,7 +71,7 @@ export class LocationRiddlePostComponent {
 
 	constructor() {
 		effect(() => {
-			console.log(this.mapCenter());
+			console.log(this.solution());
 		});
 	}
 
@@ -97,7 +95,6 @@ export class LocationRiddlePostComponent {
 			// The flow prevents the guess from being null, but for the sake of typing we define a fallback
 			this.submitGuess.emit(this.marker() || []);
 			this.submitted.set(true);
-			this.mapComponent.refreshMap();
 		}
 	}
 }

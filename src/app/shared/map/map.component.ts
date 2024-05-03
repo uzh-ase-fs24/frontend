@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, output, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, input, output, ViewChild } from '@angular/core';
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -49,7 +49,13 @@ export class MapComponent {
 		source: this.vectorSource
 	});
 
-	constructor() {}
+	constructor() {
+		effect(() => {
+			if (this.solved()) {
+				this.refreshMap();
+			}
+		});
+	}
 
 	initMap(mapElement: ElementRef) {
 		this.map = new Map({
@@ -68,11 +74,13 @@ export class MapComponent {
 		});
 
 		this.removeMapAttribution();
+		this.vectorSource.clear();
 
 		this.guesses().forEach((guess) => {
 			this.addMarker(guess.guess, Marker.GUESS, guess.username, false);
 		});
 
+		console.log(this.solution());
 		this.addMarker(this.solution(), Marker.SOLUTION, 'Solution', false);
 		this.addMarker(this.userGuess(), Marker.USER, 'Your Guess', false);
 		this.addMarker(this.marker(), Marker.USER, '', true);
@@ -100,7 +108,7 @@ export class MapComponent {
 		});
 	}
 
-	public refreshMap() {
+	private refreshMap() {
 		setTimeout(() => {
 			this.removeMapAttribution();
 
@@ -109,12 +117,14 @@ export class MapComponent {
 			});
 
 			this.addMarker(this.solution(), Marker.SOLUTION, 'Solution', false);
-		}, 800);
+		}, 300);
 	}
 
 	addMarker(coordinate: Coordinate | undefined | null, markerType: Marker, name: string, emit = false) {
 		if (!coordinate) return;
 		if (emit) this.vectorSource.clear();
+
+		console.log(markerType, name, coordinate);
 
 		const marker = new Feature({
 			geometry: new Point(coordinate)
