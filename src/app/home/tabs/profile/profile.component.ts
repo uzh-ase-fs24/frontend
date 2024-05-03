@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
@@ -36,11 +37,14 @@ export class ProfileComponent {
 	authService = inject(AuthService);
 	toastService = inject(ToastService);
 	destroyRef = inject(DestroyRef);
+	route = inject(ActivatedRoute);
 
 	// Class variables
 	updateProfileView = signal(false);
-	profile$ = this.profileApiService.getProfile().pipe(takeUntilDestroyed());
+	profile$ = this.profileApiService.getProfile(this.route.snapshot.params['username']).pipe(takeUntilDestroyed());
 	connections$ = this.profileApiService.getConnections().pipe(takeUntilDestroyed());
+
+	readonly = this.route.snapshot.params['username'] || false;
 
 	constructor() {}
 

@@ -26,6 +26,10 @@ const routes: Routes = [
 				loadComponent: () => import('./tabs/profile/profile.component').then((m) => m.ProfileComponent)
 			},
 			{
+				path: 'profiles/:username',
+				loadComponent: () => import('./tabs/profile/profile.component').then((m) => m.ProfileComponent)
+			},
+			{
 				path: 'post',
 				loadComponent: () => import('./tabs/post/post.component').then((m) => m.PostComponent)
 			},
