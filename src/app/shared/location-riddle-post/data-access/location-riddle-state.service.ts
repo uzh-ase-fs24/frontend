@@ -80,7 +80,5 @@ export class LocationRiddleStateService {
 			.with(this.commentOnLocationRiddleSource$, (state, updatedLocationRiddle) => ({
 				locationRiddle: updatedLocationRiddle
 			}));
-
-		effect(() => console.log(this.locationRiddle()));
 	}
 }
