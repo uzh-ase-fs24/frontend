@@ -48,8 +48,6 @@ export class MapComponent {
 	private vectorLayer = new VectorLayer({
 		source: this.vectorSource
 	});
-	private lastZoomEvent = 0;
-	private lastCenterEvent = [0, 0];
 
 	constructor() {}
 
@@ -88,20 +86,16 @@ export class MapComponent {
 
 		this.map.getView().on('change:resolution', (event) => {
 			const zoom = this.map?.getView().getZoom();
-			const center = this.map?.getView().getCenter();
 			// Ensure that zoom and center change events are only emitted when they actually changed to prevent an event flood
-			if (zoom && Math.abs(zoom - this.lastZoomEvent) > 0.5) {
+			if (zoom) {
 				this.zoomChange.emit(zoom);
-				this.lastZoomEvent = zoom;
 			}
+		});
 
-			if (
-				center &&
-				Math.abs(center[0] - this.lastCenterEvent[0]) > 0.1 &&
-				Math.abs(center[1] - this.lastCenterEvent[1]) > 0.1
-			) {
+		this.map.getView().on('change:center', (event) => {
+			const center = this.map?.getView().getCenter();
+			if (center) {
 				this.centerChange.emit(center);
-				this.lastCenterEvent = center;
 			}
 		});
 	}

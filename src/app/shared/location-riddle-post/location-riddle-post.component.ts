@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input, output, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, input, output, signal, ViewChild } from '@angular/core';
 import {
 	IonAvatar,
 	IonButton,
@@ -71,7 +71,11 @@ export class LocationRiddlePostComponent {
 		() => this.locationRiddle().guesses?.find((guess) => guess.username === this.username())?.guess || null
 	);
 
-	constructor() {}
+	constructor() {
+		effect(() => {
+			console.log(this.mapCenter());
+		});
+	}
 
 	toggleMap() {
 		this.showMap.set(!this.showMap());
