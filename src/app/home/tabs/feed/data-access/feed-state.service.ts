@@ -75,13 +75,16 @@ export class FeedStateService {
 			.with(this.refreshLocationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles
 			}))
-			.with(this.submitGuessSource, (state, guessResult) => ({
-				locationRiddles: state.locationRiddles.map((riddle) =>
-					riddle.locationRiddleId === guessResult.locationRiddle.locationRiddleId
-						? guessResult.locationRiddle
-						: riddle
-				)
-			}))
+			.with(this.submitGuessSource, (state, guessResult) => {
+        console.log(guessResult);
+        return {
+          locationRiddles: state.locationRiddles.map((riddle) =>
+            riddle.locationRiddleId === guessResult.locationRiddle.locationRiddleId
+              ? guessResult.locationRiddle
+              : riddle
+          )
+        };
+      })
 			.with(this.rateLocationRiddleSource$, (state, updatedLocationRiddle) => ({
 				locationRiddles: state.locationRiddles.map((riddle) =>
 					riddle.locationRiddleId === updatedLocationRiddle.locationRiddleId ? updatedLocationRiddle : riddle

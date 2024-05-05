@@ -50,7 +50,7 @@ export type GuessDto = {
 export type GuessResult = {
 	guessResult: {
 		distance: number;
-		score: number;
+		received_score: number;
 	};
 	locationRiddle: LocationRiddle;
 };
@@ -58,7 +58,7 @@ export type GuessResult = {
 export type guessResultDto = {
 	guess_result: {
 		distance: number;
-		score: number;
+		received_score: number;
 	};
 	location_riddle: LocationRiddleDto;
 };
