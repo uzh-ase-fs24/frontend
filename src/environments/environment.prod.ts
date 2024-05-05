@@ -1,13 +1,12 @@
 export const environment = {
 	production: true,
 	auth: {
-		// TODO: Add production auth0 configuration
-		domain: 'findme-dev.eu.auth0.com',
-		clientId: 'dQQU9Dtorl9YUJPUwqBRwJLWoAAlU24T',
+		domain: 'findme-prod.eu.auth0.com',
+		clientId: '5Y8M4fLV05tX8d1WXOjUy9EzCT2YiTdZ',
 		webCallbackUri: 'https://find-me.life/home',
 		logoutRedirectUri: 'http://find-me.life/login',
-		audience: 'https://findme-dev.eu.auth0.com/api/v2/',
-		namespace: 'https://findme.ch'
+		audience: 'https://findme-prod.eu.auth0.com/api/v2/',
+		namespace: 'https://api.find-me.life'
 	},
 	api: {
 		url: 'https://api.find-me.life'
