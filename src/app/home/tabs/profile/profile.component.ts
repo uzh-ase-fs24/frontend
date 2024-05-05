@@ -11,18 +11,21 @@ import {
 	IonInput,
 	IonItem,
 	IonLabel,
+	IonModal,
 	IonRefresher,
 	IonRefresherContent,
 	IonSpinner,
 	IonTitle
 } from '@ionic/angular/standalone';
 import { catchError, EMPTY, tap } from 'rxjs';
-import { UserForm } from 'src/app/model/user';
+import { User, UserForm } from 'src/app/model/user';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { ProfileApiService } from 'src/app/services/api/profile-api.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { LocationRiddlePostComponent } from 'src/app/shared/location-riddle-post/location-riddle-post.component';
 import { UserFormComponent } from 'src/app/shared/user-form/user-form.component';
+import { ModalController } from '@ionic/angular';
+import { ConnectionsModalComponent } from './ui/connections-modal/connections-modal.component';
 
 @Component({
 	selector: 'app-profile',
@@ -39,6 +42,8 @@ import { UserFormComponent } from 'src/app/shared/user-form/user-form.component'
 		IonButton,
 		IonIcon,
 		IonLabel,
+		IonModal,
+		IonContent,
 		FormsModule,
 		IonChip,
 		IonContent,
@@ -56,6 +61,7 @@ export class ProfileComponent {
 	authService = inject(AuthService);
 	toastService = inject(ToastService);
 	destroyRef = inject(DestroyRef);
+	modalController = inject(ModalController);
 
 	// Class variables
 	updateProfileView = signal(false);
@@ -81,11 +87,21 @@ export class ProfileComponent {
 		return (firstName[0] + lastName[0]).toUpperCase();
 	}
 
-	refresh(event: any) {
+  refresh(event: any) {
 		event.target.complete();
 		this.profile$ = this.profileApiService.getProfile();
 		this.connections$ = this.profileApiService.getConnections();
 		this.locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles();
+	}
+
+  async openConnections(connection: 'Following' | 'Followers', connections: User[]) {
+		const modal = await this.modalController.create({
+			component: ConnectionsModalComponent,
+			componentProps: { connection: connection, connections: connections },
+			breakpoints: [0, 0.5, 0.8],
+			initialBreakpoint: 0.5
+		});
+		modal.present();
 	}
 
 	logout(): void {

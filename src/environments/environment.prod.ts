@@ -4,12 +4,12 @@ export const environment = {
 		// TODO: Add production auth0 configuration
 		domain: 'findme-dev.eu.auth0.com',
 		clientId: 'dQQU9Dtorl9YUJPUwqBRwJLWoAAlU24T',
-		webCallbackUri: 'http://localhost:8100/home',
-		logoutRedirectUri: 'http://localhost:8100/login',
-		audience: 'http://findme.execute-api.localhost.localstack.cloud:4566/local/',
+		webCallbackUri: 'https://find-me.life/home',
+		logoutRedirectUri: 'http://find-me.life/login',
+		audience: 'https://findme-dev.eu.auth0.com/api/v2/',
 		namespace: 'https://findme.ch'
 	},
 	api: {
-		url: 'http://localhost:3000'
+		url: 'https://api.find-me.life'
 	}
 };
