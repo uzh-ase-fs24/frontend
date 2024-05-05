@@ -3,13 +3,14 @@ import { Geolocation } from '@capacitor/geolocation';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
 import { fromLonLat } from 'ol/proj';
-import { from, merge, Subject, switchMap, tap } from 'rxjs';
+import { filter, from, Subject, switchMap } from 'rxjs';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 
 type PostState = {
 	image: string | undefined;
 	location: Coordinate | undefined;
 	userLocation: Coordinate | undefined;
+	uploading: boolean;
 };
 
 @Injectable({
@@ -23,12 +24,13 @@ export class PostStateService {
 	private state = signal<PostState>({
 		image: undefined,
 		location: undefined,
-		userLocation: undefined
+		userLocation: undefined,
+		uploading: false
 	});
 
 	// Selectors
 	imageSet = computed(() => !!this.state().image);
-	locationSet = computed(() => !!this.state().location);
+	postingEnabled = computed(() => !!this.state().location && !this.state().uploading);
 	location = computed(() => this.state().location);
 
 	// Action Sources (Subjects)
@@ -39,7 +41,7 @@ export class PostStateService {
 
 	// Sources (Observables)
 	postLocationRiddle = this.completePost.pipe(
-		tap(() => console.log(this.state().image?.split('base64,'))),
+		filter(() => this.postingEnabled()),
 		switchMap(() =>
 			this.locationRiddleApi.postLocationRiddle({
 				location: this.state().location!,
@@ -60,7 +62,12 @@ export class PostStateService {
 				const olCoordinates = fromLonLat([longitude, latitude]);
 				return { location: olCoordinates, userLocation: olCoordinates };
 			})
-			.with(merge(this.cancelPost, this.postLocationRiddle), (state) => ({
+			.with(this.postLocationRiddle, (state) => ({
+				uploading: true,
+				image: undefined,
+				location: state.userLocation
+			}))
+			.with(this.cancelPost, (state) => ({
 				image: undefined,
 				location: state.userLocation
 			}));

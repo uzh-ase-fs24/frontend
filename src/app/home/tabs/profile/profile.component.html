@@ -1,5 +1,8 @@
-<div>
-  @if (profile$ | async; as profile) {
+<ion-content class="ion-padding">
+	<ion-refresher (ionRefresh)="refresh($event)" slot="fixed">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+	@if (profile$ | async; as profile) {
     @if (connections$ | async; as connections) {
       @if (updateProfileView()) {
         <div class="base-container">
@@ -18,7 +21,7 @@
                 color="medium"
                 expand="block"
                 size="default"
-              >Cancel
+                >Cancel
               </ion-button>
             </app-user-form>
           </div>
@@ -53,14 +56,16 @@
             <div class="ion-text-start">{{ profile.bio }}</div>
           </ion-label>
         </div>
-        <div class="ion-padding-horizontal ion-padding-top ion-margin-horizontal center-container"
-             style="display: flex; align-items: flex-end">
+        <div
+          class="ion-padding-horizontal ion-padding-top ion-margin-horizontal center-container"
+          style="display: flex; align-items: flex-end"
+        >
           <div class="ion-padding-horizontal">
             <ion-label class="ion-text-center">
               <ion-chip color="warning">
                 <div style="display: flex; align-items: center">
                   <ion-icon class="ion-padding-end" name="trophy-outline"></ion-icon>
-                  <h2>{{ profile.averageScore || 0 | number:'1.0-0' }}</h2>
+                  <h2>{{ profile.averageScore || 0 | number: '1.0-0' }}</h2>
                 </div>
               </ion-chip>
               <p>Score</p>
@@ -87,11 +92,23 @@
             </div>
           </div>
         </div>
+        <div class="center-container" style="height: 100%">
+          <div style="height: 100%">
+            @if (locationRiddles$ | async; as posts) {
+              @for (item of posts; track item.locationRiddleId) {
+                <app-location-riddle-post
+                  [locationRiddle]="item"
+                  [username]="profile.username"
+                ></app-location-riddle-post>
+              }
+            }
+          </div>
+        </div>
       }
     }
-  } @else {
-    <div class="center-container">
-      <ion-spinner name="circular"></ion-spinner>
-    </div>
-  }
-</div>
+	} @else {
+		<div class="center-container">
+			<ion-spinner name="circular"></ion-spinner>
+		</div>
+	}
+</ion-content>

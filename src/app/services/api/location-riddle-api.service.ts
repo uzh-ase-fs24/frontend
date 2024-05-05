@@ -20,11 +20,11 @@ export class LocationRiddleApiService {
 	constructor() {}
 
 	getLocationRiddles(): Observable<LocationRiddle[]> {
-		return this.http.get<LocationRiddleDto[]>(environment.api.url + '/location-riddles').pipe(
-			map((dtos: LocationRiddleDto[]) => {
-				return dtos.map((dto) => this.mapDtoToLocationRiddle(dto));
-			})
-		);
+		return this.getRequest('/location-riddles');
+	}
+
+	getUserLocationRiddles(): Observable<LocationRiddle[]> {
+		return this.getRequest('/location-riddles/user');
 	}
 
 	postLocationRiddle(locationRiddle: LocationRiddlePostDto): Observable<void> {
@@ -61,6 +61,14 @@ export class LocationRiddleApiService {
 				rating: rating
 			})
 			.pipe(map((dto) => this.mapDtoToLocationRiddle(dto)));
+	}
+
+	private getRequest(url: string): Observable<LocationRiddle[]> {
+		return this.http.get<LocationRiddleDto[]>(environment.api.url + url).pipe(
+			map((dtos: LocationRiddleDto[]) => {
+				return dtos.map((dto) => this.mapDtoToLocationRiddle(dto));
+			})
+		);
 	}
 
 	private mapDtoToLocationRiddle(dto: LocationRiddleDto): LocationRiddle {
