@@ -1,4 +1,13 @@
 <ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-select  [(ngModel)]="feedMode" (ionChange)="onFeedModeChange()" aria-label="Arenas" interface="popover" placeholder="Select arena">
+        @for (arenaOption of arenaOptions; track arenaOption) {
+          <ion-select-option value="{{ arenaOption }}">{{ arenaOption }}</ion-select-option>
+        }
+      </ion-select>
+    </ion-item>
+  </ion-list>
   @if (!feedState.loading()) {
     <ion-refresher (ionRefresh)="handleRefresh($event)" slot="fixed">
       <ion-refresher-content></ion-refresher-content>

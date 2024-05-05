@@ -11,6 +11,7 @@ type PostState = {
 	location: Coordinate | undefined;
 	userLocation: Coordinate | undefined;
 	uploading: boolean;
+  arenas: string[] | undefined;
 };
 
 @Injectable({
@@ -25,18 +26,21 @@ export class PostStateService {
 		image: undefined,
 		location: undefined,
 		userLocation: undefined,
-		uploading: false
+		uploading: false,
+    arenas: undefined
 	});
 
 	// Selectors
 	imageSet = computed(() => !!this.state().image);
 	postingEnabled = computed(() => !!this.state().location && !this.state().uploading);
+  arenasSet = computed(() => !!this.state().arenas);
 	location = computed(() => this.state().location);
 
 	// Action Sources (Subjects)
 	uploadImage = new Subject<string>();
 	cancelPost = new Subject<void>();
 	setLocation = new Subject<Coordinate>();
+  setArenas = new Subject<string[]>();
 	completePost = new Subject<void>();
 
 	// Sources (Observables)
@@ -46,7 +50,8 @@ export class PostStateService {
 			this.locationRiddleApi.postLocationRiddle({
 				location: this.state().location!,
 				// ensure the base64 prefix is not included
-				image: this.state().image?.split('base64,')[1] || this.state().image!
+				image: this.state().image?.split('base64,')[1] || this.state().image!,
+        arenas: this.state().arenas!
 			})
 		)
 	);
@@ -57,6 +62,7 @@ export class PostStateService {
 		connect(this.state)
 			.with(this.uploadImage, (state, image) => ({ image }))
 			.with(this.setLocation, (state, location) => ({ location }))
+      .with(this.setArenas, (state, arenas) => ({ arenas }))
 			.with(this.userLocation, (state, location) => {
 				const { latitude, longitude } = location.coords;
 				const olCoordinates = fromLonLat([longitude, latitude]);
@@ -65,11 +71,13 @@ export class PostStateService {
 			.with(this.postLocationRiddle, (state) => ({
 				uploading: true,
 				image: undefined,
-				location: state.userLocation
+				location: state.userLocation,
+        arenas: state.arenas
 			}))
 			.with(this.cancelPost, (state) => ({
 				image: undefined,
-				location: state.userLocation
+				location: state.userLocation,
+        arenas: undefined
 			}));
 	}
 }
