@@ -32,6 +32,7 @@ export type Comment = {
 export type LocationRiddlePostDto = {
 	image: string;
 	location: Coordinate;
+  arenas: string[];
 };
 
 export type Guess = {

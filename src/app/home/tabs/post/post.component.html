@@ -44,9 +44,21 @@
 					(placeMarker)="postState.setLocation.next($event)"
 					[marker]="postState.location()"
 					[center]="postState.location()"
-					[zoom]="postState.locationSet() ? 10 : 4"
+					[zoom]="!!postState.location() ? 10 : 4"
 				></app-map>
 			</div>
+
+      <ion-list class="ion-padding ion-margin">
+        <ion-item>
+            <ion-select [(ngModel)]="arenas" aria-label="Arenas" placeholder="Select all arenas that apply" [multiple]="true">
+              @for (arenaOption of arenaOptions; track arenaOption) {
+                @if (arenaOption !== "My Friends"){
+                  <ion-select-option value="{{ arenaOption }}">{{ arenaOption }}</ion-select-option>
+                }
+              }
+            </ion-select>
+        </ion-item>
+      </ion-list>
 
 			<div class="center-container" style="margin-top: 5vh">
 				<ion-button (click)="postState.cancelPost.next()" style="margin: 10px" color="medium">
@@ -54,9 +66,9 @@
 					<ion-icon name="close-outline"></ion-icon>
 				</ion-button>
 				<ion-button
-					(click)="postState.completePost.next()"
+					(click)="completePost()"
 					style="margin: 10px"
-					[disabled]="!postState.locationSet()"
+					[disabled]="!postState.postingEnabled()"
 				>
 					<span style="padding-right: 5px">Post Riddle</span>
 					<ion-icon name="location-outline"></ion-icon>

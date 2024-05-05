@@ -3,13 +3,15 @@ import { Geolocation } from '@capacitor/geolocation';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
 import { fromLonLat } from 'ol/proj';
-import { from, merge, Subject, switchMap, tap } from 'rxjs';
+import { filter, from, Subject, switchMap } from 'rxjs';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 
 type PostState = {
 	image: string | undefined;
 	location: Coordinate | undefined;
 	userLocation: Coordinate | undefined;
+	uploading: boolean;
+  arenas: string[] | undefined;
 };
 
 @Injectable({
@@ -23,28 +25,33 @@ export class PostStateService {
 	private state = signal<PostState>({
 		image: undefined,
 		location: undefined,
-		userLocation: undefined
+		userLocation: undefined,
+		uploading: false,
+    arenas: undefined
 	});
 
 	// Selectors
 	imageSet = computed(() => !!this.state().image);
-	locationSet = computed(() => !!this.state().location);
+	postingEnabled = computed(() => !!this.state().location && !this.state().uploading);
+  arenasSet = computed(() => !!this.state().arenas);
 	location = computed(() => this.state().location);
 
 	// Action Sources (Subjects)
 	uploadImage = new Subject<string>();
 	cancelPost = new Subject<void>();
 	setLocation = new Subject<Coordinate>();
+  setArenas = new Subject<string[]>();
 	completePost = new Subject<void>();
 
 	// Sources (Observables)
 	postLocationRiddle = this.completePost.pipe(
-		tap(() => console.log(this.state().image?.split('base64,'))),
+		filter(() => this.postingEnabled()),
 		switchMap(() =>
 			this.locationRiddleApi.postLocationRiddle({
 				location: this.state().location!,
 				// ensure the base64 prefix is not included
-				image: this.state().image?.split('base64,')[1] || this.state().image!
+				image: this.state().image?.split('base64,')[1] || this.state().image!,
+        arenas: this.state().arenas!
 			})
 		)
 	);
@@ -55,14 +62,22 @@ export class PostStateService {
 		connect(this.state)
 			.with(this.uploadImage, (state, image) => ({ image }))
 			.with(this.setLocation, (state, location) => ({ location }))
+      .with(this.setArenas, (state, arenas) => ({ arenas }))
 			.with(this.userLocation, (state, location) => {
 				const { latitude, longitude } = location.coords;
 				const olCoordinates = fromLonLat([longitude, latitude]);
 				return { location: olCoordinates, userLocation: olCoordinates };
 			})
-			.with(merge(this.cancelPost, this.postLocationRiddle), (state) => ({
+			.with(this.postLocationRiddle, (state) => ({
+				uploading: true,
 				image: undefined,
-				location: state.userLocation
+				location: state.userLocation,
+        arenas: state.arenas
+			}))
+			.with(this.cancelPost, (state) => ({
+				image: undefined,
+				location: state.userLocation,
+        arenas: undefined
 			}));
 	}
 }

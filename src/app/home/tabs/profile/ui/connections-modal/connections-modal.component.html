@@ -1,0 +1,15 @@
+<ion-item lines="full">
+  <ion-label class="ion-text-center">
+    <h2>{{ connection }}</h2>
+  </ion-label>
+</ion-item>
+<ion-content>
+  @for (user of connections; track user.username) {
+    <ion-item lines="full">
+      <ion-label>
+        <h3>{{ user.username }}</h3>
+        <p>{{ user.firstName }} {{ user.lastName }}</p>
+      </ion-label>
+    </ion-item>
+  }
+</ion-content>
