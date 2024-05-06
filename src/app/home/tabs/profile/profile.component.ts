@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
@@ -61,13 +62,16 @@ export class ProfileComponent {
 	authService = inject(AuthService);
 	toastService = inject(ToastService);
 	destroyRef = inject(DestroyRef);
+	route = inject(ActivatedRoute);
 	modalController = inject(ModalController);
 
 	// Class variables
 	updateProfileView = signal(false);
-	profile$ = this.profileApiService.getProfile();
-	connections$ = this.profileApiService.getConnections();
-	locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles();
+	profile$ = this.profileApiService.getProfile(this.route.snapshot.params['username']);
+	connections$ = this.profileApiService.getConnections(this.route.snapshot.params['username']);
+	locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles(this.route.snapshot.params['username']);
+
+	readonly = this.route.snapshot.params['username'] || false;
 
 	constructor() {}
 

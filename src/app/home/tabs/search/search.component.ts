@@ -10,6 +10,7 @@ import {
 	IonItem
 } from '@ionic/angular/standalone';
 import { tap } from 'rxjs';
+import { Router } from '@angular/router';
 import { FollowRequestsApiService } from 'src/app/services/api/follow-requests-api.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { SearchStateService } from './data-access/search-state.service';
@@ -27,6 +28,7 @@ export class SearchComponent {
 	searchState = inject(SearchStateService);
 	followRequestsApiService = inject(FollowRequestsApiService);
 	toastService = inject(ToastService);
+  router = inject(Router);
 
 	constructor() {}
 

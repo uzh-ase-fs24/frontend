@@ -24,8 +24,8 @@ export class LocationRiddleApiService {
 		return this.getRequest('/location-riddles' + (arena ? `/arena/${arena}` : ''));
 	}
 
-  getUserLocationRiddles(): Observable<LocationRiddle[]> {
-		return this.getRequest('/location-riddles/user');
+  getUserLocationRiddles(username?: string): Observable<LocationRiddle[]> {
+		return this.getRequest('/location-riddles/user'+ (username ? `/${username}` : ''));
 	}
 
 	postLocationRiddle(locationRiddle: LocationRiddlePostDto): Observable<void> {
@@ -42,7 +42,7 @@ export class LocationRiddleApiService {
 					locationRiddle: this.mapDtoToLocationRiddle(dto.location_riddle),
 					guessResult: {
 						distance: dto.guess_result.distance,
-						score: dto.guess_result.score
+						received_score: dto.guess_result.received_score
 					}
 				}))
 			);

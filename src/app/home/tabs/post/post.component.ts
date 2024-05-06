@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { IonButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { IonButton, IonIcon, IonList, IonItem, IonSelect, IonSelectOption, IonPopover, IonContent } from '@ionic/angular/standalone';
 import { MapComponent } from '../../../shared/map/map.component';
 import { Arenas } from '../../../model/arenas';
 import { PostStateService } from './data-access/post-state.service';
@@ -12,7 +12,7 @@ import { PostStateService } from './data-access/post-state.service';
 	styleUrls: ['./post.component.scss'],
 	providers: [PostStateService],
 	standalone: true,
-	imports: [IonIcon, IonButton, MapComponent, IonSelect, IonList, IonItem, IonSelectOption, FormsModule]
+	imports: [IonIcon, IonButton, MapComponent, IonSelect, IonList, IonItem, IonSelectOption, FormsModule, IonPopover, IonContent]
 })
 export class PostComponent {
 	// Services
