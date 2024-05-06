@@ -22,8 +22,7 @@ import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
-import { RatingComponent } from './rating/rating.component';
-
+import { RatingComponent } from './ui/rating/rating.component';
 @Component({
 	selector: 'app-location-riddle-post',
 	templateUrl: './location-riddle-post.component.html',
@@ -57,7 +56,7 @@ export class LocationRiddlePostComponent {
 
 	// Input/Output
 	locationRiddle = input.required<LocationRiddle>();
-	username = input<string>();
+	username = input.required<string>();
 
 	submitGuess = output<Coordinate>();
 	commentLocationRiddle = output<string>();
