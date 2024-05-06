@@ -5,7 +5,7 @@
 </ion-item>
 <ion-content>
   @for (user of connections; track user.username) {
-    <ion-item lines="full" (click)="router.navigate(['/home/profiles/' + user.username])">
+    <ion-item lines="full" (click)="closeModalAndNavigate(user.username)">
       <ion-label>
         <h3>{{ user.username }}</h3>
         <p>{{ user.firstName }} {{ user.lastName }}</p>
