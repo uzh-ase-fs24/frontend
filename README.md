@@ -1,6 +1,12 @@
-# findMe
+<p align="center">
+  <a href="https://github.com/uzh-ase-fs24" target="_blank">
+    <img alt="findme-logo" height="150" src="https://github.com/uzh-ase-fs24/workspace/wiki/logos/findMe_square_solid.png"/>
+  </a>
+</p>
 
-A mobile social media guessing game app. 
+# findMe frontend 📱💻
+
+A mobile first social media guessing game app. 
 
 ## Tech-Stack 
 This app is built with Angular and Ionic. This combination enables the app to work as progressive web app as well as a mobile app. Furthermore, Ionic provides standardized GUI elements that are optimized for the various platforms.
