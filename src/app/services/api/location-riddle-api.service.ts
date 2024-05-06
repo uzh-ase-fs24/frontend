@@ -24,8 +24,8 @@ export class LocationRiddleApiService {
 		return this.getRequest('/location-riddles' + (arena ? `/arena/${arena}` : ''));
 	}
 
-  getUserLocationRiddles(): Observable<LocationRiddle[]> {
-		return this.getRequest('/location-riddles/user');
+  getUserLocationRiddles(username?: string): Observable<LocationRiddle[]> {
+		return this.getRequest('/location-riddles/user'+ (username ? `/${username}` : ''));
 	}
 
 	postLocationRiddle(locationRiddle: LocationRiddlePostDto): Observable<void> {

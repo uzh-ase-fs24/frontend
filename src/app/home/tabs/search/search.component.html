@@ -18,7 +18,7 @@
 			@for(item of searchState.searchResults(); track item.username) {
 			<ion-card>
 				<ion-card-header>
-					<ion-card-title>{{ item.username }}</ion-card-title>
+					<ion-card-title class="hover-pointer" (click)="router.navigate(['/home/profiles/' + item.username])">{{ item.username }}</ion-card-title>
 				</ion-card-header>
 				<ion-card-content>
 					<ion-button expand="block" fill="outline" (click)="follow(item.username)"> Follow </ion-button>
