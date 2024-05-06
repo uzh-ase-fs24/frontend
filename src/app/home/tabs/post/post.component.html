@@ -1,4 +1,4 @@
-<div>
+<ion-content>
 	<div class="title-bar-container">
 		<div class="center-container">
 			<h1>Post new Riddle</h1>
@@ -48,17 +48,32 @@
 				></app-map>
 			</div>
 
-      <ion-list class="ion-padding ion-margin">
-        <ion-item>
-            <ion-select [(ngModel)]="arenas" aria-label="Arenas" placeholder="Select all arenas that apply" [multiple]="true">
-              @for (arenaOption of arenaOptions; track arenaOption) {
-                @if (arenaOption !== "My Friends"){
-                  <ion-select-option value="{{ arenaOption }}">{{ arenaOption }}</ion-select-option>
+      <div class="center-container">
+        <ion-list class="ion-padding ion-margin">
+          <ion-item>
+              <ion-select [(ngModel)]="arenas" aria-label="Arenas" placeholder="Select all arenas that apply" [multiple]="true">
+                @for (arenaOption of arenaOptions; track arenaOption) {
+                  @if (arenaOption !== "My Friends"){
+                    <ion-select-option value="{{ arenaOption }}">{{ arenaOption }}</ion-select-option>
+                  }
                 }
-              }
-            </ion-select>
-        </ion-item>
-      </ion-list>
+              </ion-select>
+          </ion-item>
+        </ion-list>
+        <ion-button fill="clear" id="click-trigger">
+          <ion-icon name="information-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-popover trigger="click-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">What are arenas?
+              Arenas help users to navigate and find riddles that align with their interests more easily.
+              For example, an arena could be a specific city, a type of location like beaches or mountains,
+              or even a theme like historical sites or famous landmarks. Keep in mind that arenas are public!
+              This means that every user of the application can see and participate in the riddles grouped under an arena.
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </div>
 
 			<div class="center-container" style="margin-top: 5vh">
 				<ion-button (click)="postState.cancelPost.next()" style="margin: 10px" color="medium">
@@ -76,4 +91,4 @@
 			</div>
 		</div>
 	}
-</div>
+</ion-content>

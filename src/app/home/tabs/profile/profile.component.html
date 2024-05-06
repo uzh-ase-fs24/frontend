@@ -37,17 +37,21 @@
 								<ion-label>
 									<h1 style="font-weight: normal">{{ profile.firstName }} {{ profile.lastName }}</h1>
 									<p style="margin-bottom: 0.5rem">{{ '@' + profile.username }}</p>
-									<ion-button fill="solid" size="small" (click)="updateProfileView.set(true)">
-										Edit Profile
-										<ion-icon slot="end" name="create-outline"></ion-icon>
-									</ion-button>
+									@if (!readonly) {
+										<ion-button fill="solid" size="small" (click)="updateProfileView.set(true)">
+											Edit Profile
+											<ion-icon slot="end" name="create-outline"></ion-icon>
+										</ion-button>
+									}
 								</ion-label>
 							</div>
-							<div style="display: flex; align-items: flex-start">
-								<ion-button fill="clear" (click)="logout()" style="margin: 10px">
-									<ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
-								</ion-button>
-							</div>
+							@if (!readonly) {
+								<div style="display: flex; align-items: flex-start">
+									<ion-button fill="clear" (click)="logout()" style="margin: 10px">
+										<ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+									</ion-button>
+								</div>
+							}
 						</div>
 					</div>
 				</div>

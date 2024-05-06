@@ -23,6 +23,7 @@ import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-a
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
 import { RatingComponent } from './ui/rating/rating.component';
+import { Router } from '@angular/router';
 @Component({
 	selector: 'app-location-riddle-post',
 	templateUrl: './location-riddle-post.component.html',
@@ -61,6 +62,8 @@ export class LocationRiddlePostComponent {
 	submitGuess = output<Coordinate>();
 	commentLocationRiddle = output<string>();
 	rateLocationRiddle = output<number>();
+
+  router = inject(Router);
 
 	constructor() {
 		effect(

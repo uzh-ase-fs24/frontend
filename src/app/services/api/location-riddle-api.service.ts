@@ -24,8 +24,8 @@ export class LocationRiddleApiService {
 		return this.getRequest('/location-riddles' + (arena ? `/arena/${arena}` : ''));
 	}
 
-	getUserLocationRiddles(solvedRiddles = false): Observable<LocationRiddle[]> {
-		const url = '/location-riddles/user' + (solvedRiddles ? '/solved' : '');
+	getUserLocationRiddles(username?: string, solvedRiddles = false): Observable<LocationRiddle[]> {
+		const url = '/location-riddles/user' + (username ? `/${username}` : '') + (solvedRiddles ? '/solved' : '');
 		return this.getRequest(url);
 	}
 
@@ -43,7 +43,7 @@ export class LocationRiddleApiService {
 					locationRiddle: this.mapDtoToLocationRiddle(dto.location_riddle),
 					guessResult: {
 						distance: dto.guess_result.distance,
-						score: dto.guess_result.score
+						received_score: dto.guess_result.received_score
 					}
 				}))
 			);

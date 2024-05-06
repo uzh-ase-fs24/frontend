@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { ModalController } from '@ionic/angular';
 import {
@@ -65,17 +66,22 @@ export class ProfileComponent {
 	authService = inject(AuthService);
 	toastService = inject(ToastService);
 	destroyRef = inject(DestroyRef);
+	route = inject(ActivatedRoute);
 	modalController = inject(ModalController);
 
 	// Class variables
 	updateProfileView = signal(false);
 	locationRiddleView = signal('Posts');
 
-	profile$ = this.profileApiService.getProfile();
-	connections$ = this.profileApiService.getConnections();
+	profile$ = this.profileApiService.getProfile(this.route.snapshot.params['username']);
+	connections$ = this.profileApiService.getConnections(this.route.snapshot.params['username']);
 	locationRiddles$ = computed(() =>
-		this.locationRiddleApiService.getUserLocationRiddles(this.locationRiddleView() === 'Solved')
+		this.locationRiddleApiService.getUserLocationRiddles(
+			this.route.snapshot.params['username'],
+			this.locationRiddleView() === 'Solved'
+		)
 	);
+	readonly = this.route.snapshot.params['username'] || false;
 
 	constructor() {}
 
@@ -100,7 +106,10 @@ export class ProfileComponent {
 		this.profile$ = this.profileApiService.getProfile();
 		this.connections$ = this.profileApiService.getConnections();
 		this.locationRiddles$ = computed(() =>
-			this.locationRiddleApiService.getUserLocationRiddles(this.locationRiddleView() === 'Solved')
+			this.locationRiddleApiService.getUserLocationRiddles(
+				this.route.snapshot.params['username'],
+				this.locationRiddleView() === 'Solved'
+			)
 		);
 	}
 
