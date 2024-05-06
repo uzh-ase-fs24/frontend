@@ -1,12 +1,13 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
-import {of, share, Subject, switchMap, tap } from 'rxjs';
+import { share, Subject, switchMap, tap } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { environment } from 'src/environments/environment';
 import { LocationRiddle } from '../../../../model/location-riddle';
 import { LocationRiddleApiService } from '../../../../services/api/location-riddle-api.service';
+import {ToastService} from "../../../../services/toast.service";
 
 type FeedState = {
 	locationRiddles: LocationRiddle[];
@@ -22,6 +23,7 @@ export class FeedStateService {
 	// Services
 	locationRiddleApiService = inject(LocationRiddleApiService);
 	authService = inject(AuthService);
+	toastService = inject(ToastService);
 
 	// State
 	private state = signal<FeedState>({
@@ -75,13 +77,16 @@ export class FeedStateService {
 			.with(this.refreshLocationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles
 			}))
-			.with(this.submitGuessSource, (state, guessResult) => ({
-				locationRiddles: state.locationRiddles.map((riddle) =>
-					riddle.locationRiddleId === guessResult.locationRiddle.locationRiddleId
-						? guessResult.locationRiddle
-						: riddle
-				)
-			}))
+			.with(this.submitGuessSource, (state, guessResult) => {
+        this.toastService.success('Congrats! You scored ' + guessResult.guessResult.received_score.toFixed(1) + ' points!');
+        return {
+          locationRiddles: state.locationRiddles.map((riddle) =>
+            riddle.locationRiddleId === guessResult.locationRiddle.locationRiddleId
+              ? guessResult.locationRiddle
+              : riddle
+          )
+        };
+      })
 			.with(this.rateLocationRiddleSource$, (state, updatedLocationRiddle) => ({
 				locationRiddles: state.locationRiddles.map((riddle) =>
 					riddle.locationRiddleId === updatedLocationRiddle.locationRiddleId ? updatedLocationRiddle : riddle

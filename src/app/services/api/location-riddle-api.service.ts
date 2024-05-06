@@ -42,7 +42,7 @@ export class LocationRiddleApiService {
 					locationRiddle: this.mapDtoToLocationRiddle(dto.location_riddle),
 					guessResult: {
 						distance: dto.guess_result.distance,
-						score: dto.guess_result.score
+						received_score: dto.guess_result.received_score
 					}
 				}))
 			);

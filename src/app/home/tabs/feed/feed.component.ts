@@ -7,6 +7,9 @@ import { LocationRiddlePostComponent } from '../../../shared/location-riddle-pos
 import { Arenas } from '../../../model/arenas';
 import { FeedStateService } from './data-access/feed-state.service';
 
+
+let FEED_MODE_MY_FRIENDS= "My Friends";
+
 @Component({
 	selector: 'app-feed',
 	templateUrl: './feed.component.html',
@@ -17,18 +20,18 @@ import { FeedStateService } from './data-access/feed-state.service';
 })
 export class FeedComponent {
 	feedState = inject(FeedStateService);
-  feedMode= "My Friends";
+  feedMode= FEED_MODE_MY_FRIENDS;
   arenaOptions = Object.values(Arenas);
 
 	constructor() {}
 
   onFeedModeChange() {
-    this.feedState.setArena.next(this.feedMode === "My Friends" ? "" : this.feedMode);
+    this.feedState.setArena.next(this.feedMode === FEED_MODE_MY_FRIENDS ? "" : this.feedMode);
     this.feedState.refresh.next();
   }
 
 	handleRefresh(event: any) {
-    this.feedState.setArena.next(this.feedMode === "My Friends" ? "" : this.feedMode);
+    this.feedState.setArena.next(this.feedMode === FEED_MODE_MY_FRIENDS ? "" : this.feedMode);
 		this.feedState.refresh.next();
 		setTimeout(() => {
 			event.target.complete();
