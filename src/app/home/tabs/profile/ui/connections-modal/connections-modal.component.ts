@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { User } from '../../../../../model/user';
 import { IonContent, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-connections-modal',
@@ -12,4 +13,5 @@ import { IonContent, IonItem, IonLabel } from '@ionic/angular/standalone';
 export class ConnectionsModalComponent {
 	connection?: string;
 	connections?: User[];
+  router = inject(Router);
 }

@@ -69,7 +69,7 @@ export class ProfileComponent {
 	updateProfileView = signal(false);
 	profile$ = this.profileApiService.getProfile(this.route.snapshot.params['username']);
 	connections$ = this.profileApiService.getConnections();
-	locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles();
+	locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles(this.route.snapshot.params['username']);
 
 	readonly = this.route.snapshot.params['username'] || false;
 
