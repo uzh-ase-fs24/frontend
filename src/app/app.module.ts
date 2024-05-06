@@ -25,10 +25,9 @@ const redirect_uri = AuthService.redirectCallback;
 			clientId: environment.auth.clientId,
 			useRefreshTokens: true,
 			useRefreshTokensFallback: true,
-			authorizationParams: {
+      cacheLocation: 'localstorage',
+      authorizationParams: {
 				prompt: 'login',
-				cacheLocation: 'localstorage',
-				useRefreshTokens: true,
 				redirect_uri,
 				audience: environment.auth.audience
 			}

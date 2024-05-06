@@ -41,3 +41,11 @@ For authentication Auth0 is deployed due to its simple and intuitive integration
 -   Sync ionic with `ionic cap sync` or via the plugin
 -   To use the native Run commands of the ionic plugin (Android/IOS) it is necessary to install Android Studio and XCode
     -   It is possible that your SDK is not defined. Find a help here: [https://stackoverflow.com/questions/27620262/sdk-location-not-found-define-location-with-sdk-dir-in-the-local-properties-fil](https://stackoverflow.com/questions/27620262/sdk-location-not-found-define-location-with-sdk-dir-in-the-local-properties-fil)
+
+## E2E Testing
+
+- Playwright is used for end to end testing. 
+- Run `npx playwright test` to run the test suite in headless mode
+- Run `npx playwright test --ui` to run the test suite in UI mode (helpful for debugging)
+- Run  `npx playwright codegen localhost:8100` to generate your own testcase. Run `npx playwright codegen --device="iPhone 14 Pro" localhost:8100` if you want to generate iPhone test cases (camera access not working)
+
