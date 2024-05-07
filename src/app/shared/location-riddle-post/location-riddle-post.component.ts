@@ -63,7 +63,7 @@ export class LocationRiddlePostComponent {
 	commentLocationRiddle = output<string>();
 	rateLocationRiddle = output<number>();
 
-  router = inject(Router);
+	router = inject(Router);
 
 	constructor() {
 		effect(
@@ -103,5 +103,12 @@ export class LocationRiddlePostComponent {
 			this.submitGuess.emit(this.locationRiddleState.marker() || []);
 			this.locationRiddleState.submittedGuess.next();
 		}
+	}
+
+	isDarkMode(): string {
+		if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			return 'dark-mode';
+		}
+		return 'light-mode';
 	}
 }

@@ -47,7 +47,7 @@
 				style="margin-top: 15px; margin-bottom: 5px"
 			>
 				<ion-icon size="small" name="chatbox-outline"></ion-icon>
-				<p style="padding-left: 0.3rem">add a comment...</p>
+				<p style="padding-left: 0.3rem; font-weight: bold">add a comment...</p>
 			</ion-item>
 			<ion-fab horizontal="start" slot="fixed" vertical="bottom">
 				<ion-fab-button (click)="locationRiddleState.toggleMap.next()">
@@ -81,8 +81,8 @@
 				@for (comment of locationRiddleState.locationRiddle()!.comments; track comment.username) {
 					<ion-item lines="none">
 						<ion-label class="ion-text-wrap" (click)="router.navigate(['/home/profiles/' + comment.username])">
-							<h3>{{ comment.username }}</h3>
-							<p>{{ comment.comment }}</p>
+							<h3 class="grey-text">{{ comment.username }}</h3>
+							<p [ngClass]="isDarkMode()">{{ comment.comment }}</p>
 						</ion-label>
 					</ion-item>
 				} @empty {
@@ -94,7 +94,7 @@
 				}
 			</ion-content>
 			<ion-item lines="none">
-				<ion-input #commentInput placeholder="Add a comment..."></ion-input>
+				<ion-input [ngClass]="isDarkMode()" #commentInput placeholder="Add a comment..."></ion-input>
 				<ion-button (click)="comment(commentInput)" fill="clear" slot="end">
 					<ion-icon name="send" slot="icon-only"></ion-icon>
 				</ion-button>
