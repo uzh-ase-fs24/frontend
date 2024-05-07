@@ -16,7 +16,8 @@ import {
 	IonInput,
 	IonItem,
 	IonLabel,
-	IonModal
+	IonModal,
+	IonAlert
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
@@ -46,7 +47,8 @@ import { Router } from '@angular/router';
 		IonButton,
 		CommonModule,
 		MapComponent,
-		RatingComponent
+		RatingComponent,
+		IonAlert
 	],
 	styleUrls: ['./location-riddle-post.component.scss'],
 	providers: [LocationRiddleStateService, LocationRiddleApiService],
@@ -66,6 +68,20 @@ export class LocationRiddlePostComponent {
 
 	router = inject(Router);
 	route = inject(ActivatedRoute);
+
+	public alertButtons = [
+		{
+			text: 'Cancel',
+			role: 'cancel'
+		},
+		{
+			text: 'Delete',
+			role: 'confirm',
+			handler: () => {
+				this.locationRiddleState.deleteLocationRiddle.next(this.locationRiddle().locationRiddleId);
+			}
+		}
+	];
 
 	constructor() {
 		effect(
