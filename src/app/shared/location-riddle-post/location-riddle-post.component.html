@@ -17,7 +17,7 @@
 							[ratingError]="ratingError"
 						></app-rating>
             @if (isCurrentUser()) {
-              <ion-button id="present-alert" fill="clear">
+              <ion-button [id]="'present-alert-' + locationRiddle().locationRiddleId" fill="clear">
                 <ion-icon
                   class="hover-pointer ion-align-self-end ion-padding-bottom"
                   name="trash-outline"
@@ -26,7 +26,7 @@
                 ></ion-icon>
               </ion-button>
               <ion-alert
-                trigger="present-alert"
+                [trigger]="'present-alert-' + locationRiddle().locationRiddleId"
                 header="Are you sure you want to delete this riddle?"
                 [buttons]="alertButtons"
               ></ion-alert>
