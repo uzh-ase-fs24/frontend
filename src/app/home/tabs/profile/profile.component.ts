@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { ModalController } from '@ionic/angular';
 import {
@@ -67,6 +67,7 @@ export class ProfileComponent {
 	toastService = inject(ToastService);
 	destroyRef = inject(DestroyRef);
 	route = inject(ActivatedRoute);
+	router = inject(Router);
 	modalController = inject(ModalController);
 
 	// Class variables
@@ -84,7 +85,17 @@ export class ProfileComponent {
 	);
 	readonly = this.route.snapshot.params['username'] || false;
 
-	constructor() {}
+	constructor() {
+		this.router.events
+			.pipe(
+				takeUntilDestroyed(),
+				filter((event) => event instanceof NavigationEnd),
+				tap(() => {
+					if (this.router.getCurrentNavigation()?.extras.state?.['refresh']) this.refresh();
+				})
+			)
+			.subscribe();
+	}
 
 	submitForm(user: UserForm) {
 		this.profile$ = this.profileApiService.updateProfile(user).pipe(
@@ -102,8 +113,8 @@ export class ProfileComponent {
 		return (firstName[0] + lastName[0]).toUpperCase();
 	}
 
-	refresh(event: any) {
-		event.target.complete();
+	refresh(event?: any) {
+		if (event) event.target.complete();
 		this.profile$ = this.profileApiService.getProfile();
 		this.connections$ = this.profileApiService.getConnections();
 		this.locationRiddles$ = computed(() =>
