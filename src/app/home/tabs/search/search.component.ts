@@ -42,4 +42,8 @@ export class SearchComponent {
 			.pipe(tap(() => this.toastService.success('Follow request sent!')))
 			.subscribe();
 	}
+
+	followingUser(username: string) {
+		return this.searchState.followingUsers().some((user) => user.username === username);
+	}
 }

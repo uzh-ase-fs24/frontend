@@ -7,6 +7,7 @@ import { ProfileApiService } from 'src/app/services/api/profile-api.service';
 type searchState = {
 	searchTerm: string;
 	searchResults: User[];
+	followingUsers: User[];
 };
 
 @Injectable()
@@ -17,12 +18,14 @@ export class SearchStateService {
 	// State
 	private state = signal<searchState>({
 		searchTerm: '',
-		searchResults: []
+		searchResults: [],
+		followingUsers: []
 	});
 
 	// Selectors
 	public searchTerm = computed(() => this.state().searchTerm);
 	public searchResults = computed(() => this.state().searchResults);
+	public followingUsers = computed(() => this.state().followingUsers);
 
 	// Action Sources (Subjects)
 	public search = new Subject<string | null | undefined>();
@@ -34,6 +37,8 @@ export class SearchStateService {
 		switchMap((searchTerm) => this.profileApiService.getProfilesByNamePrefix(searchTerm || ''))
 	);
 
+	private connections = this.profileApiService.getConnections();
+
 	constructor() {
 		// Reducers
 		connect(this.state)
@@ -42,6 +47,9 @@ export class SearchStateService {
 			}))
 			.with(this.searchResultsSource, (state, searchResults) => ({
 				searchResults: searchResults
+			}))
+			.with(this.connections, (state, connections) => ({
+				followingUsers: connections.following
 			}));
 	}
 }

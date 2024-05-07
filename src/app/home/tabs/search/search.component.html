@@ -15,15 +15,27 @@
 
 	<div class="center-container">
 		<div class="list-container">
-			@for(item of searchState.searchResults(); track item.username) {
-			<ion-card>
-				<ion-card-header>
-					<ion-card-title class="hover-pointer" (click)="router.navigate(['/home/profiles/' + item.username])">{{ item.username }}</ion-card-title>
-				</ion-card-header>
-				<ion-card-content>
-					<ion-button expand="block" fill="outline" (click)="follow(item.username)"> Follow </ion-button>
-				</ion-card-content>
-			</ion-card>
+			@for (item of searchState.searchResults(); track item.username) {
+				<ion-card>
+					<ion-card-header>
+						<ion-card-title
+							class="hover-pointer"
+							(click)="router.navigate(['/home/profiles/' + item.username])"
+							>{{ item.username }}</ion-card-title
+						>
+					</ion-card-header>
+					@if (!followingUser(item.username)) {
+						<ion-card-content>
+							<ion-button expand="block" fill="outline" (click)="follow(item.username)">
+								Follow
+							</ion-button>
+						</ion-card-content>
+					} @else {
+						<ion-card-content>
+							<ion-button expand="block" fill="outline" disabled="true"> Following </ion-button>
+						</ion-card-content>
+					}
+				</ion-card>
 			}
 		</div>
 	</div>
