@@ -86,6 +86,7 @@ export class LocationRiddleApiService {
 			createdAt: dto.created_at * 1000,
 			rating: dto.average_rating,
 			location: dto.location?.coordinate,
+			rated: dto.is_rated_by_user,
 			guesses: dto.guesses?.map((guess) => ({
 				guess: guess.guess.coordinate,
 				username: guess.username

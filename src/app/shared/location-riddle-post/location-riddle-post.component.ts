@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, input, output } from '@angular/core';
+import { Router } from '@angular/router';
 import {
 	IonAvatar,
 	IonButton,
@@ -23,7 +24,6 @@ import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-a
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
 import { RatingComponent } from './ui/rating/rating.component';
-import { Router } from '@angular/router';
 @Component({
 	selector: 'app-location-riddle-post',
 	templateUrl: './location-riddle-post.component.html',
@@ -63,7 +63,7 @@ export class LocationRiddlePostComponent {
 	commentLocationRiddle = output<string>();
 	rateLocationRiddle = output<number>();
 
-  router = inject(Router);
+	router = inject(Router);
 
 	constructor() {
 		effect(
@@ -85,6 +85,8 @@ export class LocationRiddlePostComponent {
 			return 'You can only rate a solved riddle';
 		} else if (this.locationRiddle().username === this.username()) {
 			return 'You cannot rate your own riddle';
+		} else if (this.locationRiddleState.locationRiddle()?.rated) {
+			return 'You have already rated this riddle';
 		} else {
 			return undefined;
 		}
