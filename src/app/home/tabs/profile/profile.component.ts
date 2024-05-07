@@ -21,7 +21,7 @@ import {
 	IonSpinner,
 	IonTitle
 } from '@ionic/angular/standalone';
-import { catchError, EMPTY, tap } from 'rxjs';
+import { catchError, EMPTY, filter, map, tap } from 'rxjs';
 import { User, UserForm } from 'src/app/model/user';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { ProfileApiService } from 'src/app/services/api/profile-api.service';
@@ -76,10 +76,11 @@ export class ProfileComponent {
 	profile$ = this.profileApiService.getProfile(this.route.snapshot.params['username']);
 	connections$ = this.profileApiService.getConnections(this.route.snapshot.params['username']);
 	locationRiddles$ = computed(() =>
-		this.locationRiddleApiService.getUserLocationRiddles(
-			this.route.snapshot.params['username'],
-			this.locationRiddleView() === 'Solved'
-		)
+		this.locationRiddleApiService
+			.getUserLocationRiddles(this.route.snapshot.params['username'], this.locationRiddleView() === 'Solved')
+			.pipe(
+				map((posts) => posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()))
+			)
 	);
 	readonly = this.route.snapshot.params['username'] || false;
 
