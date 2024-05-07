@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { ModalController } from '@ionic/angular';
 import {
 	IonButton,
 	IonChip,
@@ -15,6 +16,8 @@ import {
 	IonModal,
 	IonRefresher,
 	IonRefresherContent,
+	IonSegment,
+	IonSegmentButton,
 	IonSpinner,
 	IonTitle
 } from '@ionic/angular/standalone';
@@ -25,7 +28,6 @@ import { ProfileApiService } from 'src/app/services/api/profile-api.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { LocationRiddlePostComponent } from 'src/app/shared/location-riddle-post/location-riddle-post.component';
 import { UserFormComponent } from 'src/app/shared/user-form/user-form.component';
-import { ModalController } from '@ionic/angular';
 import { ConnectionsModalComponent } from './ui/connections-modal/connections-modal.component';
 
 @Component({
@@ -34,6 +36,8 @@ import { ConnectionsModalComponent } from './ui/connections-modal/connections-mo
 	styleUrls: ['./profile.component.scss'],
 	standalone: true,
 	imports: [
+		IonSegmentButton,
+		IonSegment,
 		IonRefresherContent,
 		IonRefresher,
 		IonTitle,
@@ -67,10 +71,16 @@ export class ProfileComponent {
 
 	// Class variables
 	updateProfileView = signal(false);
+	locationRiddleView = signal('Posts');
+
 	profile$ = this.profileApiService.getProfile(this.route.snapshot.params['username']);
 	connections$ = this.profileApiService.getConnections(this.route.snapshot.params['username']);
-	locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles(this.route.snapshot.params['username']);
-
+	locationRiddles$ = computed(() =>
+		this.locationRiddleApiService.getUserLocationRiddles(
+			this.route.snapshot.params['username'],
+			this.locationRiddleView() === 'Solved'
+		)
+	);
 	readonly = this.route.snapshot.params['username'] || false;
 
 	constructor() {}
@@ -91,14 +101,23 @@ export class ProfileComponent {
 		return (firstName[0] + lastName[0]).toUpperCase();
 	}
 
-  refresh(event: any) {
+	refresh(event: any) {
 		event.target.complete();
 		this.profile$ = this.profileApiService.getProfile();
 		this.connections$ = this.profileApiService.getConnections();
-		this.locationRiddles$ = this.locationRiddleApiService.getUserLocationRiddles();
+		this.locationRiddles$ = computed(() =>
+			this.locationRiddleApiService.getUserLocationRiddles(
+				this.route.snapshot.params['username'],
+				this.locationRiddleView() === 'Solved'
+			)
+		);
 	}
 
-  async openConnections(connection: 'Following' | 'Followers', connections: User[]) {
+	setLocationRiddleView(event: any) {
+		this.locationRiddleView.set(event.detail.value);
+	}
+
+	async openConnections(connection: 'Following' | 'Followers', connections: User[]) {
 		const modal = await this.modalController.create({
 			component: ConnectionsModalComponent,
 			componentProps: { connection: connection, connections: connections },

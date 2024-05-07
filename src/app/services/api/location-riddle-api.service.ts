@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Coordinate } from 'ol/coordinate';
+import { map, Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { of, map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
 	GuessResult,
@@ -24,8 +24,9 @@ export class LocationRiddleApiService {
 		return this.getRequest('/location-riddles' + (arena ? `/arena/${arena}` : ''));
 	}
 
-  getUserLocationRiddles(username?: string): Observable<LocationRiddle[]> {
-		return this.getRequest('/location-riddles/user'+ (username ? `/${username}` : ''));
+	getUserLocationRiddles(username?: string, solvedRiddles = false): Observable<LocationRiddle[]> {
+		const url = '/location-riddles/user' + (username ? `/${username}` : '') + (solvedRiddles ? '/solved' : '');
+		return this.getRequest(url);
 	}
 
 	postLocationRiddle(locationRiddle: LocationRiddlePostDto): Observable<void> {
@@ -69,9 +70,9 @@ export class LocationRiddleApiService {
 			map((dtos: LocationRiddleDto[]) => {
 				return dtos.map((dto) => this.mapDtoToLocationRiddle(dto));
 			}),
-      catchError((error) => {
-        return of([]);
-      })
+			catchError((error) => {
+				return of([]);
+			})
 		);
 	}
 
@@ -85,6 +86,7 @@ export class LocationRiddleApiService {
 			createdAt: dto.created_at * 1000,
 			rating: dto.average_rating,
 			location: dto.location?.coordinate,
+			rated: dto.is_rated_by_user,
 			guesses: dto.guesses?.map((guess) => ({
 				guess: guess.guess.coordinate,
 				username: guess.username
