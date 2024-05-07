@@ -16,6 +16,15 @@
 							(makeRating)="locationRiddleState.rateLocationRiddle.next($event)"
 							[ratingError]="ratingError"
 						></app-rating>
+            @if (isCurrentUser()) {
+              <ion-icon
+                class="hover-pointer ion-align-self-end ion-padding-bottom"
+                name="trash-outline"
+                color="dark"
+                size="medium"
+                (click)="isCurrentUser()"
+              ></ion-icon>
+            }
 					</div>
 				</ion-item>
 			</ion-card-title>

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, input, output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
 	IonAvatar,
 	IonButton,
@@ -64,6 +65,7 @@ export class LocationRiddlePostComponent {
 	rateLocationRiddle = output<number>();
 
 	router = inject(Router);
+	route = inject(ActivatedRoute);
 
 	constructor() {
 		effect(
@@ -110,5 +112,9 @@ export class LocationRiddlePostComponent {
 			return 'dark-mode';
 		}
 		return 'light-mode';
+	}
+
+	isCurrentUser(): boolean {
+		return this.locationRiddle().username === this.username() && !this.route.snapshot.params['username'];
 	}
 }
