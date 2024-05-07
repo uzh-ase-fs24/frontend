@@ -1,104 +1,106 @@
 @if (locationRiddleState.locationRiddle()) {
-	<ion-card style="width: 90vw; min-height: 37rem; max-width: 40rem" color="light">
-		<ion-card-header class="ion-padding">
-			<ion-card-title>
-				<ion-item lines="none">
-					<ion-avatar aria-hidden="true" slot="start">
-						<ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
-					</ion-avatar>
-					<div style="display: flex; justify-content: space-between; flex-grow: 1">
-						<ion-label class="hover-pointer" color="dark" (click)="router.navigate(['/home/profiles/' + locationRiddleState.locationRiddle()!.username])">
-							<h2>{{ locationRiddleState.locationRiddle()!.username }}</h2>
-							<p>{{ locationRiddleState.locationRiddle()!.createdAt | date: 'short' }}</p>
-						</ion-label>
-						<app-rating
-							[rating]="locationRiddleState.locationRiddle()!.rating"
-							(makeRating)="locationRiddleState.rateLocationRiddle.next($event)"
-							[ratingError]="ratingError"
-						></app-rating>
-					</div>
-				</ion-item>
-			</ion-card-title>
-		</ion-card-header>
-		<ion-card-content style="height: 40vh; min-height: 30rem">
-			@if (locationRiddleState.showMap()) {
-				<app-map
-					(placeMarker)="locationRiddleState.placeGuess.next($event)"
-					[marker]="locationRiddleState.marker()"
-					[guesses]="locationRiddleState.guesses()"
-					[userGuess]="locationRiddleState.userGuess()"
-					[solution]="locationRiddleState.solution()"
-					[solved]="locationRiddleState.locationRiddle()!.solved"
-					[zoom]="locationRiddleState.mapZoom()"
-					[center]="locationRiddleState.mapCenter()"
-					(zoomChange)="locationRiddleState.mapZoomChanged.next($event)"
-					(centerChange)="locationRiddleState.mapCenterChanged.next($event)"
-				></app-map>
-			} @else {
-				<ion-img
-					src="data:image;base64, {{ locationRiddleState.locationRiddle()!.locationRiddleImage }}"
-				></ion-img>
-			}
-			<ion-item
-				id="open-modal-{{ locationRiddleState.locationRiddle()!.locationRiddleId }}"
-				expand="block"
-				class="ion-no-padding"
-				lines="none"
-				style="margin-top: 15px; margin-bottom: 5px"
-			>
-				<ion-icon size="small" name="chatbox-outline"></ion-icon>
-				<p style="padding-left: 0.3rem">add a comment...</p>
-			</ion-item>
-			<ion-fab horizontal="start" slot="fixed" vertical="bottom">
-				<ion-fab-button (click)="locationRiddleState.toggleMap.next()">
-					<ion-icon name="{{ locationRiddleState.showMap() ? 'image' : 'map' }}-outline"></ion-icon>
-				</ion-fab-button>
-			</ion-fab>
-			@if (locationRiddleState.marker() && !locationRiddleState.submitted()) {
-				<ion-fab horizontal="end" slot="fixed" vertical="bottom">
-					<ion-fab-button color="success" (click)="submit()">
-						<ion-icon color="dark" name="checkmark-outline"></ion-icon>
-					</ion-fab-button>
-				</ion-fab>
-			}
-		</ion-card-content>
-	</ion-card>
+  <ion-card style="width: 90vw; min-height: 37rem; max-width: 40rem" color="light">
+    <ion-card-header class="ion-padding">
+      <ion-card-title>
+        <ion-item lines="none">
+          <ion-avatar aria-hidden="true" slot="start">
+            <ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
+          </ion-avatar>
+          <div style="display: flex; justify-content: space-between; flex-grow: 1">
+            <ion-label class="hover-pointer" color="dark"
+                       (click)="router.navigate(['/home/profiles/' + locationRiddleState.locationRiddle()!.username])">
+              <h2>{{ locationRiddleState.locationRiddle()!.username }}</h2>
+              <p>{{ locationRiddleState.locationRiddle()!.createdAt | date: 'short' }}</p>
+            </ion-label>
+            <app-rating
+              [rating]="locationRiddleState.locationRiddle()!.rating"
+              (makeRating)="locationRiddleState.rateLocationRiddle.next($event)"
+              [ratingError]="ratingError"
+            ></app-rating>
+          </div>
+        </ion-item>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="height: 40vh; min-height: 30rem">
+      @if (locationRiddleState.showMap()) {
+        <app-map
+          (placeMarker)="locationRiddleState.placeGuess.next($event)"
+          [marker]="locationRiddleState.marker()"
+          [guesses]="locationRiddleState.guesses()"
+          [userGuess]="locationRiddleState.userGuess()"
+          [solution]="locationRiddleState.solution()"
+          [solved]="locationRiddleState.locationRiddle()!.solved"
+          [zoom]="locationRiddleState.mapZoom()"
+          [center]="locationRiddleState.mapCenter()"
+          (zoomChange)="locationRiddleState.mapZoomChanged.next($event)"
+          (centerChange)="locationRiddleState.mapCenterChanged.next($event)"
+        ></app-map>
+      } @else {
+        <ion-img
+          src="data:image;base64, {{ locationRiddleState.locationRiddle()!.locationRiddleImage }}"
+        ></ion-img>
+      }
+      <ion-item
+        expand="block"
+        class="ion-no-padding"
+        lines="none"
+        style="margin-top: 15px; margin-bottom: 5px"
+        (click)="commentsModalOpen = true"
+      >
+        <ion-icon size="small" name="chatbox-outline"></ion-icon>
+        <p style="padding-left: 0.3rem">add a comment...</p>
+      </ion-item>
+      <ion-fab horizontal="start" slot="fixed" vertical="bottom">
+        <ion-fab-button (click)="locationRiddleState.toggleMap.next()">
+          <ion-icon name="{{ locationRiddleState.showMap() ? 'image' : 'map' }}-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      @if (locationRiddleState.marker() && !locationRiddleState.submitted()) {
+        <ion-fab horizontal="end" slot="fixed" vertical="bottom">
+          <ion-fab-button color="success" (click)="submit()">
+            <ion-icon color="dark" name="checkmark-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      }
+    </ion-card-content>
+  </ion-card>
 
-	<ion-modal
-		#modal
-		[breakpoints]="[0, 0.5]"
-		[initialBreakpoint]="0.5"
-		trigger="open-modal-{{ locationRiddleState.locationRiddle()!.locationRiddleId }}"
-		class="comments"
-	>
-		<ng-template>
-			<ion-item lines="full">
-				<ion-label class="ion-text-center">
-					<h2>Comments</h2>
-				</ion-label>
-			</ion-item>
-			<ion-content>
-				@for (comment of locationRiddleState.locationRiddle()!.comments; track comment.username) {
-					<ion-item lines="none">
-						<ion-label class="ion-text-wrap" (click)="router.navigate(['/home/profiles/' + comment.username])">
-							<h3>{{ comment.username }}</h3>
-							<p>{{ comment.comment }}</p>
-						</ion-label>
-					</ion-item>
-				} @empty {
-					<ion-item lines="none">
-						<ion-label class="ion-text-center">
-							<p>No comments yet</p>
-						</ion-label>
-					</ion-item>
-				}
-			</ion-content>
-			<ion-item lines="none">
-				<ion-input #commentInput placeholder="Add a comment..."></ion-input>
-				<ion-button (click)="comment(commentInput)" fill="clear" slot="end">
-					<ion-icon name="send" slot="icon-only"></ion-icon>
-				</ion-button>
-			</ion-item>
-		</ng-template>
-	</ion-modal>
+  <ion-modal
+    #modal
+    [breakpoints]="[0, 0.5]"
+    [initialBreakpoint]="0.5"
+    [isOpen]="commentsModalOpen"
+    (didDismiss)="commentsModalOpen = false"
+    class="comments"
+  >
+    <ng-template>
+      <ion-item lines="full">
+        <ion-label class="ion-text-center">
+          <h2>Comments</h2>
+        </ion-label>
+      </ion-item>
+      <ion-content>
+        @for (comment of locationRiddleState.locationRiddle()!.comments; track comment.username) {
+          <ion-item lines="none">
+            <ion-label class="ion-text-wrap" (click)="router.navigate(['/home/profiles/' + comment.username])">
+              <h3>{{ comment.username }}</h3>
+              <p>{{ comment.comment }}</p>
+            </ion-label>
+          </ion-item>
+        } @empty {
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <p>No comments yet</p>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-content>
+      <ion-item lines="none">
+        <ion-input #commentInput placeholder="Add a comment..."></ion-input>
+        <ion-button (click)="comment(commentInput)" fill="clear" slot="end">
+          <ion-icon name="send" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ng-template>
+  </ion-modal>
 }
