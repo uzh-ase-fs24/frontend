@@ -1,39 +1,59 @@
-<div>
-	<div class="title-bar-container">
-		<div class="center-container">
-			<h1>Your Network</h1>
-		</div>
-	</div>
-	<div class="title-bar-container">
-		<div class="center-container">
-			<h3>Follow Requests</h3>
-		</div>
-	</div>
-	<div class="center-container">
-		<div class="list-container">
-			@for (item of networkState.followRequests(); track item.requester) {
-				<ion-card>
-					<ion-card-header>
-						<ion-card-title>{{ item.requester }}</ion-card-title>
-					</ion-card-header>
-					<ion-card-content>
-						<ion-button
-							expand="block"
-							fill="outline"
-							(click)="networkState.acceptFollowRequest.next(item.requester)"
-							>Accept</ion-button
-						>
-						<ion-button
-							expand="block"
-							fill="outline"
-							style="margin-top: 10px"
-							color="medium"
-							(click)="networkState.declineFollowRequest.next(item.requester)"
-							>Decline</ion-button
-						>
-					</ion-card-content>
-				</ion-card>
-			}
-		</div>
-	</div>
-</div>
+<ion-content class="ion-padding-horizontal">
+  <h1 class="ion-text-center">findMe</h1>
+  <ion-item class="search ion-margin-vertical" lines="none">
+    <ion-icon fill="icon-only" name="search" size="small" slot="start"></ion-icon>
+    <ion-input
+      (ionInput)="searchState.search.next($event.detail.value)"
+      [clearInput]="true"
+      color="dark"
+      label="Add or Search friends"
+      labelPlacement="floating"
+      placeholder="Username..."
+      type="text">
+    </ion-input>
+  </ion-item>
+
+  <div class="ion-margin-vertical">
+    @if (searchState.searchResults().length) {
+      <ion-label color="medium">
+        <h2>SEARCH RESULTS</h2>
+      </ion-label>
+    }
+    @for (item of searchState.searchResults(); track item.username) {
+      <ion-item lines="none">
+        <ion-label (click)="router.navigate(['/home/profiles/' + item.username])">
+          <h2>{{ item.username }}</h2>
+          <p>{{ item.firstName }} {{ item.lastName }}</p>
+        </ion-label>
+        @if (isFollowingUser(item.username)) {
+          <ion-icon name="checkmark-outline"></ion-icon>
+        } @else {
+          <ion-button (click)="this.networkState.follow.next(item.username)" fill="clear" color="dark">
+            <ion-icon slot="icon-only" name="person-add-sharp"></ion-icon>
+          </ion-button>
+        }
+      </ion-item>
+    }
+  </div>
+
+  <div class="ion-margin-vertical">
+    @if (networkState.followRequests().length) {
+      <ion-label color="medium">
+        <h2>FOLLOW REQUESTS</h2>
+      </ion-label>
+    }
+    @for (item of networkState.followRequests(); track item.requester) {
+      <ion-item lines="none">
+        <ion-label (click)="router.navigate(['home/profiles', item.requester])">
+          <h2>{{ item.requester }}</h2>
+        </ion-label>
+        <ion-button (click)="networkState.acceptFollowRequest.next(item.requester)" fill="clear" color="success">
+          <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="networkState.declineFollowRequest.next(item.requester)" fill="clear" color="danger">
+          <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    }
+  </div>
+</ion-content>

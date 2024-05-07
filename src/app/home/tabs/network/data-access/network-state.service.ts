@@ -1,16 +1,19 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
-import { map, Subject, switchMap } from 'rxjs';
+import { map, Subject, switchMap, tap } from 'rxjs';
 import { FollowRequest } from 'src/app/model/follow-request';
 import { FollowRequestsApiService } from 'src/app/services/api/follow-requests-api.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 type networkState = {
 	followRequests: FollowRequest[];
 };
+
 @Injectable()
 export class NetworkStateService {
 	// Services
 	followRequestsApi = inject(FollowRequestsApiService);
+	toastService = inject(ToastService);
 
 	// State
 	private state = signal<networkState>({
@@ -23,6 +26,7 @@ export class NetworkStateService {
 	// Action Sources (Subjects)
 	public acceptFollowRequest = new Subject<string>();
 	public declineFollowRequest = new Subject<string>();
+	public follow = new Subject<string>();
 
 	// Sources (Observables)
 	private followRequests$ = this.followRequestsApi.getFollowRequests();
@@ -31,6 +35,10 @@ export class NetworkStateService {
 	);
 	private declineFollowRequest$ = this.declineFollowRequest.pipe(
 		switchMap((username) => this.followRequestsApi.declineFollowRequest(username).pipe(map(() => username)))
+	);
+	private follow$ = this.follow.pipe(
+		switchMap((username) => this.followRequestsApi.makeFollowRequests(username).pipe(map(() => username))),
+		tap(() => this.toastService.success('Follow request sent!'))
 	);
 
 	constructor() {
@@ -43,6 +51,7 @@ export class NetworkStateService {
 			}))
 			.with(this.declineFollowRequest$, (state, username) => ({
 				followRequests: state.followRequests.filter((request) => request.requester !== username)
-			}));
+			}))
+			.with(this.follow$, (state, username) => ({}));
 	}
 }
