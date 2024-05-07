@@ -17,13 +17,14 @@
 							[ratingError]="ratingError"
 						></app-rating>
             @if (isCurrentUser()) {
-              <ion-icon
-                class="hover-pointer ion-align-self-end ion-padding-bottom"
-                name="trash-outline"
-                color="dark"
-                size="medium"
-                (click)="isCurrentUser()"
-              ></ion-icon>
+              <ion-button fill="clear" (click)="locationRiddleState.deleteLocationRiddle.next(locationRiddle().locationRiddleId)">
+                <ion-icon
+                  class="hover-pointer ion-align-self-end ion-padding-bottom"
+                  name="trash-outline"
+                  color="dark"
+                  size="medium"
+                ></ion-icon>
+              </ion-button>
             }
 					</div>
 				</ion-item>
