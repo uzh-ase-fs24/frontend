@@ -1,6 +1,5 @@
 ion-item {
 	--background: transparent;
-	--color: white;
 }
 
 ion-card-header {
@@ -9,4 +8,8 @@ ion-card-header {
 
 ::ng-deep .comments > .ion-page {
 	height: 50% !important;
+}
+
+.grey-text {
+    color: grey;
 }
