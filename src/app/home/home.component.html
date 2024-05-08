@@ -2,6 +2,9 @@
   @if (userProfile$ | async) {
     @if (authUser$ | async; as authUser) {
       <ion-tabs>
+        <ion-header class="ion-text-center">
+          <h1 class="ion-no-margin ion-margin-bottom" style="font-size: 2rem;">findMe</h1>
+        </ion-header>
         <ion-tab-bar>
           <ion-tab-button tab="feed">
             <ion-icon name="map-outline"></ion-icon>

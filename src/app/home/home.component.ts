@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonIcon, IonSpinner, IonTabBar, IonTabButton, IonTabs } from '@ionic/angular/standalone';
-import { EMPTY, Observable, catchError, startWith, switchMap } from 'rxjs';
+import { IonHeader, IonIcon, IonSpinner, IonTabBar, IonTabButton, IonTabs } from '@ionic/angular/standalone';
+import { catchError, EMPTY, Observable, startWith, switchMap } from 'rxjs';
 import { User } from '../model/user';
 import { ProfileApiService } from '../services/api/profile-api.service';
 import { AuthService } from '../services/auth/auth.service';
@@ -12,7 +12,7 @@ import { AuthService } from '../services/auth/auth.service';
 	templateUrl: './home.component.html',
 	styleUrls: ['./home.component.scss'],
 	standalone: true,
-	imports: [IonSpinner, IonIcon, IonTabBar, IonTabs, IonTabButton, CommonModule]
+	imports: [IonSpinner, IonIcon, IonTabBar, IonTabs, IonTabButton, CommonModule, IonHeader]
 })
 export class HomeComponent {
 	private authService = inject(AuthService);
