@@ -1,16 +1,5 @@
 import { Component, inject } from '@angular/core';
-import {
-	IonButton,
-	IonCard,
-	IonCardContent,
-	IonCardHeader,
-	IonCardTitle,
-	IonContent,
-	IonIcon,
-	IonInput,
-	IonItem,
-	IonLabel
-} from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonIcon, IonInput, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { NetworkStateService } from './data-access/network-state.service';
 import { Router } from '@angular/router';
 import { SearchStateService } from './data-access/search-state.service';
@@ -21,18 +10,7 @@ import { ToastService } from 'src/app/services/toast.service';
 	templateUrl: './network.component.html',
 	styleUrls: ['./network.component.scss'],
 	standalone: true,
-	imports: [
-		IonButton,
-		IonItem,
-		IonLabel,
-		IonContent,
-		IonCardHeader,
-		IonCardContent,
-		IonCardTitle,
-		IonCard,
-		IonInput,
-		IonIcon
-	],
+	imports: [IonButton, IonItem, IonLabel, IonContent, IonInput, IonIcon],
 	providers: [NetworkStateService, SearchStateService, ToastService]
 })
 export class NetworkComponent {

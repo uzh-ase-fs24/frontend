@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
-import { catchError, map, of, Subject, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, map, Subject, switchMap, tap } from 'rxjs';
 import { FollowRequest } from 'src/app/model/follow-request';
 import { FollowRequestsApiService } from 'src/app/services/api/follow-requests-api.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -42,7 +42,7 @@ export class NetworkStateService {
 				map(() => username),
 				catchError((e) => {
 					this.toastService.error('You already requested to follow this user!');
-					return of();
+					return EMPTY;
 				})
 			)
 		),
