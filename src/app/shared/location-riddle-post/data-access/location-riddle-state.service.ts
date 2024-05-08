@@ -61,6 +61,7 @@ export class LocationRiddleStateService {
 	public submittedGuess = new Subject<void>();
 	public commentOnLocationRiddle = new Subject<string>();
 	public rateLocationRiddle = new Subject<number>();
+	public deleteLocationRiddle = new Subject<string>();
 
 	// Sources
 	private commentOnLocationRiddleSource$ = this.commentOnLocationRiddle.pipe(
@@ -72,6 +73,9 @@ export class LocationRiddleStateService {
 		switchMap((rating) =>
 			this.locationRiddleApiService.rateLocationRiddle(this.locationRiddle()?.locationRiddleId || '', rating)
 		)
+	);
+	private deleteLocationRiddleSource$ = this.deleteLocationRiddle.pipe(
+		switchMap((locationRiddleId) => this.locationRiddleApiService.deleteLocationRiddle(locationRiddleId))
 	);
 
 	constructor() {
@@ -88,6 +92,7 @@ export class LocationRiddleStateService {
 			.with(this.mapZoomChanged, (state, mapZoom) => ({ mapZoom }))
 			.with(this.mapCenterChanged, (state, mapCenter) => ({ mapCenter }))
 			.with(this.setUsername, (state, username) => ({ username }))
+			.with(this.deleteLocationRiddleSource$, (state) => ({ locationRiddle: undefined }))
 			.with(locationRiddleChangeSources, (state, locationRiddle) => ({ locationRiddle }));
 	}
 }

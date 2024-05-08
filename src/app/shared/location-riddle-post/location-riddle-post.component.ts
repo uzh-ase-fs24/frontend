@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, input, output } from '@angular/core';
-import { Router } from '@angular/router';
 import {
 	IonAvatar,
 	IonButton,
@@ -16,7 +15,8 @@ import {
 	IonInput,
 	IonItem,
 	IonLabel,
-	IonModal
+	IonModal,
+	IonAlert
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
@@ -24,7 +24,7 @@ import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-a
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
 import { RatingComponent } from './ui/rating/rating.component';
-
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
 	selector: 'app-location-riddle-post',
 	templateUrl: './location-riddle-post.component.html',
@@ -46,7 +46,8 @@ import { RatingComponent } from './ui/rating/rating.component';
 		IonButton,
 		CommonModule,
 		MapComponent,
-		RatingComponent
+		RatingComponent,
+		IonAlert
 	],
 	styleUrls: ['./location-riddle-post.component.scss'],
 	providers: [LocationRiddleStateService, LocationRiddleApiService],
@@ -55,7 +56,6 @@ import { RatingComponent } from './ui/rating/rating.component';
 export class LocationRiddlePostComponent {
 	// Services
 	locationRiddleState = inject(LocationRiddleStateService);
-	router = inject(Router);
 
 	// Input/Output
 	locationRiddle = input.required<LocationRiddle>();
@@ -63,6 +63,22 @@ export class LocationRiddlePostComponent {
 
 	submitGuess = output<Coordinate>();
 
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+
+	public alertButtons = [
+		{
+			text: 'Cancel',
+			role: 'cancel'
+		},
+		{
+			text: 'Delete',
+			role: 'confirm',
+			handler: () => {
+				this.locationRiddleState.deleteLocationRiddle.next(this.locationRiddle().locationRiddleId);
+			}
+		}
+	];
 	// Variables
 	commentsModalOpen = false;
 
@@ -106,5 +122,9 @@ export class LocationRiddlePostComponent {
 			this.submitGuess.emit(this.locationRiddleState.marker() || []);
 			this.locationRiddleState.submittedGuess.next();
 		}
+	}
+
+	isCurrentUser(): boolean {
+		return this.locationRiddle().username === this.username() && !this.route.snapshot.params['username'];
 	}
 }
