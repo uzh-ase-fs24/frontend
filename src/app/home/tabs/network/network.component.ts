@@ -14,6 +14,7 @@ import {
 import { NetworkStateService } from './data-access/network-state.service';
 import { Router } from '@angular/router';
 import { SearchStateService } from './data-access/search-state.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
 	selector: 'app-network',
@@ -32,7 +33,7 @@ import { SearchStateService } from './data-access/search-state.service';
 		IonInput,
 		IonIcon
 	],
-	providers: [NetworkStateService, SearchStateService]
+	providers: [NetworkStateService, SearchStateService, ToastService]
 })
 export class NetworkComponent {
 	// Services
