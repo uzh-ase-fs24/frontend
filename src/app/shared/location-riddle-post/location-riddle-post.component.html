@@ -55,14 +55,14 @@
 				></ion-img>
 			}
 			<ion-item
-				id="open-modal-{{ locationRiddleState.locationRiddle()!.locationRiddleId }}"
 				expand="block"
 				class="ion-no-padding"
 				lines="none"
 				style="margin-top: 15px; margin-bottom: 5px"
+        (click)="commentsModalOpen = true"
 			>
 				<ion-icon size="small" name="chatbox-outline"></ion-icon>
-				<p style="padding-left: 0.3rem; font-weight: bold">add a comment...</p>
+				<p style="padding-left: 0.3rem">add a comment...</p>
 			</ion-item>
 			<ion-fab horizontal="start" slot="fixed" vertical="bottom">
 				<ion-fab-button (click)="locationRiddleState.toggleMap.next()">
@@ -83,7 +83,8 @@
 		#modal
 		[breakpoints]="[0, 0.5]"
 		[initialBreakpoint]="0.5"
-		trigger="open-modal-{{ locationRiddleState.locationRiddle()!.locationRiddleId }}"
+    [isOpen]="commentsModalOpen"
+    (didDismiss)="commentsModalOpen = false"
 		class="comments"
 	>
 		<ng-template>

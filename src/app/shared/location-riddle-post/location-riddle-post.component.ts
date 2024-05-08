@@ -62,8 +62,6 @@ export class LocationRiddlePostComponent {
 	username = input.required<string>();
 
 	submitGuess = output<Coordinate>();
-	commentLocationRiddle = output<string>();
-	rateLocationRiddle = output<number>();
 
 	router = inject(Router);
 	route = inject(ActivatedRoute);
@@ -81,6 +79,8 @@ export class LocationRiddlePostComponent {
 			}
 		}
 	];
+	// Variables
+	commentsModalOpen = false;
 
 	constructor() {
 		effect(
@@ -102,6 +102,8 @@ export class LocationRiddlePostComponent {
 			return 'You can only rate a solved riddle';
 		} else if (this.locationRiddle().username === this.username()) {
 			return 'You cannot rate your own riddle';
+		} else if (this.locationRiddleState.locationRiddle()?.rated) {
+			return 'You have already rated this riddle';
 		} else {
 			return undefined;
 		}
