@@ -3,9 +3,6 @@
 		<ion-card-header class="ion-padding">
 			<ion-card-title>
 				<ion-item lines="none">
-					<ion-avatar aria-hidden="true" slot="start">
-						<ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
-					</ion-avatar>
 					<div style="display: flex; justify-content: space-between; flex-grow: 1">
 						<ion-label class="hover-pointer" color="dark" (click)="router.navigate(['/home/profiles/' + locationRiddleState.locationRiddle()!.username])">
 							<h2>{{ locationRiddleState.locationRiddle()!.username }}</h2>
@@ -16,10 +13,11 @@
 							(makeRating)="locationRiddleState.rateLocationRiddle.next($event)"
 							[ratingError]="ratingError"
 						></app-rating>
+					</div>
             @if (isCurrentUser()) {
-              <ion-button [id]="'present-alert-' + locationRiddle().locationRiddleId" fill="clear">
+              <ion-button [id]="'present-alert-' + locationRiddle().locationRiddleId" fill="clear" slot="end">
                 <ion-icon
-                  class="hover-pointer ion-align-self-end ion-padding-bottom"
+                  class="hover-pointer"
                   name="trash-outline"
                   color="dark"
                   size="medium"
@@ -31,7 +29,6 @@
                 [buttons]="alertButtons"
               ></ion-alert>
             }
-					</div>
 				</ion-item>
 			</ion-card-title>
 		</ion-card-header>
