@@ -15,9 +15,17 @@
 
   <div class="ion-margin-vertical">
     @if (searchState.searchResults().length) {
-      <ion-label color="medium">
-        <h2>SEARCH RESULTS</h2>
-      </ion-label>
+      <ion-item lines="none">
+        <ion-label color="medium">
+          <h2>SEARCH RESULTS</h2>
+        </ion-label>
+      </ion-item>
+    } @else if (searchState.searchTerm()) {
+      <ion-item lines="none">
+        <ion-label color="medium">
+          <h3 class="ion-text-center">No users found with this username</h3>
+        </ion-label>
+      </ion-item>
     }
     @for (item of searchState.searchResults(); track item.username) {
       <ion-item lines="none">
@@ -36,12 +44,12 @@
     }
   </div>
 
-  <div class="ion-margin-vertical">
-    @if (networkState.followRequests().length) {
+  <div style="margin-top: 3rem">
+    <ion-item lines="none">
       <ion-label color="medium">
         <h2>FOLLOW REQUESTS</h2>
       </ion-label>
-    }
+    </ion-item>
     @for (item of networkState.followRequests(); track item.requester) {
       <ion-item lines="none">
         <ion-label (click)="router.navigate(['home/profiles', item.requester])">
@@ -53,6 +61,12 @@
         <ion-button (click)="networkState.declineFollowRequest.next(item.requester)" fill="clear" color="danger">
           <ion-icon slot="icon-only" name="close-outline"></ion-icon>
         </ion-button>
+      </ion-item>
+    } @empty {
+      <ion-item lines="none">
+        <ion-label color="medium">
+          <h3 class="ion-text-center ion-margin-vertical">No follow pending requests</h3>
+        </ion-label>
       </ion-item>
     }
   </div>
