@@ -98,7 +98,7 @@
 					<ion-item lines="none">
 						<ion-label class="ion-text-wrap" (click)="router.navigate(['/home/profiles/' + comment.username])">
 							<h3 class="grey-text">{{ comment.username }}</h3>
-							<p [ngClass]="isDarkMode()">{{ comment.comment }}</p>
+							<p>{{ comment.comment }}</p>
 						</ion-label>
 					</ion-item>
 				} @empty {
@@ -110,7 +110,7 @@
 				}
 			</ion-content>
 			<ion-item lines="none">
-				<ion-input [ngClass]="isDarkMode()" #commentInput placeholder="Add a comment..."></ion-input>
+				<ion-input #commentInput placeholder="Add a comment..."></ion-input>
 				<ion-button (click)="comment(commentInput)" fill="clear" slot="end">
 					<ion-icon name="send" slot="icon-only"></ion-icon>
 				</ion-button>

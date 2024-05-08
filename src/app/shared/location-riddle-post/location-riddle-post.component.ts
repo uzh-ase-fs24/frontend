@@ -124,13 +124,6 @@ export class LocationRiddlePostComponent {
 		}
 	}
 
-	isDarkMode(): string {
-		if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-			return 'dark-mode';
-		}
-		return 'light-mode';
-	}
-
 	isCurrentUser(): boolean {
 		return this.locationRiddle().username === this.username() && !this.route.snapshot.params['username'];
 	}
