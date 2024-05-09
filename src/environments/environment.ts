@@ -14,6 +14,9 @@ export const environment = {
   },
   api: {
     url: 'https://findme.execute-api.localhost.localstack.cloud:4566/local'
+  },
+  maptiler: {
+    apiKey: 'JsTQPhOHwZWiBiUTbyee'
   }
 };
 

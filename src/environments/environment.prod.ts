@@ -10,5 +10,8 @@ export const environment = {
 	},
 	api: {
 		url: 'https://api.find-me.life'
+	},
+	maptiler: {
+		apiKey: 'TDu6DHpsLG6CRtIu4yIs'
 	}
 };
