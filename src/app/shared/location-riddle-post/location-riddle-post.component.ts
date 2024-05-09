@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, input, output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
+	IonAlert,
 	IonAvatar,
 	IonButton,
 	IonCard,
@@ -15,8 +17,7 @@ import {
 	IonInput,
 	IonItem,
 	IonLabel,
-	IonModal,
-	IonAlert
+	IonModal
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
@@ -24,7 +25,6 @@ import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-a
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
 import { RatingComponent } from './ui/rating/rating.component';
-import { ActivatedRoute, Router } from '@angular/router';
 @Component({
 	selector: 'app-location-riddle-post',
 	templateUrl: './location-riddle-post.component.html',
