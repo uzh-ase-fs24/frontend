@@ -44,7 +44,7 @@ For authentication Auth0 is deployed due to its simple and intuitive integration
 
 ## E2E Testing
 
-- Playwright is used for end to end testing. 
+- Playwright is used for end to end testing. Important: Make sure to run the application before running the tests. For example using `docker compose up` 
 - Run `npx playwright test` to run the test suite in headless mode
 - Run `npx playwright test --ui` to run the test suite in UI mode (helpful for debugging)
 - Run  `npx playwright codegen localhost:8100` to generate your own testcase. Run `npx playwright codegen --device="iPhone 14 Pro" localhost:8100` if you want to generate iPhone test cases (camera access not working)

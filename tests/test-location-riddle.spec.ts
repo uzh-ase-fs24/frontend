@@ -71,8 +71,3 @@ test.describe('location-riddle-flow', () => {
 
 })
 
-
-
-// comment on location riddle of others
-
-// rate location riddle
