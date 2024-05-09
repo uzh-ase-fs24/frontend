@@ -15,16 +15,16 @@ import {
 	IonInput,
 	IonItem,
 	IonLabel,
-	IonModal
+	IonModal,
+	IonAlert
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
-import { RatingComponent } from './rating/rating.component';
-import { Router } from '@angular/router';
-
+import { RatingComponent } from './ui/rating/rating.component';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
 	selector: 'app-location-riddle-post',
 	templateUrl: './location-riddle-post.component.html',
@@ -46,7 +46,8 @@ import { Router } from '@angular/router';
 		IonButton,
 		CommonModule,
 		MapComponent,
-		RatingComponent
+		RatingComponent,
+		IonAlert
 	],
 	styleUrls: ['./location-riddle-post.component.scss'],
 	providers: [LocationRiddleStateService, LocationRiddleApiService],
@@ -58,13 +59,28 @@ export class LocationRiddlePostComponent {
 
 	// Input/Output
 	locationRiddle = input.required<LocationRiddle>();
-	username = input<string>();
+	username = input.required<string>();
 
 	submitGuess = output<Coordinate>();
-	commentLocationRiddle = output<string>();
-	rateLocationRiddle = output<number>();
 
-  router = inject(Router);
+	router = inject(Router);
+	route = inject(ActivatedRoute);
+
+	public alertButtons = [
+		{
+			text: 'Cancel',
+			role: 'cancel'
+		},
+		{
+			text: 'Delete',
+			role: 'confirm',
+			handler: () => {
+				this.locationRiddleState.deleteLocationRiddle.next(this.locationRiddle().locationRiddleId);
+			}
+		}
+	];
+	// Variables
+	commentsModalOpen = false;
 
 	constructor() {
 		effect(
@@ -86,6 +102,8 @@ export class LocationRiddlePostComponent {
 			return 'You can only rate a solved riddle';
 		} else if (this.locationRiddle().username === this.username()) {
 			return 'You cannot rate your own riddle';
+		} else if (this.locationRiddleState.locationRiddle()?.rated) {
+			return 'You have already rated this riddle';
 		} else {
 			return undefined;
 		}
@@ -104,5 +122,9 @@ export class LocationRiddlePostComponent {
 			this.submitGuess.emit(this.locationRiddleState.marker() || []);
 			this.locationRiddleState.submittedGuess.next();
 		}
+	}
+
+	isCurrentUser(): boolean {
+		return this.locationRiddle().username === this.username() && !this.route.snapshot.params['username'];
 	}
 }

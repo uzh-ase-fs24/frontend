@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
-import { Subject, switchMap } from 'rxjs';
+import { merge, Subject, switchMap } from 'rxjs';
 import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 
@@ -60,6 +60,8 @@ export class LocationRiddleStateService {
 	public mapCenterChanged = new Subject<Coordinate>();
 	public submittedGuess = new Subject<void>();
 	public commentOnLocationRiddle = new Subject<string>();
+	public rateLocationRiddle = new Subject<number>();
+	public deleteLocationRiddle = new Subject<string>();
 
 	// Sources
 	private commentOnLocationRiddleSource$ = this.commentOnLocationRiddle.pipe(
@@ -67,8 +69,22 @@ export class LocationRiddleStateService {
 			this.locationRiddleApiService.postComment(this.locationRiddle()?.locationRiddleId || '', comment)
 		)
 	);
+	private rateLocationRiddleSource$ = this.rateLocationRiddle.pipe(
+		switchMap((rating) =>
+			this.locationRiddleApiService.rateLocationRiddle(this.locationRiddle()?.locationRiddleId || '', rating)
+		)
+	);
+	private deleteLocationRiddleSource$ = this.deleteLocationRiddle.pipe(
+		switchMap((locationRiddleId) => this.locationRiddleApiService.deleteLocationRiddle(locationRiddleId))
+	);
 
 	constructor() {
+		const locationRiddleChangeSources = merge(
+			this.setLocationRiddle,
+			this.commentOnLocationRiddleSource$,
+			this.rateLocationRiddleSource$
+		);
+
 		connect(this.state)
 			.with(this.placeGuess, (state, marker) => ({ marker }))
 			.with(this.submittedGuess, (state) => ({ submitted: true }))
@@ -76,9 +92,7 @@ export class LocationRiddleStateService {
 			.with(this.mapZoomChanged, (state, mapZoom) => ({ mapZoom }))
 			.with(this.mapCenterChanged, (state, mapCenter) => ({ mapCenter }))
 			.with(this.setUsername, (state, username) => ({ username }))
-			.with(this.setLocationRiddle, (state, locationRiddle) => ({ locationRiddle }))
-			.with(this.commentOnLocationRiddleSource$, (state, updatedLocationRiddle) => ({
-				locationRiddle: updatedLocationRiddle
-			}));
+			.with(this.deleteLocationRiddleSource$, (state) => ({ locationRiddle: undefined }))
+			.with(locationRiddleChangeSources, (state, locationRiddle) => ({ locationRiddle }));
 	}
 }

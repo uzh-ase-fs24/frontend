@@ -18,10 +18,6 @@ const routes: Routes = [
 				loadComponent: () => import('./tabs/feed/feed.component').then((m) => m.FeedComponent)
 			},
 			{
-				path: 'search',
-				loadComponent: () => import('./tabs/search/search.component').then((m) => m.SearchComponent)
-			},
-			{
 				path: 'profile',
 				loadComponent: () => import('./tabs/profile/profile.component').then((m) => m.ProfileComponent)
 			},

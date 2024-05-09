@@ -3,9 +3,6 @@
 		<ion-card-header class="ion-padding">
 			<ion-card-title>
 				<ion-item lines="none">
-					<ion-avatar aria-hidden="true" slot="start">
-						<ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg"></ion-img>
-					</ion-avatar>
 					<div style="display: flex; justify-content: space-between; flex-grow: 1">
 						<ion-label class="hover-pointer" color="dark" (click)="router.navigate(['/home/profiles/' + locationRiddleState.locationRiddle()!.username])">
 							<h2>{{ locationRiddleState.locationRiddle()!.username }}</h2>
@@ -13,10 +10,25 @@
 						</ion-label>
 						<app-rating
 							[rating]="locationRiddleState.locationRiddle()!.rating"
-							(makeRating)="rateLocationRiddle.emit($event)"
+							(makeRating)="locationRiddleState.rateLocationRiddle.next($event)"
 							[ratingError]="ratingError"
 						></app-rating>
 					</div>
+            @if (isCurrentUser()) {
+              <ion-button [id]="'present-alert-' + locationRiddle().locationRiddleId" fill="clear" slot="end">
+                <ion-icon
+                  class="hover-pointer"
+                  name="trash-outline"
+                  color="dark"
+                  size="medium"
+                ></ion-icon>
+              </ion-button>
+              <ion-alert
+                [trigger]="'present-alert-' + locationRiddle().locationRiddleId"
+                header="Are you sure you want to delete this riddle?"
+                [buttons]="alertButtons"
+              ></ion-alert>
+            }
 				</ion-item>
 			</ion-card-title>
 		</ion-card-header>
@@ -40,11 +52,11 @@
 				></ion-img>
 			}
 			<ion-item
-				id="open-modal-{{ locationRiddleState.locationRiddle()!.locationRiddleId }}"
 				expand="block"
 				class="ion-no-padding"
 				lines="none"
 				style="margin-top: 15px; margin-bottom: 5px"
+        (click)="commentsModalOpen = true"
 			>
 				<ion-icon size="small" name="chatbox-outline"></ion-icon>
 				<p style="padding-left: 0.3rem">add a comment...</p>
@@ -68,7 +80,8 @@
 		#modal
 		[breakpoints]="[0, 0.5]"
 		[initialBreakpoint]="0.5"
-		trigger="open-modal-{{ locationRiddleState.locationRiddle()!.locationRiddleId }}"
+    [isOpen]="commentsModalOpen"
+    (didDismiss)="commentsModalOpen = false"
 		class="comments"
 	>
 		<ng-template>
@@ -81,7 +94,7 @@
 				@for (comment of locationRiddleState.locationRiddle()!.comments; track comment.username) {
 					<ion-item lines="none">
 						<ion-label class="ion-text-wrap" (click)="router.navigate(['/home/profiles/' + comment.username])">
-							<h3>{{ comment.username }}</h3>
+							<h3 class="grey-text">{{ comment.username }}</h3>
 							<p>{{ comment.comment }}</p>
 						</ion-label>
 					</ion-item>
