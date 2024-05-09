@@ -18,7 +18,7 @@ export default defineConfig({
   /* Amount of tests to run in parallel */
   retries: 3,
   /* Opt out of parallel tests on CI. */
-  workers: process.env['CI'] ? 1 : undefined,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -34,13 +34,13 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     // Setup project
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    {
+      name: 'setup', testMatch: /.*\.setup\.ts/ },
 
     {
       name: 'iPhone',
       use: {
         ...devices['iPhone 14 Pro'],
-        storageState: 'playwright/.auth/user.json',
       },
       dependencies: ['setup'],
 
