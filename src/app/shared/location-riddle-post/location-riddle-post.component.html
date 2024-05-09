@@ -4,7 +4,13 @@
 			<ion-card-title>
 				<ion-item lines="none">
 					<div style="display: flex; justify-content: space-between; flex-grow: 1">
-						<ion-label class="hover-pointer" color="dark" (click)="router.navigate(['/home/profiles/' + locationRiddleState.locationRiddle()!.username])">
+						<ion-label
+							class="hover-pointer"
+							color="dark"
+							(click)="
+								router.navigate(['/home/profiles/' + locationRiddleState.locationRiddle()!.username])
+							"
+						>
 							<h2>{{ locationRiddleState.locationRiddle()!.username }}</h2>
 							<p>{{ locationRiddleState.locationRiddle()!.createdAt | date: 'short' }}</p>
 						</ion-label>
@@ -14,21 +20,16 @@
 							[ratingError]="ratingError"
 						></app-rating>
 					</div>
-            @if (isCurrentUser()) {
-              <ion-button [id]="'present-alert-' + locationRiddle().locationRiddleId" fill="clear" slot="end">
-                <ion-icon
-                  class="hover-pointer"
-                  name="trash-outline"
-                  color="dark"
-                  size="medium"
-                ></ion-icon>
-              </ion-button>
-              <ion-alert
-                [trigger]="'present-alert-' + locationRiddle().locationRiddleId"
-                header="Are you sure you want to delete this riddle?"
-                [buttons]="alertButtons"
-              ></ion-alert>
-            }
+					@if (isCurrentUser()) {
+						<ion-button [id]="'present-alert-' + locationRiddle().locationRiddleId" fill="clear" slot="end">
+							<ion-icon class="hover-pointer" name="trash-outline" color="dark" size="medium"></ion-icon>
+						</ion-button>
+						<ion-alert
+							[trigger]="'present-alert-' + locationRiddle().locationRiddleId"
+							header="Are you sure you want to delete this riddle?"
+							[buttons]="alertButtons"
+						></ion-alert>
+					}
 				</ion-item>
 			</ion-card-title>
 		</ion-card-header>
@@ -56,7 +57,7 @@
 				class="ion-no-padding"
 				lines="none"
 				style="margin-top: 15px; margin-bottom: 5px"
-        (click)="commentsModalOpen = true"
+				(click)="commentsModalOpen = true"
 			>
 				<ion-icon size="small" name="chatbox-outline"></ion-icon>
 				<p style="padding-left: 0.3rem">add a comment...</p>
@@ -66,7 +67,7 @@
 					<ion-icon name="{{ locationRiddleState.showMap() ? 'image' : 'map' }}-outline"></ion-icon>
 				</ion-fab-button>
 			</ion-fab>
-			@if (locationRiddleState.marker() && !locationRiddleState.submitted()) {
+			@if (locationRiddleState.marker() && !locationRiddleState.achievedRating()) {
 				<ion-fab horizontal="end" slot="fixed" vertical="bottom">
 					<ion-fab-button color="success" (click)="submit()">
 						<ion-icon color="dark" name="checkmark-outline"></ion-icon>
@@ -80,8 +81,8 @@
 		#modal
 		[breakpoints]="[0, 0.5]"
 		[initialBreakpoint]="0.5"
-    [isOpen]="commentsModalOpen"
-    (didDismiss)="commentsModalOpen = false"
+		[isOpen]="commentsModalOpen"
+		(didDismiss)="commentsModalOpen = false"
 		class="comments"
 	>
 		<ng-template>
@@ -93,7 +94,10 @@
 			<ion-content>
 				@for (comment of locationRiddleState.locationRiddle()!.comments; track comment.username) {
 					<ion-item lines="none">
-						<ion-label class="ion-text-wrap" (click)="router.navigate(['/home/profiles/' + comment.username])">
+						<ion-label
+							class="ion-text-wrap"
+							(click)="router.navigate(['/home/profiles/' + comment.username])"
+						>
 							<h3 class="grey-text">{{ comment.username }}</h3>
 							<p>{{ comment.comment }}</p>
 						</ion-label>

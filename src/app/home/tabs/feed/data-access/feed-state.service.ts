@@ -39,8 +39,7 @@ export class FeedStateService {
 
 	// Action Sources (Subjects)
 	public refresh = new Subject<void>();
-	public submitGuess = new Subject<{ locationRiddleId: string; guess: Coordinate }>();
-	public setArena = new Subject<string>();
+ 	public setArena = new Subject<string>();
 
 	// Sources (Observables)
 	private userSource$ = this.authService.user$;
@@ -51,9 +50,6 @@ export class FeedStateService {
 		share()
 	);
 	private refreshLocationRiddlesSource$ = this.refresh.pipe(switchMap(() => this.locationRiddlesSource$));
-	private submitGuessSource = this.submitGuess.pipe(
-		switchMap(({ locationRiddleId, guess }) => this.locationRiddleApiService.postGuess(locationRiddleId, guess))
-	);
 
 	constructor() {
 		// Reducers
@@ -70,19 +66,7 @@ export class FeedStateService {
 			}))
 			.with(this.refreshLocationRiddlesSource$, (state, locationRiddles) => ({
 				locationRiddles: locationRiddles
-			}))
-			.with(this.submitGuessSource, (state, guessResult) => {
-				this.toastService.success(
-					'Congrats! You scored ' + guessResult.guessResult.received_score.toFixed(1) + ' points!'
-				);
-				return {
-					locationRiddles: state.locationRiddles.map((riddle) =>
-						riddle.locationRiddleId === guessResult.locationRiddle.locationRiddleId
-							? guessResult.locationRiddle
-							: riddle
-					)
-				};
-			});
+			}));
 
 		effect(() => console.info('Feed State Change: ', this.state()));
 	}
