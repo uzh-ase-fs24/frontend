@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	IonAlert,

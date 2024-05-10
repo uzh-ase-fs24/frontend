@@ -6,11 +6,12 @@ import { Coordinate } from 'ol/coordinate';
 import Point from 'ol/geom/Point';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import OSM from 'ol/source/OSM';
+import { TileJSON } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { Guess } from 'src/app/model/location-riddle';
+import { environment } from '../../../environments/environment';
 
 enum Marker {
 	USER,
@@ -43,6 +44,7 @@ export class MapComponent {
 	map?: Map;
 	defaultMapCenter = [914135.8295099558, 5901532.510434296]; // central of europe
 	placedMarker?: Coordinate;
+	mapTilerMapName = 'streets-v2';
 
 	private vectorSource = new VectorSource();
 	private vectorLayer = new VectorLayer({
@@ -62,7 +64,11 @@ export class MapComponent {
 			target: mapElement.nativeElement,
 			layers: [
 				new TileLayer({
-					source: new OSM()
+					source: new TileJSON({
+						url: `https://api.maptiler.com/maps/${this.mapTilerMapName}/tiles.json?key=${environment.maptiler.apiKey}`,
+						tileSize: 512,
+						crossOrigin: 'anonymous'
+					})
 				}),
 				this.vectorLayer
 			],
