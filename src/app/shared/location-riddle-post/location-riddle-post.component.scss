@@ -1,0 +1,15 @@
+ion-item {
+	--background: transparent;
+}
+
+ion-card-header {
+	--ion-padding: 8px;
+}
+
+::ng-deep .comments > .ion-page {
+	height: 50% !important;
+}
+
+.grey-text {
+    color: grey;
+}

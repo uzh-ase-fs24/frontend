@@ -1,0 +1,34 @@
+<div class="base-container">
+  @if (userProfile$ | async) {
+    @if (authUser$ | async; as authUser) {
+      <ion-tabs>
+        <ion-header class="ion-text-center">
+          <h1 class="ion-no-margin ion-margin-bottom" style="font-size: 2rem;">findMe</h1>
+        </ion-header>
+        <ion-tab-bar>
+          <ion-tab-button tab="feed">
+            <ion-icon name="map-outline"></ion-icon>
+            Riddles
+          </ion-tab-button>
+          <ion-tab-button tab="post">
+            <ion-icon name="camera-outline"></ion-icon>
+            Camera
+          </ion-tab-button>
+          <ion-tab-button tab="network">
+            <ion-icon name="globe-outline"></ion-icon>
+            Network
+          </ion-tab-button>
+          <ion-tab-button tab="profile">
+            <ion-icon name="person-circle-outline"></ion-icon>
+            Profile
+          </ion-tab-button>
+        </ion-tab-bar>
+      </ion-tabs>
+
+    } @else {
+      <ion-spinner name="circular"></ion-spinner>
+    }
+  } @else {
+    <ion-spinner name="circular"></ion-spinner>
+  }
+</div>

@@ -1,0 +1,96 @@
+<ion-content>
+  <div class="title-bar-container">
+    <div class="center-container">
+      <h1>Post new Riddle</h1>
+    </div>
+  </div>
+
+  @if (!postState.imageSet()) {
+    <div>
+      <div class="title-bar-container">
+        <div class="center-container">
+          <h2>Select an image</h2>
+        </div>
+      </div>
+
+      <div class="center-container" style="margin-top: 10px">
+        <input
+          type="file"
+          style="display: none"
+          (change)="uploadImage($event)"
+          accept=".jpg, .jpeg, .png"
+          #fileUpload
+        />
+      </div>
+
+      <div class="center-container">
+        <ion-button (click)="takePicture()" style="margin: 10px">
+          <span style="padding-right: 5px">Open Camera</span>
+          <ion-icon name="camera-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  } @else {
+    <div>
+      <div class="title-bar-container">
+        <div class="center-container">
+          <h2>Mark the image location on the map</h2>
+        </div>
+      </div>
+
+      <div class="center-container">
+        <app-map
+          class="map-container"
+          (placeMarker)="postState.setLocation.next($event)"
+          [marker]="postState.location()"
+          [center]="postState.location()"
+          [zoom]="!!postState.location() ? 10 : 4"
+        ></app-map>
+      </div>
+
+      <div class="center-container">
+        <ion-list class="ion-padding ion-margin">
+          <ion-item>
+            <ion-select [(ngModel)]="arenas" aria-label="Arenas" placeholder="Select all arenas that apply"
+                        [multiple]="true">
+              @for (arenaOption of arenaOptions; track arenaOption) {
+                @if (arenaOption !== "My Friends") {
+                  <ion-select-option value="{{ arenaOption }}">{{ arenaOption }}</ion-select-option>
+                }
+              }
+            </ion-select>
+          </ion-item>
+        </ion-list>
+        <ion-button fill="clear" id="click-trigger">
+          <ion-icon name="information-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-popover trigger="click-trigger" triggerAction="click">
+          <ng-template>
+            <ion-content class="ion-padding">What are arenas?
+              Arenas help users to navigate and find riddles that align with their interests more easily.
+              For example, an arena could be a specific city, a type of location like beaches or mountains,
+              or even a theme like historical sites or famous landmarks. Keep in mind that arenas are public!
+              This means that every user of the application can see and participate in the riddles grouped under an
+              arena.
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </div>
+
+      <div class="center-container" style="margin-top: 5vh">
+        <ion-button (click)="cancelPost()" style="margin: 10px" color="medium">
+          <span style="padding-right: 5px">Cancel</span>
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+        <ion-button
+          (click)="completePost()"
+          style="margin: 10px"
+          [disabled]="!postState.postingEnabled()"
+        >
+          <span style="padding-right: 5px">Post Riddle</span>
+          <ion-icon name="location-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  }
+</ion-content>

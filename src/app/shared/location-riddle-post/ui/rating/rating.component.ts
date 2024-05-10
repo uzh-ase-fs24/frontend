@@ -1,0 +1,81 @@
+import { Component, effect, inject, input, output, signal } from '@angular/core';
+import {
+	IonButton,
+	IonButtons,
+	IonChip,
+	IonContent,
+	IonHeader,
+	IonIcon,
+	IonInput,
+	IonLabel,
+	IonModal,
+	IonTitle,
+	IonToolbar
+} from '@ionic/angular/standalone';
+import { ToastService } from 'src/app/services/toast.service';
+
+@Component({
+	selector: 'app-rating',
+	templateUrl: './rating.component.html',
+	imports: [
+		IonLabel,
+		IonTitle,
+		IonContent,
+		IonInput,
+		IonButtons,
+		IonToolbar,
+		IonHeader,
+		IonModal,
+		IonButton,
+		IonChip,
+		IonIcon
+	],
+	styleUrls: ['./rating.component.scss'],
+	standalone: true
+})
+export class RatingComponent {
+	toastService = inject(ToastService);
+
+	rating = input.required<number>();
+	ratingError = input<string>();
+	makeRating = output<number>();
+
+	hoveredStarsIndex = signal<number>(-1);
+	isRatingModalOpen = signal<boolean>(false);
+	ratingAttempted = signal(false);
+
+	constructor() {
+		effect(() => {
+			if (this.rating() < 0 || this.rating() > 5) {
+				throw new Error('RatingComponent rating input must be between 0 and 5');
+			}
+		});
+	}
+
+	getStars(): number[] {
+		return Array.from({ length: this.rating() }, (_, i) => i);
+	}
+
+	getEmptyStars(): number[] {
+		// Only 4 empty stars are needed since a half star is displayed separately -> half star is empty if rating is an integer
+		return Array.from({ length: 4 - this.rating() }, (_, i) => i);
+	}
+
+	getHalfStar(): boolean {
+		return this.rating() % 1 !== 0;
+	}
+
+	rate(rating: number): void {
+		this.makeRating.emit(rating);
+		this.setOpen(false);
+	}
+
+	setOpen(isOpen: boolean) {
+		this.ratingAttempted.set(true);
+		if (!this.ratingError()) {
+			this.isRatingModalOpen.set(isOpen);
+		} else {
+			this.toastService.error(this.ratingError()!);
+		}
+	}
+}

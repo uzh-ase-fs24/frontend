@@ -1,0 +1,63 @@
+<ng-container>
+  <div>
+    <div class="center-container">
+      <h2>{{ formTitle() }}</h2>
+    </div>
+  </div>
+  <form (ngSubmit)="submit()" [formGroup]="userForm">
+    <ion-item lines="full">
+      <ion-input
+        formControlName="firstName"
+        label="First Name"
+        labelPlacement="floating"
+        ngDefaultControl
+        type="text"
+      ></ion-input>
+    </ion-item>
+    @if (userForm.controls.firstName.touched && userForm.controls.firstName.invalid) {
+      <app-user-form-exceptions
+        [field]="'First Name'"
+        [errors]="userForm.controls.firstName.errors"
+      ></app-user-form-exceptions>
+    }
+
+    <ion-item lines="full">
+      <ion-input
+        formControlName="lastName"
+        label="Last Name"
+        labelPlacement="floating"
+        ngDefaultControl
+        type="text"
+      ></ion-input>
+    </ion-item>
+    @if (userForm.controls.lastName.touched && userForm.controls.lastName.invalid) {
+      <app-user-form-exceptions
+        [field]="'Last Name'"
+        [errors]="userForm.controls.lastName.errors"
+      ></app-user-form-exceptions>
+    }
+
+    <ion-item lines="full">
+      <ion-textarea
+        formControlName="bio"
+        label="Bio"
+        labelPlacement="floating"
+        ngDefaultControl
+        type="text"
+      ></ion-textarea>
+    </ion-item>
+    @if (userForm.controls.bio.touched && userForm.controls.bio.invalid) {
+      <app-user-form-exceptions
+        [field]="'Bio'"
+        [errors]="userForm.controls.bio.errors"
+      ></app-user-form-exceptions>
+    }
+    <div>
+      <ion-button expand="block" size="default" style="margin-top: 30px" type="submit">{{
+          submitButtonTitle()
+        }}
+      </ion-button>
+      <ng-content></ng-content>
+    </div>
+  </form>
+</ng-container>
