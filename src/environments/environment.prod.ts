@@ -6,7 +6,8 @@ export const environment = {
 		webCallbackUri: 'https://find-me.life/home',
 		logoutRedirectUri: 'https://find-me.life/login',
 		audience: 'https://findme-prod.eu.auth0.com/api/v2/',
-		namespace: 'https://api.find-me.life'
+		namespace: 'https://api.find-me.life',
+		usernameClaim: 'https://api.find-me.life/username'
 	},
 	api: {
 		url: 'https://api.find-me.life'
