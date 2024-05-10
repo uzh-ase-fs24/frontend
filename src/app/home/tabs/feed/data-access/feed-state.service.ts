@@ -1,6 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
-import { Coordinate } from 'ol/coordinate';
 import { share, Subject, switchMap, tap } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -39,7 +38,7 @@ export class FeedStateService {
 
 	// Action Sources (Subjects)
 	public refresh = new Subject<void>();
- 	public setArena = new Subject<string>();
+	public setArena = new Subject<string>();
 
 	// Sources (Observables)
 	private userSource$ = this.authService.user$;
