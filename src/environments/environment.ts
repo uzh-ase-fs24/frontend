@@ -10,10 +10,14 @@ export const environment = {
     webCallbackUri: 'http://localhost:8100/home',
     logoutRedirectUri: 'http://localhost:8100/login',
     audience: 'https://findme-dev.eu.auth0.com/api/v2/',
-    namespace: 'https://api.find-me.life'
+    namespace: 'https://api.find-me.life',
+		usernameClaim: 'https://api.find-me.life/username'
   },
   api: {
     url: 'https://findme.execute-api.localhost.localstack.cloud:4566/local'
+  },
+  maptiler: {
+    apiKey: 'JsTQPhOHwZWiBiUTbyee'
   }
 };
 

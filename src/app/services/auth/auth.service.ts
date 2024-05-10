@@ -4,7 +4,7 @@ import { User, AuthService as auth0 } from '@auth0/auth0-angular';
 import { Browser } from '@capacitor/browser';
 import { isPlatform } from '@ionic/angular';
 import config from 'capacitor.config';
-import { Observable, ReplaySubject, share } from 'rxjs';
+import { Observable, ReplaySubject, map, share } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -25,6 +25,14 @@ export class AuthService {
 
 	public get user$(): Observable<User | undefined | null> {
 		return this.auth0.user$.pipe(takeUntilDestroyed(), share());
+	}
+
+	public get username$(): Observable<string> {
+		return this.auth0.user$.pipe(
+			takeUntilDestroyed(),
+			share(),
+			map((user) => user?.[environment.auth.usernameClaim])
+		);
 	}
 
 	public get isAuthenticated$(): Observable<boolean> {
