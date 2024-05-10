@@ -19,7 +19,6 @@ import {
 	IonLabel,
 	IonModal
 } from '@ionic/angular/standalone';
-import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
@@ -59,9 +58,6 @@ export class LocationRiddlePostComponent {
 
 	// Input/Output
 	locationRiddle = input.required<LocationRiddle>();
-	username = input.required<string>();
-
-	submitGuess = output<Coordinate>();
 
 	router = inject(Router);
 	route = inject(ActivatedRoute);
@@ -89,18 +85,14 @@ export class LocationRiddlePostComponent {
 			},
 			{ allowSignalWrites: true }
 		);
-		effect(
-			() => {
-				this.locationRiddleState.setUsername.next(this.username());
-			},
-			{ allowSignalWrites: true }
-		);
 	}
 
 	get ratingError() {
-		if (!this.locationRiddle().solved) {
+		if (!this.locationRiddleState.locationRiddle()?.solved) {
 			return 'You can only rate a solved riddle';
-		} else if (this.locationRiddle().username === this.username()) {
+		} else if (
+			this.locationRiddleState.locationRiddle()?.username === this.locationRiddleState.loggedInUsername()
+		) {
 			return 'You cannot rate your own riddle';
 		} else if (this.locationRiddleState.locationRiddle()?.rated) {
 			return 'You have already rated this riddle';
@@ -119,12 +111,14 @@ export class LocationRiddlePostComponent {
 	submit() {
 		if (this.locationRiddleState.marker()) {
 			// The flow prevents the guess from being null, but for the sake of typing we define a fallback
-			this.submitGuess.emit(this.locationRiddleState.marker() || []);
-			this.locationRiddleState.submittedGuess.next();
+			this.locationRiddleState.submitGuess.next();
 		}
 	}
 
 	isCurrentUser(): boolean {
-		return this.locationRiddle().username === this.username() && !this.route.snapshot.params['username'];
+		return (
+			this.locationRiddle().username === this.locationRiddleState.loggedInUsername() &&
+			!this.route.snapshot.params['username']
+		);
 	}
 }

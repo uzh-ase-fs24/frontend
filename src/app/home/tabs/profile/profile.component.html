@@ -118,7 +118,6 @@
 							@for (item of posts; track item.locationRiddleId) {
 								<app-location-riddle-post
 									[locationRiddle]="item"
-									[username]="profile.username"
 								></app-location-riddle-post>
 							} @empty {
 								<div class="center-container" style="padding-top: 8rem">
