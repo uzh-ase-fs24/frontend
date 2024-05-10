@@ -21,9 +21,9 @@
 				</ion-label>
 			</ion-item>
 		} @else if (searchState.loading()) {
-      <div class="center-container">
-        <ion-spinner></ion-spinner>
-      </div>
+			<div class="center-container">
+				<ion-spinner></ion-spinner>
+			</div>
 		} @else if (searchState.searchTerm()) {
 			<ion-item lines="none">
 				<ion-label color="medium">
@@ -54,6 +54,14 @@
 				<h2>FOLLOW REQUESTS</h2>
 			</ion-label>
 		</ion-item>
+		@if (networkState.loading()) {
+			<div class="center-container">
+				<ion-spinner></ion-spinner>
+			</div>
+		}
+		<ion-refresher (ionRefresh)="networkState.refresh.next($event)" slot="fixed">
+			<ion-refresher-content></ion-refresher-content>
+		</ion-refresher>
 		@for (item of networkState.followRequests(); track item.requester) {
 			<ion-item lines="none">
 				<ion-label (click)="router.navigate(['home/profiles', item.requester])">

@@ -1,9 +1,11 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { connect } from 'ngxtension/connect';
 import { Coordinate } from 'ol/coordinate';
 import { merge, Subject, switchMap } from 'rxjs';
 import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 type LocationRiddleState = {
 	showMap: boolean;
@@ -12,13 +14,16 @@ type LocationRiddleState = {
 	mapZoom: number;
 	mapCenter: Coordinate | undefined;
 	locationRiddle: LocationRiddle | undefined;
-	username: string | undefined;
+	loggedInUsername: string | undefined;
+	achievedRating: number | undefined;
 };
 
 @Injectable()
 export class LocationRiddleStateService {
 	// Services
 	private locationRiddleApiService = inject(LocationRiddleApiService);
+	private authService = inject(AuthService);
+	private toastService = inject(ToastService);
 
 	// State
 	private state = signal<LocationRiddleState>({
@@ -28,7 +33,8 @@ export class LocationRiddleStateService {
 		mapZoom: 4,
 		mapCenter: undefined,
 		locationRiddle: undefined,
-		username: ''
+		loggedInUsername: '',
+		achievedRating: undefined
 	});
 
 	// Selectors
@@ -36,12 +42,14 @@ export class LocationRiddleStateService {
 		this.state().locationRiddle?.solved ? this.state().locationRiddle?.location : undefined
 	);
 	public guesses = computed(
-		() => this.state().locationRiddle?.guesses?.filter((guess) => guess.username !== this.state().username) || []
+		() =>
+			this.state().locationRiddle?.guesses?.filter((guess) => guess.username !== this.state().loggedInUsername) ||
+			[]
 	);
 	public userGuess = computed(
 		() =>
-			this.state().locationRiddle?.guesses?.find((guess) => guess.username === this.state().username)?.guess ||
-			null
+			this.state().locationRiddle?.guesses?.find((guess) => guess.username === this.state().loggedInUsername)
+				?.guess || null
 	);
 	public showMap = computed(() => this.state().showMap);
 	public marker = computed(() => this.state().marker);
@@ -49,16 +57,16 @@ export class LocationRiddleStateService {
 	public mapZoom = computed(() => this.state().mapZoom);
 	public mapCenter = computed(() => this.state().mapCenter);
 	public locationRiddle = computed(() => this.state().locationRiddle);
-	public username = computed(() => this.state().username);
+	public loggedInUsername = computed(() => this.state().loggedInUsername);
+	public achievedRating = computed(() => this.state().achievedRating);
 
 	// Actions
-	public setUsername = new Subject<string | undefined>();
 	public setLocationRiddle = new Subject<LocationRiddle>();
 	public placeGuess = new Subject<Coordinate>();
 	public toggleMap = new Subject<void>();
 	public mapZoomChanged = new Subject<number>();
 	public mapCenterChanged = new Subject<Coordinate>();
-	public submittedGuess = new Subject<void>();
+	public submitGuess = new Subject<void>();
 	public commentOnLocationRiddle = new Subject<string>();
 	public rateLocationRiddle = new Subject<number>();
 	public deleteLocationRiddle = new Subject<string>();
@@ -77,6 +85,12 @@ export class LocationRiddleStateService {
 	private deleteLocationRiddleSource$ = this.deleteLocationRiddle.pipe(
 		switchMap((locationRiddleId) => this.locationRiddleApiService.deleteLocationRiddle(locationRiddleId))
 	);
+	private usernameSource$ = this.authService.username$;
+	private submitGuessSource = this.submitGuess.pipe(
+		switchMap(() =>
+			this.locationRiddleApiService.postGuess(this.locationRiddle()!.locationRiddleId, this.marker()!)
+		)
+	);
 
 	constructor() {
 		const locationRiddleChangeSources = merge(
@@ -87,12 +101,21 @@ export class LocationRiddleStateService {
 
 		connect(this.state)
 			.with(this.placeGuess, (state, marker) => ({ marker }))
-			.with(this.submittedGuess, (state) => ({ submitted: true }))
+			.with(this.submitGuessSource, (state, guessResult) => ({
+				locationRiddle: guessResult.locationRiddle,
+				achievedRating: guessResult.guessResult.received_score
+			}))
 			.with(this.toggleMap, (state) => ({ showMap: !state.showMap }))
 			.with(this.mapZoomChanged, (state, mapZoom) => ({ mapZoom }))
 			.with(this.mapCenterChanged, (state, mapCenter) => ({ mapCenter }))
-			.with(this.setUsername, (state, username) => ({ username }))
+			.with(this.usernameSource$, (state, username) => ({ loggedInUsername: username }))
 			.with(this.deleteLocationRiddleSource$, (state) => ({ locationRiddle: undefined }))
 			.with(locationRiddleChangeSources, (state, locationRiddle) => ({ locationRiddle }));
+
+		effect(() => {
+			if (this.achievedRating()) {
+				this.toastService.success('Congrats! You scored ' + this.achievedRating()?.toFixed(1) + ' points!');
+			}
+		});
 	}
 }
