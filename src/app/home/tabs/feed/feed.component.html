@@ -33,10 +33,6 @@
         @for (item of feedState.locationRiddles(); track item.locationRiddleId) {
           <app-location-riddle-post
             [locationRiddle]="item"
-            [username]="feedState.username()"
-            (submitGuess)="
-							feedState.submitGuess.next({ locationRiddleId: item.locationRiddleId, guess: $event })
-						"
           ></app-location-riddle-post>
         } @empty {
           <div style="height: 100%; align-content: center">
