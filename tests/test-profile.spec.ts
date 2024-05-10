@@ -13,7 +13,7 @@ test('test-edit-own-profile', async ({ page }) => {
   await page.getByRole('button', { name: 'Edit Profile' }).click();
   await page.getByLabel('First Name').fill('First Name');
   await page.getByLabel('Last Name').fill('Second Name');
-  await page.getByLabel('BioChallenge me with your').fill('Changing up Bio for testing');
+  await page.getByLabel('Bio').fill('Changing up Bio for testing');
   await page.getByRole('button', { name: 'Save' }).click();
   await expect(page.getByText('Changing up Bio for testing')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'First Name Second Name' })).toBeVisible();
