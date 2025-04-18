@@ -23,7 +23,7 @@ import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
-import { RatingComponent } from './ui/rating/rating.component';
+
 @Component({
 	selector: 'app-location-riddle-post',
 	templateUrl: './location-riddle-post.component.html',
@@ -45,7 +45,6 @@ import { RatingComponent } from './ui/rating/rating.component';
 		IonButton,
 		CommonModule,
 		MapComponent,
-		RatingComponent,
 		IonAlert
 	],
 	styleUrls: ['./location-riddle-post.component.scss'],
@@ -85,20 +84,6 @@ export class LocationRiddlePostComponent {
 			},
 			{ allowSignalWrites: true }
 		);
-	}
-
-	get ratingError() {
-		if (!this.locationRiddleState.locationRiddle()?.solved) {
-			return 'You can only rate a solved riddle';
-		} else if (
-			this.locationRiddleState.locationRiddle()?.username === this.locationRiddleState.loggedInUsername()
-		) {
-			return 'You cannot rate your own riddle';
-		} else if (this.locationRiddleState.locationRiddle()?.rated) {
-			return 'You have already rated this riddle';
-		} else {
-			return undefined;
-		}
 	}
 
 	comment(commentInputRef: IonInput) {
