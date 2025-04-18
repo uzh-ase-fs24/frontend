@@ -1,5 +1,5 @@
 @if (locationRiddleState.locationRiddle()) {
-  <div class="post-container">
+  <div class="post-container" [class.map-active]="locationRiddleState.showMap()">
     @if (locationRiddleState.showMap()) {
       <app-map
         (placeMarker)="locationRiddleState.placeGuess.next($event)"
