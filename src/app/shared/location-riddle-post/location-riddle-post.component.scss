@@ -29,9 +29,9 @@
 /* Map component styling */
 app-map {
   display: block;
-  width: calc(100% - 20px); /* Width minus padding */
-  height: calc(100% - 20px); /* Height minus padding */
-  border-radius: 12px; /* Slightly smaller radius than container */
+  width: 100%;
+  height: 100%;
+  border-radius: 16px; /* Slightly smaller radius than container */
   overflow: hidden; /* Ensure content doesn't overflow rounded corners */
 }
 
@@ -39,14 +39,14 @@ app-map {
 :host ::ng-deep app-map .map-container {
   height: 100% !important;
   width: 100% !important;
-  border-radius: 12px;
+  border-radius: 16px;
 }
 
 /* Ensure map renders properly */
 :host ::ng-deep .leaflet-container {
   height: 100% !important;
   width: 100% !important;
-  border-radius: 12px;
+  border-radius: 16px;
 }
 
 .user-info-overlay {
