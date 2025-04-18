@@ -7,11 +7,12 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top:10px ;
 }
 
 .map-active {
-  height: 400px; /* Fixed height when showing map */
+  height: 450px; /* Fixed height when showing map */
   background-color: #f0f0f0; /* Grey background */
   display: flex;
   justify-content: center;
