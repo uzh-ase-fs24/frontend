@@ -1,81 +1,65 @@
 @if (locationRiddleState.locationRiddle()) {
-  <ion-card style="width: 90vw; min-height: 37rem; max-width: 40rem" color="light">
-    <ion-card-header class="ion-padding">
-      <ion-card-title>
-        <ion-item lines="none">
-          <div style="display: flex; justify-content: space-between; flex-grow: 1">
-            <ion-label
-              class="hover-pointer"
-              color="dark"
-              (click)="
-								router.navigate(['/home/profiles/' + locationRiddleState.locationRiddle()!.username])
-							"
-            >
-              <h2>{{ locationRiddleState.locationRiddle()!.username }}</h2>
-              <p>{{ locationRiddleState.locationRiddle()!.createdAt | date: 'short' }}</p>
-            </ion-label>
-            <app-rating
-              [rating]="locationRiddleState.locationRiddle()!.rating"
-              (makeRating)="locationRiddleState.rateLocationRiddle.next($event)"
-              [ratingError]="ratingError"
-            ></app-rating>
-          </div>
-          @if (isCurrentUser()) {
-            <ion-button [id]="'present-alert-' + locationRiddle().locationRiddleId" fill="clear" slot="end">
-              <ion-icon class="hover-pointer" name="trash-outline" color="dark" size="medium"></ion-icon>
-            </ion-button>
-            <ion-alert
-              [trigger]="'present-alert-' + locationRiddle().locationRiddleId"
-              header="Are you sure you want to delete this riddle?"
-              [buttons]="alertButtons"
-            ></ion-alert>
-          }
-        </ion-item>
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content style="height: 40vh; min-height: 30rem">
-      @if (locationRiddleState.showMap()) {
-        <app-map
-          (placeMarker)="locationRiddleState.placeGuess.next($event)"
-          [marker]="locationRiddleState.marker()"
-          [guesses]="locationRiddleState.guesses()"
-          [userGuess]="locationRiddleState.userGuess()"
-          [solution]="locationRiddleState.solution()"
-          [solved]="locationRiddleState.locationRiddle()!.solved"
-          [zoom]="locationRiddleState.mapZoom()"
-          [center]="locationRiddleState.mapCenter()"
-          (zoomChange)="locationRiddleState.mapZoomChanged.next($event)"
-          (centerChange)="locationRiddleState.mapCenterChanged.next($event)"
-        ></app-map>
-      } @else {
-        <ion-img
-          src="{{ locationRiddleState.locationRiddle()!.locationRiddleImage }}"
-        ></ion-img>
+  <div class="post-container" [class.map-active]="locationRiddleState.showMap()">
+    @if (locationRiddleState.showMap()) {
+      <app-map
+        (placeMarker)="locationRiddleState.placeGuess.next($event)"
+        [marker]="locationRiddleState.marker()"
+        [guesses]="locationRiddleState.guesses()"
+        [userGuess]="locationRiddleState.userGuess()"
+        [solution]="locationRiddleState.solution()"
+        [solved]="locationRiddleState.locationRiddle()!.solved"
+        [zoom]="locationRiddleState.mapZoom()"
+        [center]="locationRiddleState.mapCenter()"
+        (zoomChange)="locationRiddleState.mapZoomChanged.next($event)"
+        (centerChange)="locationRiddleState.mapCenterChanged.next($event)"
+      ></app-map>
+    } @else {
+      <ion-img
+        class="post-image"
+        src="{{ locationRiddleState.locationRiddle()!.locationRiddleImage }}"
+      ></ion-img>
+    }
+
+    <!-- User info overlay -->
+    <div class="user-info-overlay">
+      <div class="user-info hover-pointer" (click)="
+          router.navigate(['/home/profiles/' + locationRiddleState.locationRiddle()!.username])
+        ">
+        <span class="username">{{ locationRiddleState.locationRiddle()!.username }}</span>
+        <span class="date">{{ locationRiddleState.locationRiddle()!.createdAt | date: 'short' }}</span>
+      </div>
+
+      @if (isCurrentUser()) {
+        <ion-button [id]="'present-alert-' + locationRiddle().locationRiddleId" fill="clear" class="delete-button">
+          <ion-icon name="trash-outline" color="light" size="small"></ion-icon>
+        </ion-button>
+        <ion-alert
+          [trigger]="'present-alert-' + locationRiddle().locationRiddleId"
+          header="Are you sure you want to delete this riddle?"
+          [buttons]="alertButtons"
+        ></ion-alert>
       }
-      <ion-item
-        expand="block"
-        class="ion-no-padding"
-        lines="none"
-        style="margin-top: 15px; margin-bottom: 5px"
-        (click)="commentsModalOpen = true"
-      >
-        <ion-icon size="small" name="chatbox-outline"></ion-icon>
-        <p style="padding-left: 0.3rem">add a comment...</p>
-      </ion-item>
-      <ion-fab horizontal="start" slot="fixed" vertical="bottom">
-        <ion-fab-button (click)="locationRiddleState.toggleMap.next()">
-          <ion-icon name="{{ locationRiddleState.showMap() ? 'image' : 'map' }}-outline"></ion-icon>
-        </ion-fab-button>
-      </ion-fab>
-      @if (locationRiddleState.marker() && !locationRiddleState.achievedRating()) {
-        <ion-fab horizontal="end" slot="fixed" vertical="bottom">
-          <ion-fab-button color="success" (click)="submit()">
-            <ion-icon color="dark" name="checkmark-outline"></ion-icon>
-          </ion-fab-button>
-        </ion-fab>
-      }
-    </ion-card-content>
-  </ion-card>
+    </div>
+
+    <!-- Bottom controls -->
+    <div class="bottom-controls">
+      <!-- Map toggle button -->
+      <ion-button class="map-toggle-button" fill="clear" (click)="locationRiddleState.toggleMap.next()">
+        <ion-icon name="{{ locationRiddleState.showMap() ? 'image' : 'map' }}-outline"></ion-icon>
+      </ion-button>
+
+      <!-- Comment button -->
+      <ion-button class="comment-button" fill="clear" (click)="commentsModalOpen = true">
+        <ion-icon name="chatbox-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    @if (locationRiddleState.marker() && !locationRiddleState.achievedRating()) {
+      <ion-button class="submit-button" fill="solid" color="success" (click)="submit()">
+        <ion-icon color="dark" name="checkmark-outline"></ion-icon>
+      </ion-button>
+    }
+  </div>
 
   <ion-modal
     #modal
