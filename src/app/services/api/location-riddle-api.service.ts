@@ -12,11 +12,13 @@ import {
 	LocationRiddlePostDto
 } from '../../model/location-riddle';
 import { AuthService } from '../auth/auth.service';
+import { GuestUserService } from '../guest-user.service';
 
 @Injectable()
 export class LocationRiddleApiService {
 	http = inject(HttpClient);
 	auth = inject(AuthService);
+	guestUserService = inject(GuestUserService);
 
 	constructor() {}
 
@@ -29,6 +31,15 @@ export class LocationRiddleApiService {
 		return this.getRequest(url);
 	}
 
+	getPublicLocationRiddle(locationRiddleId: string): Observable<LocationRiddle> {
+		const guestUsername = this.guestUserService.getGuestUsername();
+		return this.http
+			.post<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId, {
+				username: guestUsername
+			})
+			.pipe(map((dto: LocationRiddleDto) => this.mapDtoToLocationRiddle(dto)));
+	}
+
 	postLocationRiddle(locationRiddle: LocationRiddlePostDto): Observable<void> {
 		return this.http.post<void>(environment.api.url + '/location-riddles', locationRiddle);
 	}
@@ -37,6 +48,24 @@ export class LocationRiddleApiService {
 		return this.http
 			.post<guessResultDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/guess', {
 				guess: guess
+			})
+			.pipe(
+				map((dto) => ({
+					locationRiddle: this.mapDtoToLocationRiddle(dto.location_riddle),
+					guessResult: {
+						distance: dto.guess_result.distance,
+						received_score: dto.guess_result.received_score
+					}
+				}))
+			);
+	}
+
+	postPublicGuess(locationRiddleId: string, guess: Coordinate): Observable<GuessResult> {
+		const guestUsername = this.guestUserService.getGuestUsername();
+		return this.http
+			.post<guessResultDto>(environment.api.url + '/location-riddles/' + locationRiddleId + '/guess', {
+				guess: guess,
+				username: guestUsername
 			})
 			.pipe(
 				map((dto) => ({
@@ -74,7 +103,7 @@ export class LocationRiddleApiService {
 			map((dtos: LocationRiddleDto[]) => {
 				return dtos.map((dto) => this.mapDtoToLocationRiddle(dto));
 			}),
-			catchError((error) => {
+			catchError((_) => {
 				return of([]);
 			})
 		);

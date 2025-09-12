@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Location Riddle</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (loading()) {
+    <div class="loading-container">
+      <ion-spinner></ion-spinner>
+    </div>
+  } @else if (error()) {
+    <div class="error-container">
+      <p>{{ error() }}</p>
+    </div>
+  } @else if (locationRiddle()) {
+    <div class="post-container">
+      <app-location-riddle-post [locationRiddle]="locationRiddle()!" [isPublicView]="true"></app-location-riddle-post>
+    </div>
+  }
+</ion-content>

@@ -1,0 +1,12 @@
+.loading-container, .error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.post-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
