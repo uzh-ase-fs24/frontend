@@ -17,10 +17,6 @@ const routes: Routes = [
 	{
 		path: 'login',
 		loadComponent: () => import('./login/login.component').then((m) => m.LoginComponent)
-	},
-	{
-		path: 'post/:id',
-		loadComponent: () => import('./shared/public-post-view/public-post-view.component').then((m) => m.PublicPostViewComponent)
 	}
 ];
 @NgModule({
