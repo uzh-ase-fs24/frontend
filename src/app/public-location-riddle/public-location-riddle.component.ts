@@ -1,19 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {
-	IonButton,
-	IonCard,
-	IonCardContent,
-	IonCardHeader,
-	IonCardTitle,
-	IonContent,
-	IonHeader,
-	IonIcon,
-	IonImg,
-	IonTitle,
-	IonToolbar
-} from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
 import { PublicLocationRiddleService } from 'src/app/services/api/public-location-riddle.service';
@@ -22,22 +9,6 @@ import { MapComponent } from 'src/app/shared/map/map.component';
 
 @Component({
 	selector: 'app-public-location-riddle',
-	standalone: true,
-	imports: [
-		CommonModule,
-		IonContent,
-		IonHeader,
-		IonToolbar,
-		IonTitle,
-		IonCard,
-		IonCardHeader,
-		IonCardTitle,
-		IonCardContent,
-		IonImg,
-		IonButton,
-		IonIcon,
-		MapComponent
-	],
 	template: `
 		<ion-header>
 			<ion-toolbar>

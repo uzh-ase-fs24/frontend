@@ -19,8 +19,8 @@ const routes: Routes = [
 		loadComponent: () => import('./login/login.component').then((m) => m.LoginComponent)
 	},
 	{
-		path: 'locationriddle/:id',
-		loadComponent: () => import('./public-location-riddle/public-location-riddle.component').then((m) => m.PublicLocationRiddleComponent)
+    path: 'locationriddle/:id',
+    loadChildren: () => import('./public-location-riddle/public-location-riddle.module').then((m) => m.PublicLocationRiddleModule)
 	}
 ];
 @NgModule({
