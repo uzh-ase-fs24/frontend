@@ -1,10 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	IonAlert,
+	IonAvatar,
 	IonButton,
+	IonCard,
+	IonCardContent,
+	IonCardHeader,
+	IonCardTitle,
 	IonContent,
+	IonFab,
+	IonFabButton,
 	IonIcon,
 	IonImg,
 	IonInput,
@@ -14,7 +21,6 @@ import {
 } from '@ionic/angular/standalone';
 import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
-import { ToastService } from 'src/app/services/toast.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
 
@@ -24,12 +30,19 @@ import { LocationRiddleStateService } from './data-access/location-riddle-state.
 	imports: [
 		IonImg,
 		IonIcon,
-		IonButton,
+		IonFab,
+		IonFabButton,
+		IonCardContent,
+		IonCardTitle,
+		IonCardHeader,
+		IonCard,
+		IonAvatar,
 		IonModal,
 		IonContent,
 		IonInput,
 		IonItem,
 		IonLabel,
+		IonButton,
 		CommonModule,
 		MapComponent,
 		IonAlert
@@ -41,7 +54,6 @@ import { LocationRiddleStateService } from './data-access/location-riddle-state.
 export class LocationRiddlePostComponent {
 	// Services
 	locationRiddleState = inject(LocationRiddleStateService);
-	toastService = inject(ToastService);
 
 	// Input/Output
 	locationRiddle = input.required<LocationRiddle>();
@@ -92,21 +104,6 @@ export class LocationRiddlePostComponent {
 		return (
 			this.locationRiddle().username === this.locationRiddleState.loggedInUsername() &&
 			!this.route.snapshot.params['username']
-		);
-	}
-
-	shareRiddle() {
-		const riddleId = this.locationRiddle().locationRiddleId;
-		const publicUrl = `${window.location.origin}/locationriddle/${riddleId}`;
-
-		navigator.clipboard.writeText(publicUrl).then(
-			() => {
-				this.toastService.success('Riddle URL copied to clipboard!');
-			},
-			(err) => {
-				console.error('Error copying URL: ', err);
-				this.toastService.error('Failed to copy URL to clipboard');
-			}
 		);
 	}
 }
