@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Page Not Found</title>
+  <script>
+    // Get the current path from the URL.
+    var path = window.location.pathname;
+
+    // If this is a project page (e.g., username.github.io/repo-name),
+    // we need to keep the repo name in the path.
+    // Set the number of path segments to keep. For a project page, this is 1.
+    // For a user/organization page (e.g., username.github.io), this is 0.
+    var pathSegmentsToKeep = 1;
+
+    // Store the path in sessionStorage.
+    sessionStorage.redirect = path;
+
+    // Redirect to the root of the site.
+    window.location.replace(
+      path.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/'
+    );
+  </script>
+</head>
+<body>
+If you are not redirected automatically, follow this <a href="/">link to the home page</a>.
+</body>
+</html>
