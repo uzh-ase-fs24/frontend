@@ -16,7 +16,7 @@ import {
 } from '@ionic/angular/standalone';
 import { Coordinate } from 'ol/coordinate';
 import { LocationRiddle } from 'src/app/model/location-riddle';
-import { PublicLocationRiddleService } from 'src/app/services/public-location-riddle.service';
+import { PublicLocationRiddleService } from 'src/app/services/api/public-location-riddle.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
 

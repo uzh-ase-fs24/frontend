@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Coordinate } from 'ol/coordinate';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { LocationRiddle, LocationRiddleDto, GuessResult, guessResultDto } from '../model/location-riddle';
+import { environment } from '../../../environments/environment';
+import { LocationRiddle, LocationRiddleDto, GuessResult, guessResultDto } from '../../model/location-riddle';
 
 @Injectable({
 	providedIn: 'root'
