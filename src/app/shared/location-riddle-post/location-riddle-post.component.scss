@@ -100,7 +100,7 @@ app-map {
   z-index: 10; /* Ensure controls are above map */
 }
 
-.map-toggle-button, .comment-button {
+.map-toggle-button, .comment-button, .share-button {
   --padding-start: 8px;
   --padding-end: 8px;
   --padding-top: 8px;
@@ -112,7 +112,7 @@ app-map {
   width: 36px;
 }
 
-.map-toggle-button ion-icon, .comment-button ion-icon {
+.map-toggle-button ion-icon, .comment-button ion-icon, .share-button ion-icon {
   color: white;
   font-size: 18px;
 }

@@ -48,6 +48,11 @@
         <ion-icon name="{{ locationRiddleState.showMap() ? 'image' : 'map' }}-outline"></ion-icon>
       </ion-button>
 
+      <!-- Share button -->
+      <ion-button class="share-button" fill="clear" (click)="shareRiddle()">
+        <ion-icon name="share-outline"></ion-icon>
+      </ion-button>
+
       <!-- Comment button -->
       <ion-button class="comment-button" fill="clear" (click)="commentsModalOpen = true">
         <ion-icon name="chatbox-outline"></ion-icon>

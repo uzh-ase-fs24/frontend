@@ -4,6 +4,11 @@ import { switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
+	// Skip authentication for public endpoints
+	if (req.url.includes('/public/')) {
+		return next(req);
+	}
+
 	const authService = inject(AuthService);
 	return authService.acquireTokenSilently().pipe(
 		switchMap((token) => {
