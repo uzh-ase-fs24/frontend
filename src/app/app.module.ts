@@ -4,7 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
-import {HttpClientModule, provideHttpClient, withInterceptors} from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../environments/environment';
@@ -20,7 +20,6 @@ const redirect_uri = AuthService.redirectCallback;
 		BrowserModule,
 		IonicModule.forRoot(),
 		AppRoutingModule,
-    HttpClientModule,
 		AuthModule.forRoot({
 			domain: environment.auth.domain,
 			clientId: environment.auth.clientId,
