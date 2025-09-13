@@ -30,17 +30,14 @@ export class PublicLocationRiddleService {
 		return `${randomAdjective}${randomAnimal}${randomNumber}`;
 	}
 
-  getPublicLocationRiddle(locationRiddleId: string): Observable<LocationRiddle> {
-    const username = this.getAnonymousUsername();
-    return this.http
-      .get<LocationRiddleDto>(
-        `${environment.api.url}/public/location-riddles/${locationRiddleId}`,
-        {
-          params: { username }
-        }
-      )
-      .pipe(map((dto: LocationRiddleDto) => this.mapDtoToLocationRiddle(dto)));
-  }
+	getPublicLocationRiddle(locationRiddleId: string): Observable<LocationRiddle> {
+		const username = this.getAnonymousUsername();
+		return this.http
+			.post<LocationRiddleDto>(`${environment.api.url}/public/location-riddles/${locationRiddleId}`, {
+				username: username
+			})
+			.pipe(map((dto: LocationRiddleDto) => this.mapDtoToLocationRiddle(dto)));
+	}
 
 	postPublicGuess(locationRiddleId: string, guess: Coordinate): Observable<GuessResult> {
 		const username = this.getAnonymousUsername();
