@@ -24,5 +24,15 @@
 <body>
 <app-root></app-root>
 <noscript>Please enable JavaScript to continue using this application.</noscript>
+
+<script>
+  (function() {
+    var redirect = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+    if (redirect && redirect != location.href) {
+      history.replaceState(null, null, redirect);
+    }
+  })();
+</script>
 <script src="runtime.a7d4580594e73a42.js" type="module"></script><script src="polyfills.43d4f2a60900e049.js" type="module"></script><script src="main.b52d88ab1a6e799d.js" type="module"></script></body>
 </html>
