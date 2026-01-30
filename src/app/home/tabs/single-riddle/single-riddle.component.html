@@ -1,0 +1,19 @@
+<ion-content class="ion-padding">
+  <ion-refresher (ionRefresh)="refresh($event)" slot="fixed">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="center-container" style="height: 100%">
+    <div style="height: 100%">
+      @if (locationRiddle$ | async; as riddle) {
+        <app-location-riddle-post
+          [locationRiddle]="riddle"
+        ></app-location-riddle-post>
+      } @else {
+        <div style="height: 100%; align-content: center">
+          <ion-spinner name="circular"></ion-spinner>
+        </div>
+      }
+    </div>
+  </div>
+</ion-content>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, input, output } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	IonAlert,
@@ -23,6 +23,7 @@ import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
+import { ToastService } from 'src/app/services/toast.service'; // <--- Import ToastService
 
 @Component({
 	selector: 'app-location-riddle-post',
@@ -60,6 +61,7 @@ export class LocationRiddlePostComponent {
 
 	router = inject(Router);
 	route = inject(ActivatedRoute);
+  toastService = inject(ToastService);
 
 	public alertButtons = [
 		{
@@ -106,4 +108,42 @@ export class LocationRiddlePostComponent {
 			!this.route.snapshot.params['username']
 		);
 	}
+
+  async share() {
+    const url = `https://find-me.click/home/riddle/${this.locationRiddle().locationRiddleId}`;
+    const title = 'Check out this location riddle!';
+    const text = `Can you guess where this is? Try solving this location riddle on Find Me!`;
+
+    // Check if the Web Share API is available (available on iOS Safari and most modern browsers)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title,
+          text: text,
+          url: url
+        });
+        // Don't show success toast for native share - the native UI handles feedback
+      } catch (err: any) {
+        // User cancelled the share dialog or sharing failed
+        if (err.name !== 'AbortError') {
+          console.error('Error sharing:', err);
+          // Fallback to clipboard if share fails
+          await this.fallbackToClipboard(url);
+        }
+      }
+    } else {
+      // Fallback to clipboard for browsers that don't support Web Share API
+      await this.fallbackToClipboard(url);
+    }
+  }
+
+  private async fallbackToClipboard(url: string) {
+    try {
+      await navigator.clipboard.writeText(url);
+      this.toastService.success('Link copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy:', err);
+      this.toastService.error('Failed to copy link');
+    }
+  }
 }

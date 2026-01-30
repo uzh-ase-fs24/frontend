@@ -17,6 +17,10 @@ const routes: Routes = [
 				path: 'feed',
 				loadComponent: () => import('./tabs/feed/feed.component').then((m) => m.FeedComponent)
 			},
+      {
+        path: 'riddle/:riddleId',
+        loadComponent: () => import('./tabs/single-riddle/single-riddle.component').then((m) => m.SingleRiddleComponent)
+      },
 			{
 				path: 'profile',
 				loadComponent: () => import('./tabs/profile/profile.component').then((m) => m.ProfileComponent)
