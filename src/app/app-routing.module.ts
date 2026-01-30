@@ -9,6 +9,12 @@ const routes: Routes = [
 		loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
 		canActivate: [AuthGuard]
 	},
+  {
+    path: 'riddle/:id',
+    loadComponent: () =>
+      import('./home/tabs/post/location-riddle-single.component').then((m) => m.LocationRiddleSingleComponent),
+    canActivate: [AuthGuard]
+  },
 	{
 		path: 'signup',
 		loadComponent: () => import('./signup/signup.component').then((m) => m.SignupComponent),

@@ -1,4 +1,5 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService as Auth0 } from '@auth0/auth0-angular';
 import { App } from '@capacitor/app';
 import { Browser } from '@capacitor/browser';
@@ -11,10 +12,17 @@ import { AuthService } from './services/auth/auth.service';
 	styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-	// Import the AuthService module from the Auth0 Angular SDK
+	private router = inject(Router);
+	private route = inject(ActivatedRoute);
 	constructor(private auth: Auth0, private ngZone: NgZone) {}
 
 	ngOnInit(): void {
+    // 1. Handle the GitHub Pages "Hack" for query params
+    this.route.queryParams.subscribe(params => {
+      if (params['riddleId']) {
+        this.router.navigate(['/riddle', params['riddleId']]);
+      }
+    });
 		// Use Capacitor's App plugin to subscribe to the `appUrlOpen` event
 		App.addListener('appUrlOpen', ({ url }) => {
 			// Must run inside an NgZone for Angular to pick up the changes
