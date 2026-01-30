@@ -69,12 +69,6 @@ export class LocationRiddleApiService {
 		return this.http.delete<void>(environment.api.url + '/location-riddles/' + locationRiddleId);
 	}
 
-  getLocationRiddle(locationRiddleId: string): Observable<LocationRiddle> {
-    return this.http
-      .get<LocationRiddleDto>(environment.api.url + '/location-riddles/' + locationRiddleId)
-      .pipe(map((dto) => this.mapDtoToLocationRiddle(dto)));
-  }
-
 	private getRequest(url: string): Observable<LocationRiddle[]> {
 		return this.http.get<LocationRiddleDto[]>(environment.api.url + url).pipe(
 			map((dtos: LocationRiddleDto[]) => {

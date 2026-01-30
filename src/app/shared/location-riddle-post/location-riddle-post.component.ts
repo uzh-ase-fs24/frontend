@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
 	IonAlert,
@@ -23,7 +23,6 @@ import { LocationRiddle } from 'src/app/model/location-riddle';
 import { LocationRiddleApiService } from 'src/app/services/api/location-riddle-api.service';
 import { MapComponent } from 'src/app/shared/map/map.component';
 import { LocationRiddleStateService } from './data-access/location-riddle-state.service';
-import { ToastService } from 'src/app/services/toast.service'; // <--- Import ToastService
 
 @Component({
 	selector: 'app-location-riddle-post',
@@ -49,7 +48,7 @@ import { ToastService } from 'src/app/services/toast.service'; // <--- Import To
 		IonAlert
 	],
 	styleUrls: ['./location-riddle-post.component.scss'],
-	providers: [LocationRiddleStateService, LocationRiddleApiService, ToastService],
+	providers: [LocationRiddleStateService, LocationRiddleApiService],
 	standalone: true
 })
 export class LocationRiddlePostComponent {
@@ -61,7 +60,6 @@ export class LocationRiddlePostComponent {
 
 	router = inject(Router);
 	route = inject(ActivatedRoute);
-  toastService = inject(ToastService);
 
 	public alertButtons = [
 		{
@@ -108,17 +106,4 @@ export class LocationRiddlePostComponent {
 			!this.route.snapshot.params['username']
 		);
 	}
-
-  async share() {
-    // Construct the URL using the ?riddleId= format for GitHub Pages
-    const url = `https://find-me.click/?riddleId=${this.locationRiddle().locationRiddleId}`;
-
-    try {
-      await navigator.clipboard.writeText(url);
-      this.toastService.success('Link copied to clipboard!');
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-      this.toastService.error('Failed to copy link');
-    }
-  }
 }
